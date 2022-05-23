@@ -1,0 +1,22 @@
+{
+    "name": "Super-Hot",
+    "short_name": "Sup-Hot",
+    "display": "standalone",
+    "id":"./index.html",
+    "start_url": "./index.html",
+    "scope": "https://super-hot.fr",
+    "icons": [
+     {
+         "src": "./assets/images/android-chrome-192x192.png",
+         "sizes": "192x192",
+         "type": "image/png"
+     },
+     {
+         "src": "./assets/images/android-chrome-512x512.png",
+         "sizes": "512x512",
+         "type": "image/png"
+     }
+ ],
+    "theme_color": "#ff0000",
+    "background_color": "#0000ff"
+ }
