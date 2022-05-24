@@ -1,7 +1,8 @@
 export function qs(element){return document.querySelector(element);}
+
 export function qsa(element, parent = document){return [...parent.querySelectorAll(element)];}
-export function qsa(element, parent = document){return [...parent.querySelectorAll(element)]}
-function addGlobalEventListener(
+
+export function addGlobalEventListener(
     type,
     element,
     callback,
