@@ -1,4 +1,5 @@
 // DOM
+export function qs(element, parent = document){return parent.querySelector(element);}
 
 export function qsa(element, parent = document){return [...parent.querySelectorAll(element)];}
 
