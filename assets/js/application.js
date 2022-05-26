@@ -14,43 +14,50 @@ class Application{
         this.liens          = qsa(".tabMenu li");
         this.contenus       = qsa(".tabContenu");
 
+        this.tabPosition = "left";
+
         this.onglets = () => {
             
             const toggle = (targetId) => {
                 this.contenus.forEach((element) => {
-                    // setTimeout(() => {
-                    //   // element.style.display = element.id === targetId ? "flex" : "none";
-                    
-                    // }, 110);
+ 
                     qs(`[data-target="${element.id}"]`).classList[element.id === targetId ? "add" : "remove"]("active");
                     element.classList[element.id === targetId ? "add" : "remove"]("active");
                     element.classList[element.id === targetId ? "remove" : "add"]("unactive");
                     
                     if(tabHome.classList.contains("active")) {
-                    tabHistory.style.removeProperty("left");
-                    tabHistory.style.right="0";
-                    tabHistory.style.width="0";
-                    tabAlerts.style.width="0";
-                    // qs(".onglets").style.background= "center no-repeat url('epicLandscape.jpg')";
+                        if (this.tabPosition === "right"){
+                            tabAlerts.style.animation="leftToRightOut .4s forwards ease-in-out";
+                        }
+                        else tabHistory.style.animation="leftToRightOut .4s forwards ease-in-out";
+                        this.tabPosition = "left";
+                        tabHome.style.animation="leftToRightIn .4s forwards ease-in-out";
                     }
                     if(tabHistory.classList.contains("active")) {
-                    // qs(".onglets").style.background= "center no-repeat url('sunnyLandscape.jpg')";
-                    tabHistory.style.animation="homeTransition .4s forwards ease-in-out";
-                    tabAlerts.style.animation="reverse homeTransition .4s forwards ease-in-out";
-                    tabAlerts.style.removeProperty("animation");
+                        if (this.tabPosition === "right"){
+                            tabAlerts.style.animation="leftToRightOut .4s forwards ease-in-out";
+                            tabHistory.style.animation="leftToRightIn .4s forwards ease-in-out";
+                        }
+                        else {
+                            tabHome.style.animation="rightToLeftOut .4s forwards ease-in-out";                        
+                            tabHistory.style.animation="rightToLeftIn .4s forwards ease-in-out";
+                        }
+                        this.tabPosition = "middle";
                     }
                     if(tabAlerts.classList.contains("active")) {
-                    tabHistory.style.left="0";
-                    tabHistory.style.removeProperty("right");
-                    //   qs(".onglets").style.background= "center no-repeat url('epicLandscape.jpg')";
-                    // 
-                    tabAlerts.style.animation="homeTransition .4s forwards ease-in-out";
+                        if (this.tabPosition === "middle"){
+                            tabHistory.style.animation="rightToLeftOut .4s forwards ease-in-out";
+                        }
+                        else tabHome.style.animation="rightToLeftOut .4s forwards ease-in-out";
+                        this.tabPosition = "right";
+                        tabAlerts.style.animation="rightToLeftIn .4s forwards ease-in-out";
                     }
-                
-                    console.log(tabHistory.style);
                 });
             }
-        
+            console.log("tabHome",tabHome.style);
+            console.log("tabHistory",tabHistory.style);
+            console.log("tabAlerts",tabAlerts.style);
+            
             this.liens.forEach((lien) => {
                 lien.addEventListener("click", () => {
                     toggle(lien.dataset.target);
