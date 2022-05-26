@@ -1,4 +1,6 @@
-// DOM
+/* Accès au DOM */
+
+
 export function qs(element, parent = document){return parent.querySelector(element);}
 
 export function qsa(element, parent = document){return [...parent.querySelectorAll(element)];}
@@ -41,11 +43,17 @@ export function createElement(type, options = {}) {
     return element;
 }
 
-// Other
+
+/* Diverses */
+
 
 export function randomNumberBetween(min, max) {return Math.floor(Math.random() * (max - min + 1) + min);}
 
 export function sleep(duration) {return new Promise(resolve => setTimeout(resolve, duration));}
+
+
+/* Arrays */
+
 
 export function firstElementsArray(array, n = 1) {
     if(n ===1)return array[0];
