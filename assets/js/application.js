@@ -1,4 +1,4 @@
-import { qs,qsa } from "../utils/utils.js";
+import { qs,qsa } from "./utils/utils.js";
 
 class Application{
 
@@ -26,28 +26,28 @@ class Application{
                     element.classList[element.id === targetId ? "add" : "remove"]("active");
                     element.classList[element.id === targetId ? "remove" : "add"]("unactive");
                     
-                    if(this.tabHome.classList.contains("active")) {
-                        this.tabHistory.style.removeProperty("left");
-                        this.tabHistory.style.right="0";
-                        this.tabHistory.style.width="0";
-                        this.tabAlerts.style.width="0";
-                        // qs(".onglets").style.background= "center no-repeat url('epicLandscape.jpg')";
+                    if(tabHome.classList.contains("active")) {
+                    tabHistory.style.removeProperty("left");
+                    tabHistory.style.right="0";
+                    tabHistory.style.width="0";
+                    tabAlerts.style.width="0";
+                    // qs(".onglets").style.background= "center no-repeat url('epicLandscape.jpg')";
                     }
-                    if(this.tabHistory.classList.contains("active")) {
-                        // qs(".onglets").style.background= "center no-repeat url('sunnyLandscape.jpg')";
-                        this.tabHistory.style.animation="homeTransition .4s forwards ease-in-out";
-                        this.tabAlerts.style.animation="reverse homeTransition .4s forwards ease-in-out";
-                        this.tabAlerts.style.removeProperty("animation");
+                    if(tabHistory.classList.contains("active")) {
+                    // qs(".onglets").style.background= "center no-repeat url('sunnyLandscape.jpg')";
+                    tabHistory.style.animation="homeTransition .4s forwards ease-in-out";
+                    tabAlerts.style.animation="reverse homeTransition .4s forwards ease-in-out";
+                    tabAlerts.style.removeProperty("animation");
                     }
-                    if(this.tabAlerts.classList.contains("active")) {
-                        this.tabHistory.style.left="0";
-                        this.tabHistory.style.removeProperty("right");
-                        //   qs(".onglets").style.background= "center no-repeat url('epicLandscape.jpg')";
-                        // 
-                        this.tabAlerts.style.animation="homeTransition .4s forwards ease-in-out";
+                    if(tabAlerts.classList.contains("active")) {
+                    tabHistory.style.left="0";
+                    tabHistory.style.removeProperty("right");
+                    //   qs(".onglets").style.background= "center no-repeat url('epicLandscape.jpg')";
+                    // 
+                    tabAlerts.style.animation="homeTransition .4s forwards ease-in-out";
                     }
                 
-                    console.log(this.tabHistory.style);
+                    console.log(tabHistory.style);
                 });
             }
         
@@ -62,5 +62,3 @@ class Application{
         }
     }
 }
-const app = new Application();
-app.onglets();
