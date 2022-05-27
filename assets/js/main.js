@@ -1,3 +1,5 @@
+
+import { Application } from "./application.js";
 /*Enregistrement service worker*/
 
 if ('serviceWorker' in navigator) {
@@ -14,6 +16,8 @@ if ('serviceWorker' in navigator) {
 let deferredPrompt;
 const addBtn = document.querySelector('.add-button');
 addBtn.style.display = 'none';
+
+const app = new Application();
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();

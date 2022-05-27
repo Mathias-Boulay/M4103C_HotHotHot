@@ -21,7 +21,7 @@ export function addGlobalEventListener(
     )
 }
 
-export function createElement(type, options = {}) {
+export function createElement(type, options = {}, parent = document.body) {
     const element = document.createElement(type);
     Object.entries(options).forEach(([key, value]) => {
         if (key === "class") {
@@ -40,6 +40,7 @@ export function createElement(type, options = {}) {
         }
         element.setAttribute(key, value);
     })
+    parent.append(element);
     return element;
 }
 

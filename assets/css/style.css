@@ -1,0 +1,155 @@
+:root{
+    --fond:white;
+    --border-color:#555;
+}
+
+html,body{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    height: 100%;
+    font: inherit;
+    font-family: system-ui;
+    vertical-align: baseline;
+    -webkit-overflow-scrolling: touch;
+    font-weight: bold;
+}
+#header{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    z-index: 99;
+    left: 10vw;
+    right: 10vw;
+    top :10vh;
+    max-height: 5vh;
+}
+
+.tabMenu{
+    display: flex;
+    align-items: center;
+    list-style: none;
+    position: absolute;
+    top:25%;
+    padding: 0;
+    margin: 0;
+    opacity: 45%;
+    font-size:large;
+    line-height: 1.3em;
+    z-index: 99;
+    background-color: rgba(209, 209, 209);
+    border-radius:10px;
+    transition: .8s;
+}
+.tabMenu:hover{
+    opacity: 100%;
+}
+
+.tabMenu > li {
+    background: rgb(209, 209, 209);
+    border-radius: 10px;
+    margin: .2em;
+    transition: all .5s ease-out;
+    -webkit-transition: all .5s ease-out;
+}
+
+.tabMenu > .active {
+    background: center no-repeat var(--fond);
+    z-index: 99;
+    box-shadow: 0 0px 6px rgb(99, 94, 94);
+}
+
+.tabMenu a {
+    display: inline-flex;
+    padding: .5rem;
+    margin: .2rem;
+    color: #333;
+    text-decoration: none;
+}
+
+.tabContent{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 80%;
+    border: 1px solid var(--border-color);
+    background-size: auto;
+    border-radius: 0 0 5px 5px;
+}
+
+#tabHome{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: center no-repeat url("sunnyLandscape.jpg");
+    background-size: auto;
+    transition: .1s;
+}
+
+#tabHistory{
+    position: fixed;
+    bottom: 0;
+    background-color: rgb(21, 193, 216);
+    background: center no-repeat url("epicLandscape.jpg");
+    background-size: auto;
+    transition: .1s;
+    transform: translateX(100%);
+}
+
+#tabAlerts{
+    position: fixed;
+    bottom: 0;
+    background: center no-repeat url("insaneAlert.jpg");
+    transition: .1s;
+    transform: translateX(100%);
+}
+
+.tabs{
+    position: absolute;
+    width: 100%;
+    height: 80%;
+    bottom: 0;
+}
+
+@keyframes leftToRightIn{
+    0%{
+        transform: translateX(-100%);
+    }
+    100%{
+        transform: translateX(0);
+    }
+}
+
+@keyframes rightToLeftIn{
+    0%{
+        transform: translateX(100%);
+    }
+    100%{
+        transform: translateX(0);
+    }
+}
+
+@keyframes leftToRightOut{
+    0%{
+        transform: translateX(0%);
+    }
+    100%{
+        transform: translateX(100%);
+    }
+}
+
+@keyframes rightToLeftOut{
+    0%{
+        transform: translateX(0%);
+    }
+    100%{
+        transform: translateX(-100%);
+    }
+}
