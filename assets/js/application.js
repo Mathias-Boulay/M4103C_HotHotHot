@@ -7,37 +7,27 @@ export class Application {
     constructor() {
         this.tabPosition = "left";
 
-        /* Création des éléments HTML*/
-                                               // ____________________________________________________________________________________________________________________
-        this.constructHTML = () => {           // |Type dElément|________________________Attributs, Datasets & Inner Texts________________________|___Elément Parent__|
-                                               //                                                                                                 (def: document.body)|
-            this.header           =  createElement(  "section", {id:"header"                                                                      }                  );
-
-            this.userName         =  createElement(   "span",   {id:"userName",                        text:"Mitchel"                             },           header);
-
-            this.connectionState  =  createElement(   "span",   {id:"connectionState",                 text:"Déconnexion"                         },           header);
-
-            this.tileMenu         =  createElement(    "ul",    {class:"tabMenu",                                                  role:"tablist" }                  );
-
-            this.tileHome         =  createElement(    "li",    {"data-target":"tabHome",              class:"active",             role:"tab"     },    this.tileMenu);
-            const linkTileHome    =  createElement(    "a",     {href:"#",                             text:"Accueil"                             },    this.tileHome);
-
-            this.tileHistory      =  createElement(    "li",    {"data-target":"tabHistory",                                       role:"tab"     },    this.tileMenu);
-            const linkTileHistory =  createElement(    "a",     {href:"#",                             text:"Historique"                          }, this.tileHistory);
-
-            this.tileAlerts       =  createElement(    "li",    {"data-target":"tabAlerts",                                        role:"tab"     },    this.tileMenu);
-            const linkTileAlerts  =  createElement(    "a",     {href:"#",                             text:"Alertes"                             },  this.tileAlerts);
-
-            this.links            =       qsa     (".tabMenu li"                                                                                                     );
-
-            this.tabs             =  createElement(   "div",    {class:"tabs"                                                                     }                  );
-
-            this.tabHome          =  createElement(   "div",    {id:"tabHome",   class:"tabContent","aria-labelledby":   "tabHome",role:"tabpanel"},        this.tabs);
-            this.tabHistory       =  createElement(   "div",    {id:"tabHistory",class:"tabContent","aria-labelledby":"tabHistory",role:"tabpanel"},        this.tabs);
-            this.tabAlerts        =  createElement(   "div",    {id:"tabAlerts", class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"},        this.tabs);
-
-            this.contents         =       qsa     (".tabContent"                                                                                                     );
-        }
+        /* Création des éléments HTML */
+                                      //         ___________________________________________________________________________________________________________________
+        this.constructHTML = () => {  //         |Type Elément|                        Attributs, Datasets & Inner Texts                        |  Elément Parent  |
+                                      //         |____________|_________________________________________________________________________________(def:document.body)|
+            this.header           = createElement( "section" ,{id:"header"                                                                      }                 );
+            this.userName         = createElement(   "span"  ,{id:"userName"                     ,text:"Mitchel"                                },          header);
+            this.connectionState  = createElement(   "span"  ,{id:"connectionState"              ,text:"Déconnexion"                            },          header);
+            this.tileMenu         = createElement(    "ul"   ,{class:"tabMenu"                   ,                               role:"tablist" }                 );
+            this.tileHome         = createElement(    "li"   ,{"data-target":"tabHome"           ,class:"active",                role:"tab"     },   this.tileMenu);
+            const linkTileHome    = createElement(    "a"    ,{href:"#"                          ,text:"Accueil"                                },   this.tileHome);
+            this.tileHistory      = createElement(    "li"   ,{"data-target":"tabHistory"        ,                               role:"tab"     },   this.tileMenu);
+            const linkTileHistory = createElement(    "a"    ,{href:"#"                          ,text:"Historique"                             },this.tileHistory);
+            this.tileAlerts       = createElement(    "li"   ,{"data-target":"tabAlerts"         ,                               role:"tab"     },   this.tileMenu);
+            const linkTileAlerts  = createElement(    "a"    ,{href:"#"                          ,text:"Alertes"                                }, this.tileAlerts);
+            this.links            =      qsa     (".tabMenu li"                                                                                                   );
+            this.tabs             = createElement(   "div"   ,{class:"tabs"                                                                     }                 );
+            this.tabHome          = createElement(   "div"   ,{id:"tabHome",   class:"tabContent","aria-labelledby":   "tabHome",role:"tabpanel"},       this.tabs);
+            this.tabHistory       = createElement(   "div"   ,{id:"tabHistory",class:"tabContent","aria-labelledby":"tabHistory",role:"tabpanel"},       this.tabs);
+            this.tabAlerts        = createElement(   "div"   ,{id:"tabAlerts", class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"},       this.tabs);
+            this.contents         =      qsa     (".tabContent"                                                                                                   );
+        }                                      
 
         /* Comportement des onglets (tabs) */
 
