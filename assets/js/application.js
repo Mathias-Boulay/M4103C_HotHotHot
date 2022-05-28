@@ -31,11 +31,11 @@ export class Application {
             this.contents        =      qsa     (".tabContent");
         }                                      
 
-        /* Comportement des onglets (tabs) */
+        /* Comportement des onglets */
 
         this.setTabsBehavior = () => {
 
-            let firstUse = false; // permet de ne pas déclencher l'animation au premier affichage de l'onglet Accueil (Home)
+            let firstUse = false; // Permet de ne pas déclencher l'animation au premier affichage de l'onglet Accueil (Home)
             
             const OPT_TXT = ".4s forwards ease-in-out";
             const L2RI    = `leftToRightIn ${OPT_TXT}`;
@@ -48,34 +48,35 @@ export class Application {
                 if (firstUse === false) { firstUse = true; return; }
 
                 this.contents.forEach( (element) => {                      
-                    qs(`[data-target="${element.id}"]`).classList[element.id === targetId ? "add" : "remove"]("active");
-                    element.classList[element.id === targetId ? "add" : "remove"]("active");
+                    element.classList                                 [element.id === targetId ? "add" : "remove"]("active");
+                    qs(`[data-target="${element.id}"]`).classList     [element.id === targetId ? "add" : "remove"]("active");
+
                     if(tabHome.classList.contains("active") && firstUse) {
                         switch(this.tabPosition) {
-                            case "tabHistory"    : tabHome.style.animation    = L2RI; tabHistory.style.animation = L2RO; break;
-                            case "tabAlerts"     : tabHome.style.animation    = L2RI; tabAlerts.style.animation  = L2RO; break;
+                            case "tabHistory"  : tabHome.style.animation    = L2RI; tabHistory.style.animation = L2RO; break;
+                            case "tabAlerts"   : tabHome.style.animation    = L2RI; tabAlerts.style.animation  = L2RO; break;
                         }
                         this.tabPosition = "tabHome";
                     }
                     if(tabHistory.classList.contains("active")) {
                         switch(this.tabPosition) {
-                            case "tabHome"       : tabHistory.style.animation = R2LI; tabHome.style.animation    = R2LO; break;
-                            case "tabAlerts"     : tabHistory.style.animation = L2RI; tabAlerts.style.animation  = L2RO; break;
+                            case "tabHome"     : tabHistory.style.animation = R2LI; tabHome.style.animation    = R2LO; break;
+                            case "tabAlerts"   : tabHistory.style.animation = L2RI; tabAlerts.style.animation  = L2RO; break;
                         }
                         this.tabPosition = "tabHistory";
                     }
                     if(tabAlerts.classList.contains("active")) {
                         switch(this.tabPosition) {
-                            case "tabHome"       : tabAlerts.style.animation  = R2LI; tabHome.style.animation    = R2LO; break;
-                            case "tabHistory"    : tabAlerts.style.animation  = R2LI; tabHistory.style.animation = R2LO; break;
+                            case "tabHome"     : tabAlerts.style.animation  = R2LI; tabHome.style.animation    = R2LO; break;
+                            case "tabHistory"  : tabAlerts.style.animation  = R2LI; tabHistory.style.animation = R2LO; break;
                         }
                         this.tabPosition = "tabAlerts";
                     }
                 });
             }
             this.links.forEach( (link) => {
-                link.addEventListener( "click", () => { toggle(link.dataset.target); });
-                if (link.className.includes("active"))  toggle(link.dataset.target);
+                link.addEventListener("click", () => { toggle(link.dataset.target); });
+                if (link.className.includes("active")) toggle(link.dataset.target);
             })
         }
         this.create = () => {
@@ -87,9 +88,9 @@ export class Application {
 
 /* Instanciation d'une application */
 
-/* -> */
+/* -> * /
  
 const app = new Application();
-app.create(); 
+app.create();  
 
 /**/
