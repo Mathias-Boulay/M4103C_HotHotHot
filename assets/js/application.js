@@ -35,7 +35,7 @@ export class Application {
 
         this.setTabsBehavior = () => {
 
-            let firstTime = false; // permet de ne pas déclencher l'animation au premier affichage de l'onglet Accueil (Home)
+            let firstUse = false; // permet de ne pas déclencher l'animation au premier affichage de l'onglet Accueil (Home)
             
             const OPT_TXT = ".4s forwards ease-in-out";
             const L2RI    = `leftToRightIn ${OPT_TXT}`;
