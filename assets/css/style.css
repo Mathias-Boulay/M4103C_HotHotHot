@@ -43,7 +43,7 @@ html,body{
     z-index: 99;
     background-color: rgba(209, 209, 209);
     border-radius:10px;
-    transition: .8s;
+    transition: .6s;
 }
 .tabMenu:hover{
     opacity: 100%;
