@@ -5,7 +5,7 @@ import { qs, qsa, createElement } from "./utils/utils.js";
 export class Application {
 
     constructor() {
-        this.tabPosition = "left";
+        this.tabPosition = "tabHome";
 
         /* Création des éléments HTML */
                                       //         ___________________________________________________________________________________________________________________
@@ -49,26 +49,26 @@ export class Application {
                     element.classList[element.id === targetId ? "add" : "remove"]("active");
 
                     if(tabHome.classList.contains("active") && firstTime) {
-                        if (this.tabPosition !== "right")  tabHistory.style.animation = L2RO;
-                        tabAlerts.style.animation       =  L2RO;
-                        tabHome.style.animation         =  L2RI;
-                        this.tabPosition                = "left";
-                    }
-                    if(tabHistory.classList.contains("active")) {
-                        if (this.tabPosition !== "right") {
-                            tabHome.style.animation     =  R2LO;                        
-                            tabHistory.style.animation  =  R2LI;
-                            return;
+                        switch(this.tabPosition){
+                            case "tabHistory": tabHome.style.animation    = L2RI; tabHistory.style.animation = L2RO; break;
+                            case "tabAlerts" : tabHome.style.animation    = L2RI; tabAlerts.style.animation  = L2RO; break;
                         }
-                        tabAlerts.style.animation       =  L2RO;
-                        tabHistory.style.animation      =  L2RI;
-                        this.tabPosition                = "middle";
+                        this.tabPosition = "tabHome";
+                    }
+
+                    if(tabHistory.classList.contains("active")) {
+                        switch(this.tabPosition){
+                            case "tabHome"   : tabHistory.style.animation = R2LI; tabHome.style.animation    = R2LO; break;
+                            case "tabAlerts" : tabHistory.style.animation = L2RI; tabAlerts.style.animation  = L2RO; break;
+                        }
+                        this.tabPosition = "tabHistory";
                     }
                     if(tabAlerts.classList.contains("active")) {
-                        if (this.tabPosition !== "middle") tabHome.style.animation = R2LO;                     
-                        tabHistory.style.animation      =  R2LO;                  
-                        tabAlerts.style.animation       =  R2LI;                        
-                        this.tabPosition                = "right";        
+                        switch(this.tabPosition){
+                            case "tabHome"   : tabAlerts.style.animation  = R2LI; tabHome.style.animation    = R2LO; break;
+                            case "tabHistory": tabAlerts.style.animation  = R2LI; tabHistory.style.animation = R2LO; break;
+                        }
+                        this.tabPosition = "tabAlerts";
                     }
                 });
             }
