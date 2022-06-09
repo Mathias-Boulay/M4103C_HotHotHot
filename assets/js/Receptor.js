@@ -37,7 +37,7 @@ export default class Receptor extends Object{
         console.log("Update from server received");
         sensorDataArray.forEach(sensorData => {
             // Notify listeners if needed.
-            if(Receptor.#isAlert(sensorData)){
+            if(Receptor.isAlert(sensorData)){
                 Receptor.#notifyListeners(this.#alertsListeners, sensorData);
                 this.#alertArray.push(sensorData);
             }
@@ -56,7 +56,7 @@ export default class Receptor extends Object{
      * @param sensorData The sensorData
      * @return {boolean} Whether or not it is alert worthy
      */
-    static #isAlert(sensorData){
+    static isAlert(sensorData){
         switch (sensorData.Nom){
             case "interieur":
                 return sensorData.Valeur < 12 || sensorData.Valeur > 22;
