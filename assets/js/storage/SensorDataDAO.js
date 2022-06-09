@@ -2,6 +2,9 @@
  * Class charged of accessing and storing
  * all the sensor data into the IndexedDB
  */
+import Receptor from "../Receptor";
+import {remove} from "../utils/arrayUtils";
+
 export default class SensorDataDAO extends Object {
     static #DATABASE_NAME = "sensor_history";
     static #MAIN_OBJECT_STORE_NAME = "sensors";
@@ -154,6 +157,24 @@ export default class SensorDataDAO extends Object {
         }
         return results;
     }
+
+    /**
+     * Get sensor data ELIGIBLE FOR ALERTS according to the options set, if any
+     * @param options An object with the same attributes as {getSensorData}
+     * @return {Promise<[]>} A promise resolving with all the sensorData ELIGIBLE FOR ALERTS
+     */
+    async getAlerts(options){
+        let results = await this.getSensorData(options);
+
+        for(let i = 0; i < results.length; ++i){
+            if(!Receptor.isAlert(results[i])){
+                results.splice(i, 1);
+                --i; // Needed since we go back one
+            }
+        }
+        return results;
+    }
+
 
 
 
