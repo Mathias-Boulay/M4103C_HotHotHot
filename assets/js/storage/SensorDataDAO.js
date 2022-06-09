@@ -100,10 +100,11 @@ export default class SensorDataDAO extends Object {
      * @param options An object with the following attributes : {
      *     filterType : {String}"whitelist", "blacklist", defaults to "whitelist"
      *     filters : {String[]} contains the name of each category, defaults to NO category being filtered !
+     *     filterFunction : {function} Optional, takes a sensorData as a parameter, returns whether the current entry is kept.
      *     startTime: {int} the start time, as a timestamp, defaults to 0
      *     endTime: {int} the end time, as a timestamp, defaults to Date.now()
      * }
-     * @return {Promise<[]>}
+     * @return {Promise<[]>} A promise resolving with all the sensorData
      */
     async getSensorData(options){
         await this.#openDatabaseIfNeeded();
@@ -116,14 +117,17 @@ export default class SensorDataDAO extends Object {
 
         // Create the filtering function beforehand,
         // with the goal to reduce the amount of overhead by if "filterType" statement when iterating over records;
-        let filterFunction;
+        let filters;
         if(options?.filters === undefined){
-            filterFunction = function (record){return true;} // No filtering
+            filters = function (record){return true;} // No filtering
         }else{
-            filterFunction = filterType === "whitelist" ?
+            filters = filterType === "whitelist" ?
                 function (record){return options?.filters.includes(record.Nom);} :
                 function (record){return !options?.filters.includes(record.Nom)};
         }
+
+        // Prepare the user filter function, swap it for a default one if no additional filtering is performed
+        let userFilters = options?.filterFunction ?? function (sensorData){return true;}
 
 
         // Use the literal "readonly" instead of IDBTransaction.READ, which is deprecated:
@@ -143,7 +147,7 @@ export default class SensorDataDAO extends Object {
             if (!cursor) return;
             let currentValue = cursor.value;
             // Filter values
-            if(filterFunction(currentValue)){
+            if(filters(currentValue) && userFilters(currentValue)){
                 results.push(currentValue);
             }
             cursor.continue();
