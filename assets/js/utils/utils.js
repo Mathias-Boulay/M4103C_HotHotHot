@@ -25,7 +25,8 @@ export function createElement(type, options = {}, parent = document.body) {
     const element = document.createElement(type);
     Object.entries(options).forEach(([key, value]) => {
         if (key === "class") {
-            element.classList.add(value);
+            const classes = value.split(" ");
+            classes.forEach(oneClass => element.classList.add(oneClass));
             return;
         }
         if (key === "dataset") {

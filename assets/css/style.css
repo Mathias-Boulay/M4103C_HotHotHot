@@ -1,6 +1,12 @@
 :root{
-    --fond:white;
-    --border-color:#555;
+    --switcherColor  :rgb(255, 255, 255);
+    --tabMenuColor   :rgb(209, 209, 209);
+    --textColor      :rgb(51, 51, 51);
+    
+    --borderColor    :rgb(85, 85, 85);
+    --tabHomeColor   :rgb(85, 85, 85);
+    --tabHistoryColor:rgb(21, 193, 216);
+    --tabAlertsColor :rgb(156, 151, 151);
 }
 
 html,body{
@@ -11,6 +17,7 @@ html,body{
     padding: 0;
     margin: 0;
     border: 0;
+    color :var(--textColor);
     height: 100%;
     font: inherit;
     font-family: system-ui;
@@ -18,6 +25,7 @@ html,body{
     -webkit-overflow-scrolling: touch;
     font-weight: bold;
 }
+
 #header{
     position: absolute;
     display: flex;
@@ -30,6 +38,7 @@ html,body{
 }
 
 .tabMenu{
+    position: relative;
     opacity: 45%;
     display: flex;
     align-items: center;
@@ -40,26 +49,35 @@ html,body{
     margin: 0;
     font-size:large;
     line-height: 1.3em;
-    z-index: 99;
-    background-color: rgba(209, 209, 209);
+    z-index: 1;
+    background-color: var(--tabMenuColor);
     border-radius:10px;
     transition: .6s;
+    overflow:hidden;
 }
+
 .tabMenu:hover{
     opacity: 100%;
 }
 
 .tabMenu > li {
-    background: rgb(209, 209, 209);
+    background:  var(--tabMenuColor);
     border-radius: 10px;
     margin: .2em;
-    transition: all .5s ease-out;
-    -webkit-transition: all .5s ease-out;
 }
 
-.tabMenu > .active {
-    background: center no-repeat var(--fond);
-    z-index: 99;
+#switcher {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+    color: var(--textColor);
+    width: 30% ;
+    padding: 0rem 0.2rem;
+    font-size: clamp(17px, 7vw, 18px);
+    background-color: var(--switcherColor);
+    border-radius: 10px;
     box-shadow: 0 0px 6px rgb(99, 94, 94);
 }
 
@@ -67,7 +85,7 @@ html,body{
     display: inline-flex;
     padding: .5rem;
     margin: .2rem;
-    color: #333;
+    color: var(--textColor);
     text-decoration: none;
 }
 
@@ -75,7 +93,7 @@ html,body{
     position: absolute;
     width: 100%;
     height: 80%;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--borderColor);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -86,38 +104,32 @@ html,body{
 
 #tabHome{
     position: fixed;
-    left: 0;
-    bottom: 0;
-    background-color: #555;
-    /* background: center no-repeat url("sunnyLandscape.jpg"); */
-    background-size: auto;
-    transition: .1s;
+    background-color: var(--tabHomeColor);
 }
 
 #tabHistory{
-    bottom: 0;
-    background-color: rgb(21, 193, 216);
-    /* background: center no-repeat url("epicLandscape.jpg"); */
-    background-size: auto;
     position: fixed;
+    background-color: var(--tabHistoryColor);
     transform: translateX(100%);
-    transition: .1s;
 }
 
 #tabAlerts{
-    transform: translateX(100%);
-    bottom: 0;
-    background-color: rgb(156, 151, 151);
-    /* background: center no-repeat url("insaneAlert.jpg"); */
     position: fixed;
-    transition: .1s;
+    background-color: var(--tabAlertsColor);
+    transform: translateX(100%);
 }
 
-.tabs{
+.tabsContainer{
     position: absolute;
     width: 100%;
     height: 80%;
     bottom: 0;
+}
+
+[data-target="tabHome"],[data-target="tabHistory"],[data-target="tabAlerts"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @keyframes leftToRightIn{
@@ -153,5 +165,76 @@ html,body{
     }
     100%{
         transform: translateX(-100%);
+    }
+}
+
+@keyframes homeToHistory{
+    0%{
+        color: rgba(0, 0, 0, 0.15);
+        transform: translateX(0%)scale(1,1);
+    }
+    100%{
+        color: rgba(0, 0, 0, 1);
+        transform:  translateX(105%) scale(1.15,1);
+        font-size: 17px;
+       
+    }
+}
+
+@keyframes historyToAlerts{
+    0%{
+        color: rgba(0, 0, 0, 0.15);
+        transform: translateX(105%)scale(1.15,1);
+    }
+    100%{
+        color: rgba(0, 0, 0, 1);
+        transform:  translateX(210%) scale(1,1);
+        font-size: 18px;
+    }
+}
+
+@keyframes alertsToHistory{
+    0%{
+        color: rgba(0, 0, 0, 0.15);
+        transform: translateX(210%)scale(1,1);
+    }
+    100%{
+        color: rgba(0, 0, 0, 1);
+        transform:  translateX(105%) scale(1.15,1);
+        font-size: 17px;
+    }
+}
+
+@keyframes historyToHome{
+    0%{
+        color: rgba(0, 0, 0, 0.15);
+        transform: translateX(105%)scale(1.15,1);
+    }
+    100%{
+        color: rgba(0, 0, 0, 1);
+        transform:  translateX(0%) scale(1,1);
+        font-size: 18px;
+    }
+}
+
+@keyframes alertsToHome{
+    0%{
+        color: rgba(0, 0, 0, 0.15);
+        transform: translateX(210%)scale(1,1);
+    }
+    100%{
+        color: rgba(0, 0, 0, 1);
+        transform:  translateX(0%) scale(1,1);
+    }
+}
+
+@keyframes homeToAlerts{
+    0%{
+        color: rgba(0, 0, 0, 0.15);
+        transform: translateX(0%)scale(1,1);
+    }
+    100%{
+        color: rgba(0, 0, 0, 1);
+        transform:  translateX(210%) scale(1,1);
     }
 }
