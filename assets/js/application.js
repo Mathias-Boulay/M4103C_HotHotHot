@@ -27,7 +27,7 @@ export class Application {
             this.header          = createElement("section",{id             :"header"                                                         }                   );
             this.userName        = createElement(  "span" ,{id             :"userName"        ,text  :"Mitchel"                              },       this.header);
             this.connectionState = createElement(  "span" ,{id             :"connectionState" ,text  :"Déconnexion"                          },       this.header);
-            this.linksMenu       = createElement(   "ul"  ,{class          :"tabMenu"         ,                               role :"tablist"}                   );
+            this.linksMenu       = createElement(   "ul"  ,{class          :"linksMenu"       ,                               role :"tablist"}                   );
             this.switcher        = createElement(  "span" ,{id             :"switcher"        ,                                              },    this.linksMenu);
             this.linkHome        = createElement(   "li"  ,{"data-target"  :"tabHome"         ,class :"active"               ,role :"tab"    },    this.linksMenu);
             const anchorHome     = createElement(   "a"   ,{                                   text  :"Accueil"              ,href :"#"      },     this.linkHome);
@@ -39,7 +39,7 @@ export class Application {
             this.tabHome         = createElement(  "div"  ,{id:"tabHome"   ,class:"tabContent","aria-labelledby":   "tabHome",role:"tabpanel"},this.tabsContainer);
             this.tabHistory      = createElement(  "div"  ,{id:"tabHistory",class:"tabContent","aria-labelledby":"tabHistory",role:"tabpanel"},this.tabsContainer);
             this.tabAlerts       = createElement(  "div"  ,{id:"tabAlerts" ,class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"},this.tabsContainer);
-            this.links           =      qsa     (".tabMenu li");
+            this.links           =      qsa     (".linksMenu li");
             this.contents        =      qsa     (".tabContent");
         }                                      
 

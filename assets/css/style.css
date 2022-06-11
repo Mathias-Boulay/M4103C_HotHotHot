@@ -1,12 +1,21 @@
 :root{
-    --switcherColor  :rgb(255, 255, 255);
-    --tabMenuColor   :rgb(209, 209, 209);
-    --textColor      :rgb(51, 51, 51);
+    --textColor          :rgb(51, 51, 51);
+
+    --headerHeight       :  20%;
+    --headerColor        : white;
+
+    --tabMenuColor       :rgb(209, 209, 209);
+    --switcherColor      :rgb(255, 255, 255);
     
-    --borderColor    :rgb(85, 85, 85);
-    --tabHomeColor   :rgb(85, 85, 85);
-    --tabHistoryColor:rgb(21, 193, 216);
-    --tabAlertsColor :rgb(156, 151, 151);
+    --tabHomeColor       :rgb(85, 85, 85);
+    --tabHistoryColor    :rgb(21, 193, 216);
+    --tabAlertsColor     :rgb(156, 151, 151);
+
+    --historyTabScale    :  1.15;
+
+    --homeTabPosition    :    0%;
+    --historyTabPosition :  105%;
+    --alertsTabPosition  :  210%;
 }
 
 html,body{
@@ -29,22 +38,23 @@ html,body{
 #header{
     position: absolute;
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+    top: 0;
     z-index: 99;
-    left: 10vw;
-    right: 10vw;
-    top :10vh;
-    max-height: 5vh;
-    justify-content: space-between;
+    height:var(--headerHeight);
+    background-color: var(--headerColor);
+    width: 100%;
 }
 
-.tabMenu{
+.linksMenu{
     position: relative;
     opacity: 45%;
     display: flex;
     align-items: center;
     list-style: none;
     position: absolute;
-    top:25%;
+    top:calc(var(--headerHeight) + 5%);
     padding: 0;
     margin: 0;
     font-size:large;
@@ -56,14 +66,13 @@ html,body{
     overflow:hidden;
 }
 
-.tabMenu:hover{
+.linksMenu:hover{
     opacity: 100%;
 }
 
-.tabMenu > li {
+.linksMenu > li {
     background:  var(--tabMenuColor);
     border-radius: 10px;
-    margin: .2em;
 }
 
 #switcher {
@@ -81,7 +90,7 @@ html,body{
     box-shadow: 0 0px 6px rgb(99, 94, 94);
 }
 
-.tabMenu a {
+.linksMenu a {
     display: inline-flex;
     padding: .5rem;
     margin: .2rem;
@@ -92,8 +101,8 @@ html,body{
 .tabContent{
     position: absolute;
     width: 100%;
-    height: 80%;
-    border: 1px solid var(--borderColor);
+    bottom: 0;
+    height: calc(100% - var(--headerHeight));
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -122,7 +131,7 @@ html,body{
 .tabsContainer{
     position: absolute;
     width: 100%;
-    height: 80%;
+    height: calc(100% - var(--headerHeight));
     bottom: 0;
 }
 
@@ -171,24 +180,25 @@ html,body{
 @keyframes homeToHistory{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(0%)scale(1,1);
+        transform: translateX(var(--homeTabPosition))scale(1,1);
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform:  translateX(105%) scale(1.15,1);
-        font-size: 17px;
-       
+        transform: translateX(var(--historyTabPosition)) 
+                        scale(var(--historyTabScale),.99);
+        font-size: 16.75px;
     }
 }
 
 @keyframes historyToAlerts{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(105%)scale(1.15,1);
+        transform: translateX(var(--historyTabPosition))
+                        scale(var(--historyTabScale),1);
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform:  translateX(210%) scale(1,1);
+        transform: translateX(var(--alertsTabPosition)) scale(1,1);
         font-size: 18px;
     }
 }
@@ -196,23 +206,25 @@ html,body{
 @keyframes alertsToHistory{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(210%)scale(1,1);
+        transform: translateX(var(--alertsTabPosition)) scale(1,1);
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform:  translateX(105%) scale(1.15,1);
-        font-size: 17px;
+        transform: translateX(var(--historyTabPosition)) 
+                        scale(var(--historyTabScale),1);
+        font-size: 16.75px;
     }
 }
 
 @keyframes historyToHome{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(105%)scale(1.15,1);
+        transform: translateX(var(--historyTabPosition)) 
+                        scale(var(--historyTabScale),1);
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform:  translateX(0%) scale(1,1);
+        transform: translateX(var(--homeTabPosition)) scale(1,1);
         font-size: 18px;
     }
 }
@@ -220,21 +232,21 @@ html,body{
 @keyframes alertsToHome{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(210%)scale(1,1);
+        transform: translateX(var(--alertsTabPosition)) scale(1,1);
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform:  translateX(0%) scale(1,1);
+        transform: translateX(var(--homeTabPosition)) scale(1,1);
     }
 }
 
 @keyframes homeToAlerts{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(0%)scale(1,1);
+        transform: translateX(var(--homeTabPosition))scale(1,1);
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform:  translateX(210%) scale(1,1);
+        transform: translateX(var(--alertsTabPosition)) scale(1,1);
     }
 }
