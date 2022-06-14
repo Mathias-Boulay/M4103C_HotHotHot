@@ -6,7 +6,11 @@ import SensorDataDAO from "./storage/SensorDataDAO";
 import ServerQuery from "./query/ServerQuery";
 import {remove} from "./utils/arrayUtils";
 
-export default class Receptor extends Object{
+class Receptor extends Object{
+    // public final constants, not the most elegant way though
+    static get ALL_SENSORS(){return "ALL";}
+
+
     #sensorDataArray            /* Array of all sensor data ? */
     #alertArray                 /* Array of all the alerts    */
 
@@ -27,6 +31,9 @@ export default class Receptor extends Object{
         this.#serverQuery.listener = this;
         this.#serverQuery.startQueryingServer();
     }
+
+    // Simple getter for the DAO
+    get DAO(){ return this.#sensorDataDao; }
 
 
     /**
@@ -71,7 +78,7 @@ export default class Receptor extends Object{
      * @param sensorData The sensor data
      */
     static #notifyListeners(object, sensorData){
-        ["ALL", sensorData.Nom].forEach(category => {
+        [Receptor.ALL_SENSORS, sensorData.Nom].forEach(category => {
             if(!object.hasOwnProperty(category)) return;
             // If we have this category
             object[category].forEach(listener => {
@@ -86,7 +93,7 @@ export default class Receptor extends Object{
      * @param listener A listener, implementing the update(sensorData) method.
      * @param sensorName The name of the sensor to listen to, by default it is ALL sensors. Case sensitive !
      */
-    addSensorDataListener(listener, sensorName="ALL"){
+    addSensorDataListener(listener, sensorName= Receptor.ALL_SENSORS){
         Receptor.#addListenerToList(this.#sensorDataListeners, listener, sensorName);
     }
 
@@ -95,7 +102,7 @@ export default class Receptor extends Object{
      * @param listener The listener to remove
      * @param sensorName if set, it will remove the listener only for the selected sensor, else from all sensors
      */
-    removeSensorDataListener(listener, sensorName = "ALL"){
+    removeSensorDataListener(listener, sensorName = Receptor.ALL_SENSORS){
         Receptor.#removeListenerFromList(this.#sensorDataListeners, listener, sensorName);
     }
 
@@ -105,7 +112,7 @@ export default class Receptor extends Object{
      * @param listener A listener, implementing the update(sensorData) method.
      * @param sensorName The name of the sensor to listen to, by default it is ALL sensors. Case sensitive !
      */
-    addAlertListener(listener, sensorName="ALL"){
+    addAlertListener(listener, sensorName= Receptor.ALL_SENSORS){
         Receptor.#addListenerToList(this.#alertsListeners, listener, sensorName);
     }
 
@@ -114,7 +121,7 @@ export default class Receptor extends Object{
      * @param listener The listener to remove
      * @param sensorName if set, it will remove the listener only for the selected sensor, else from all sensors
      */
-    removeAlertListener(listener, sensorName = "ALL"){
+    removeAlertListener(listener, sensorName = Receptor.ALL_SENSORS){
         Receptor.#removeListenerFromList(this.#alertsListeners, listener, sensorName);
     }
 
@@ -140,7 +147,7 @@ export default class Receptor extends Object{
      * @param sensorName if set, it will remove the listener only for the selected sensor, else from all sensors
      */
     static #removeListenerFromList(object, listener, sensorName){
-        if(sensorName === "ALL"){
+        if(sensorName === Receptor.ALL_SENSORS){
             // Remove it from everywhere
             Object.getOwnPropertyNames(object).forEach(category => {
                 remove(object[category], listener);
@@ -152,6 +159,6 @@ export default class Receptor extends Object{
             remove(object[sensorName], listener);
         }
     }
-
-
 }
+let receptor = new Receptor();
+export {Receptor as default, receptor};
