@@ -3,7 +3,6 @@
  * all the sensor data into the IndexedDB
  */
 import Receptor from "../Receptor";
-import {remove} from "../utils/arrayUtils";
 
 export default class SensorDataDAO extends Object {
     static #DATABASE_NAME = "sensor_history";
@@ -101,7 +100,7 @@ export default class SensorDataDAO extends Object {
     /**
      * Get sensor data according to the options set, if any
      * @param options An object with the following attributes : {
-     *     filterType : {String}"whitelist", "blacklist", defaults to "whitelist"
+     *     filterType : {String} "whitelist", "blacklist", defaults to "whitelist"
      *     filters : {String[]} contains the name of each category, defaults to NO category being filtered !
      *     filterFunction : {function} Optional, takes a sensorData as a parameter, returns whether the current entry is kept.
      *     startTime: {int} the start time, as a timestamp, defaults to 0
@@ -174,8 +173,4 @@ export default class SensorDataDAO extends Object {
         }
         return results;
     }
-
-
-
-
 }
