@@ -108,53 +108,58 @@ export default class SensorDataDAO extends Object {
      * }
      * @return {Promise<[]>} A promise resolving with all the sensorData
      */
-    async getSensorData(options){
-        await this.#openDatabaseIfNeeded();
-        // Check the filter type validity
-        let filterType;
-        filterType = options?.filterType.toLowerCase() ?? "whitelist";
-        if(filterType !== "whitelist" && filterType !== "blacklist"){
-            throw new Error('Unexpected input : ' + filterType);
-        }
+    getSensorData(options){
+        return new Promise((resolve) => {
+            this.#openDatabaseIfNeeded().then(() =>{
+                // Check the filter type validity
+                let filterType;
+                filterType = options?.filterType?.toLowerCase() ?? "whitelist";
+                if(filterType !== "whitelist" && filterType !== "blacklist"){
+                    throw new Error('Unexpected input : ' + filterType);
+                }
 
-        // Create the filtering function beforehand,
-        // with the goal to reduce the amount of overhead by if "filterType" statement when iterating over records;
-        let filters;
-        if(options?.filters === undefined){
-            filters = function (record){return true;} // No filtering
-        }else{
-            filters = filterType === "whitelist" ?
-                function (record){return options?.filters.includes(record.Nom);} :
-                function (record){return !options?.filters.includes(record.Nom)};
-        }
+                // Create the filtering function beforehand,
+                // with the goal to reduce the amount of overhead by if "filterType" statement when iterating over records;
+                let filters;
+                if(options?.filters === undefined){
+                    filters = function (record){return true;} // No filtering
+                }else{
+                    filters = filterType === "whitelist" ?
+                        function (record){return options?.filters.includes(record.Nom);} :
+                        function (record){return !options?.filters.includes(record.Nom)};
+                }
 
-        // Prepare the user filter function, swap it for a default one if no additional filtering is performed
-        let userFilters = options?.filterFunction ?? function (sensorData){return true;}
+                // Prepare the user filter function, swap it for a default one if no additional filtering is performed
+                let userFilters = options?.filterFunction ?? function (sensorData){return true;}
 
 
-        // Use the literal "readonly" instead of IDBTransaction.READ, which is deprecated:
-        let transaction = this.#databaseInstance.transaction(SensorDataDAO.#MAIN_OBJECT_STORE_NAME, "readonly");
-        let objectStore = transaction.objectStore(SensorDataDAO.#MAIN_OBJECT_STORE_NAME);
-        let index = objectStore.index("timestamp");
+                // Use the literal "readonly" instead of IDBTransaction.READ, which is deprecated:
+                let transaction = this.#databaseInstance.transaction(SensorDataDAO.#MAIN_OBJECT_STORE_NAME, "readonly");
+                let objectStore = transaction.objectStore(SensorDataDAO.#MAIN_OBJECT_STORE_NAME);
+                let index = objectStore.index("timestamp");
 
-        // Create the KeyRange object
-        let queryRange = IDBKeyRange.bound(options?.startTime ?? 0, options?.endTime ?? Date.now(), true, true);
+                // Create the KeyRange object
+                let queryRange = IDBKeyRange.bound(options?.startTime ?? 0, options?.endTime ?? Date.now(), true, true);
 
-        // Query the DB itself
-        let cursorRequest = index.openCursor(queryRange);
-        let results = [];
+                // Query the DB itself
+                let cursorRequest = index.openCursor(queryRange);
+                let results = [];
 
-        cursorRequest.onsuccess = (event) => {
-            let cursor = event.target.result;
-            if (!cursor) return;
-            let currentValue = cursor.value;
-            // Filter values
-            if(filters(currentValue) && userFilters(currentValue)){
-                results.push(currentValue);
-            }
-            cursor.continue();
-        }
-        return results;
+                cursorRequest.onsuccess = (event) => {
+                    let cursor = event.target.result;
+                    if (!cursor){
+                        // We got all the results, we return the array then
+                        resolve(results);
+                    }
+                    let currentValue = cursor.value;
+                    // Filter values
+                    if(filters(currentValue) && userFilters(currentValue)){
+                        results.push(currentValue);
+                    }
+                    cursor.continue();
+                }
+            });
+        });
     }
 
     /**
