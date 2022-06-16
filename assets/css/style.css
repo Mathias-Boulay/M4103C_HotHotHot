@@ -111,6 +111,18 @@ html,body{
     border-radius: 0 0 5px 5px;
 }
 
+.realTimeSensorDataView{
+    background: gray;
+    border-radius: 1em;
+    aspect-ratio: 1/1;
+    padding: 25%;
+    margin-bottom: 1em;
+}
+
+.realTimeSensorDataView > p{
+    text-align: center;
+}
+
 #tabHome{
     position: fixed;
     background-color: var(--tabHomeColor);
