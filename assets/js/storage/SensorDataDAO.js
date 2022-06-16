@@ -150,6 +150,7 @@ export default class SensorDataDAO extends Object {
                     if (!cursor){
                         // We got all the results, we return the array then
                         resolve(results);
+                        return;
                     }
                     let currentValue = cursor.value;
                     // Filter values
