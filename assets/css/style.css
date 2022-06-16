@@ -48,7 +48,6 @@ html,body{
 }
 
 .linksMenu{
-    position: relative;
     opacity: 45%;
     display: flex;
     align-items: center;
