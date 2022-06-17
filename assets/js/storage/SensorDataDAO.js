@@ -52,37 +52,10 @@ export default class SensorDataDAO extends Object {
 
 
     /**
-     * Sanitize the data to guarantee the "type" of it.
-     * Let's say we don't expect a string with SQLERROR instead of a float for the temperature
-     * @param sensorDataArray An array of sensor data object
-     * @return The array, sanitized on the value
-     */
-    #sanitizeSensorData(sensorDataArray){
-        sensorDataArray.forEach(sensorData => {
-            let convertedValue = parseFloat(sensorData.Valeur);
-            if(isNaN(convertedValue)) convertedValue = 0; // Fallback for SQLERROR
-
-            sensorData.Valeur = convertedValue;
-        });
-        return sensorDataArray;
-    }
-
-
-    /**
-     * Put the newly acquired sensor data into the db
-     * @param sensorDataArray An array of sensorData
-     */
-    async addSensorData(sensorDataArray){
-        sensorDataArray = this.#sanitizeSensorData(sensorDataArray);
-        await this.addSensorDataUnchecked(sensorDataArray);
-    }
-
-
-    /**
      * Put the newly acquired sensor data into the db, although unchecked.
      * @param sensorDataArray An array of sensorData
      */
-    async addSensorDataUnchecked(sensorDataArray){
+    async addSensorData(sensorDataArray){
         await this.#openDatabaseIfNeeded();
 
         let transaction = this.#databaseInstance.transaction(SensorDataDAO.#MAIN_OBJECT_STORE_NAME, "readwrite");

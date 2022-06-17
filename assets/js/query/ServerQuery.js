@@ -19,7 +19,7 @@ export default class ServerQuery extends Object{
         this.#listener = null;
         this.#queryStrategy = new QueryWebsocket(
             "wss://ws.hothothot.dog:9502",
-            event => this.#listener.update(event),
+            event => this.#updateListener(event),
             () => this.#switchQueryStrategy());
     }
 
@@ -38,7 +38,7 @@ export default class ServerQuery extends Object{
         this.#queryStrategy.stopQuery();
         this.#queryStrategy = new QueryAPI(
             "https://hothothot.dog/api/capteurs/",
-            event => this.#listener.update(event),
+            event => this.#updateListener(event),
             () => console.error("this case wasn't handled, shout it switch back to websocket ?"),
             5000);
         this.#queryStrategy.startQuery();
@@ -47,6 +47,34 @@ export default class ServerQuery extends Object{
     /** @param newListener The listener object */
      set listener(newListener){
         this.#listener = newListener;
+    }
+
+
+    /**
+     * Update the listener after sanitizing
+     * @param sensorDataArray
+     */
+    #updateListener(sensorDataArray){
+        this.#sanitizeSensorData(sensorDataArray);
+        this.#listener.update(sensorDataArray);
+    }
+
+    /**
+     * Sanitize and normalize the data to guarantee the "type" of it.
+     * Let's say we don't expect a string with SQLERROR instead of a float for the temperature
+     * Also, the timestamp has to be converted into ms instead of seconds
+     * @param sensorDataArray An array of sensor data object
+     * @return The array, sanitized on the value
+     */
+    #sanitizeSensorData(sensorDataArray){
+        sensorDataArray.forEach(sensorData => {
+            let convertedValue = parseFloat(sensorData.Valeur);
+            if(isNaN(convertedValue)) convertedValue = 0; // Fallback for SQLERROR
+
+            sensorData.Valeur = convertedValue;
+            sensorData.Timestamp *= 1000;
+        });
+        return sensorDataArray;
     }
 
 
