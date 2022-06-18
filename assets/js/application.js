@@ -1,7 +1,7 @@
 import { qs, qsa, createElement, addGlobalEventListener } from "./utils/utils.js";
 
 /* Classe de création de l'interface d'application */
-function c(m){console.log(m)}
+
 
 export class Application {
 
@@ -20,6 +20,8 @@ export class Application {
         this.tabAlerts;
 
         this.previousTabPosition = "tabHome";
+        this.screenWidth = window.innerWidth;
+        window.addEventListener("resize", ()=> {this.screenWidth = window.innerWidth;console.log(this.screenWidth)});
 
         /* Création des éléments HTML */
                                       //        ___________________________________________________________________________________________________________________
@@ -44,15 +46,6 @@ export class Application {
             this.contents        =      qsa     (".tabContent");
         }                                      
 
-        /* Sliding des onglets */
-
-        // addGlobalEventListener(
-        //     "pointerdown",
-        //     this.tabHome,
-        //     () =>{ 
-
-        //     }
-        // );
         this.startup = () => {
             const el =  document;
             el.addEventListener('pointerdown', this.handleStart);
@@ -62,96 +55,50 @@ export class Application {
             console.log('Initialisation.');
         } 
 
-        let prevPosX;
+        let prevPosX=0;
+        let tmpEventClient =0;
         const ongoingTouches = [];
         this.handleStart =(evt) =>{
             evt.preventDefault();
-            console.log('pointerdown.');
-            const el = qs('.tabContent');
-
             prevPosX = evt.clientX
           }
 
         this.handleMove = (evt) =>{
-            evt.preventDefault();
-            const el = qs('.tabContent');
-            if(prevPosX > evt.clientX +100) console.log("beaucoup")
-            console.log(prevPosX)
-            console.log(evt.clientX)
-            console.log(evt)
-            c(this.previousTabPosition)
-            /*
-            if(this.previousTabPosition == "tabHome"){
-                if(prevPosX > evt.clientX && evt.pointerType == "touch") 
-                qs("[data-target = 'tabHistory']").click()
-                if(prevPosX < evt.clientX&& evt.pointerType == "touch")qs("[data-target = 'tabHome']").click()
-            }
-            else if(this.previousTabPosition == "tabHistory"){
-                if(prevPosX > evt.clientX && evt.pointerType == "touch") 
-                qs("[data-target = 'tabAlerts']").click()
-                if(prevPosX < evt.clientX&& evt.pointerType == "touch")qs("[data-target = 'tabHome']").click()
-            }
-            else if(this.previousTabPosition == "tabAlerts"){
-                if(prevPosX > evt.clientX +100 && evt.pointerType == "touch") 
-                qs("[data-target = 'tabAlerts']").click()
-                if(prevPosX < evt.clientX +100 && evt.pointerType == "touch")qs("[data-target = 'tabHistory']").click()
-            }
-            */
+            evt.preventDefault();           
+            tmpEventClient=evt.clientX
         }
 
           this.handleEnd = (evt) => {
             evt.preventDefault();
-            c(this.previousTabPosition)
+            let screenPortionToMove = this.screenWidth * 1 / 10;
+            let diffPos = prevPosX - evt.clientX;
             if(this.previousTabPosition == "tabHome"){
-                if(prevPosX > evt.clientX && evt.pointerType == "mouse") 
-                qs("[data-target = 'tabHistory']").click()
-                if(prevPosX < evt.clientX&& evt.pointerType == "mouse")qs("[data-target = 'tabHome']").click()
+                if(diffPos > 0 && evt.pointerType == "mouse")  this.linkHistory.click()
+                console.log(diffPos)
             }
             else if(this.previousTabPosition == "tabHistory"){
-                if(prevPosX > evt.clientX && evt.pointerType == "mouse") 
-                qs("[data-target = 'tabAlerts']").click()
-                if(prevPosX < evt.clientX&& evt.pointerType == "mouse")qs("[data-target = 'tabHome']").click()
+                if(diffPos > 0 && evt.pointerType == "mouse") this.linkAlerts.click()
+                if(diffPos  < 0 && evt.pointerType == "mouse")this.linkHome.click()
             }
             else if(this.previousTabPosition == "tabAlerts"){
-                if(prevPosX > evt.clientX +100 && evt.pointerType == "mouse") 
-                qs("[data-target = 'tabAlerts']").click()
-                if(prevPosX < evt.clientX +100 && evt.pointerType == "mouse")qs("[data-target = 'tabHistory']").click()
+                if(diffPos > 0 && evt.pointerType == "mouse") this.linkAlerts.click()
+                if(diffPos  < 0 && evt.pointerType == "mouse")this.linkHistory.click()
             }
-            
-            console.log('touchend');
-            const el =qs('.tabContent');
           }
 
           this.handleCancel=(evt) =>{
-            if(this.previousTabPosition == "tabHome"){
-                if(prevPosX > evt.clientX +100 && evt.pointerType == "touch")this.linkHistory.click()
-                if(prevPosX < evt.clientX +100 && evt.pointerType == "touch")this.linkHome.click()
-            }
+            let diffPos = tmpEventClient - prevPosX;
+
+            if(this.previousTabPosition == "tabHome" && diffPos < -8.5 && evt.pointerType == "touch") this.linkHistory.click();
+            
             else if(this.previousTabPosition == "tabHistory"){
-                if(prevPosX > evt.clientX +100 && evt.pointerType == "touch") this.linkAlerts.click()
-                if(prevPosX < evt.clientX +100 && evt.pointerType == "touch")this.linkHome.click()
+                if(diffPos < -8.5 && evt.pointerType == "touch") this.linkAlerts.click();
+                else if(diffPos > 8.5 && evt.pointerType == "touch") this.linkHome.click();
             }
-            else if(this.previousTabPosition == "tabAlerts"){
-                if(prevPosX > evt.clientX +100 && evt.pointerType == "touch")this.linkAlerts.click()
-                if(prevPosX < evt.clientX +100 && evt.pointerType == "touch")this.linkHistory.click()
-            }
+
+            else if(this.previousTabPosition == "tabAlerts" && diffPos > 8.5 && evt.pointerType == "touch")this.linkHistory.click();
+
             evt.preventDefault();
-            console.log('touchcancel.');
-          }
-
-          function copyTouch({ identifier, pageX, pageY }) {
-            return { identifier, pageX, pageY };
-          }
-
-          function ongoingTouchIndexById(idToFind) {
-            for (let i = 0; i < ongoingTouches.length; i++) {
-              const id = ongoingTouches[i].identifier;
-          
-              if (id == idToFind) {
-                return i;
-              }
-            }
-            return -1;    // non trouvé
           }
 
         /* Comportement des onglets */
@@ -159,8 +106,8 @@ export class Application {
         this.setTabsBehavior = () => {
             let  firstUse = false; // Permet de ne pas déclencher l'animation au premier affichage de l'onglet Accueil (Home)
             
-            const OPT_TXT = ".8s forwards ease-in-out";
-            const OPT_TXT2 = ".8s forwards ease-in-out";
+            const OPT_TXT = ".7s forwards ease-in-out";
+            const OPT_TXT2 = ".7s forwards ease-in-out";
 
             const L2RI    = `leftToRightIn  ${OPT_TXT}`;
             const L2RO    = `leftToRightOut ${OPT_TXT}`;
@@ -173,77 +120,6 @@ export class Application {
             const HIHO    = `historyToHome  ${OPT_TXT2}`;
             const ALHO    = `alertsToHome   ${OPT_TXT2}`;
             const HOAL    = `homeToAlerts   ${OPT_TXT2}`;
-
-
-
-/*********************************************************************************************************************************************** */
-          
-            /*
-            let oldX = 0, newX = 0; // for storing X (horizontal) positions
-            let element = document.getElementById("switcher"); // The element you want to drag
-            let linksMenuWidth = qs(".linksMenu").offsetWidth; // let menuLimit = `${qs("linksMenu").clientX}`;
-            let linkHomeWidth = qs("[data-target='tabHome']").offsetWidth; // let menuLimit = `${qs("linksMenu").clientX}`;
-            let elementWidth = element.offsetWidth;
-            let position;
-            // We do the dragging here
-            function elementDrag(e) {
-                e = e || window.event;
-                e.preventDefault();
-                newX = oldX - e.clientX; // to calculate how much we have moved
-                oldX = e.clientX; // store current value to use for next move
-
-                position = parseInt(element.style.left.substr(0,3));
-
-                if(position <0 ) element.style.left = 0;
-                else if(position > linksMenuWidth - elementWidth ) {element.style.left=`${linksMenuWidth - elementWidth}px`;}
-                else element.style.left = (switcher.offsetLeft - newX-.9) + "px";
-                if (position > linkHomeWidth)element.style.left=`${linkHomeWidth}px`;
-            //if(position > 30 ) {element.style.left = 0;qs('[data-target="tabHistory"]').click();element.style.left="0%";}
-            
-            c(qs(".linksMenu").offsetWidth)
-           c(position)
-          // c(elementWidth)
-            c(linkHomeWidth)
-        }
-        
-            
-            // we do this so there is not multiple event handlers
-            function closeDragElement() {
-              document.onmouseup = null;
-              document.onmousemove = null;
-            }
-            
-            // when mouse down on element attach mouse move and mouse up for document
-            // so that if mouse goes outside element still drags
-            function dragMouseDown(e) {
-              e = e ?? window.event;
-              e.preventDefault();
-             
-              oldX = e.clientX; // store current value to use for mouse move calculation
-              document.onmouseup = closeDragElement;
-              document.onmousemove = elementDrag;
-            }
-            
-            element.onmousedown = dragMouseDown;
-
-            function drop(e) {
-                e.target.classList.remove('drag-over');
-            
-                // get the draggable element
-                const id = e.dataTransfer.getData('text/plain');
-                const draggable = document.getElementById(id);
-            
-                // add it to the drop target
-                e.target.appendChild(draggable);
-            
-                // display the draggable element
-                draggable.classList.remove('hide');
-            }
-
-            
-/**************************************************************************************************************************** */
-
-
 
 
             const toggle  = (targetId) => {
@@ -299,7 +175,7 @@ export class Application {
 
 /* Instanciation d'une application */
 
-/* -> * /
+/* -> */
  
 const app = new Application();
 app.create();  
