@@ -175,7 +175,7 @@ export class Application {
 
 /* Instanciation d'une application */
 
-/* -> */
+/* -> * /
  
 const app = new Application();
 app.create();  
