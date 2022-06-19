@@ -76,6 +76,7 @@ export default class SensorDataDAO extends Object {
      *     filterType : {String} "whitelist", "blacklist", defaults to "whitelist"
      *     filters : {String[]} contains the name of each category, defaults to NO category being filtered !
      *     filterFunction : {function} Optional, takes a sensorData as a parameter, returns whether the current entry is kept.
+     *     limit : {int} How many entries should be returned at maximum. Defaults to MAX_SAFE_INTEGER.
      *     startTime: {int} the start time, as a timestamp, defaults to 0
      *     endTime: {int} the end time, as a timestamp, defaults to Date.now()
      * }
@@ -120,7 +121,7 @@ export default class SensorDataDAO extends Object {
 
                 cursorRequest.onsuccess = (event) => {
                     let cursor = event.target.result;
-                    if (!cursor){
+                    if (!cursor || (results.length >= options?.limit ?? Number.MAX_SAFE_INTEGER)){
                         // We got all the results, we return the array then
                         resolve(results);
                         return;
