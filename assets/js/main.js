@@ -1,5 +1,6 @@
 
 import { Application } from "./application.js";
+import { AlertsTabView } from "./tab_view/AlertsTabView.js";
 /*Enregistrement service worker*/
 
 if ('serviceWorker' in navigator) {
@@ -18,6 +19,9 @@ const addBtn = document.querySelector('.add-button');
 addBtn.style.display = 'none';
 
 const app = new Application();
+app.create();
+const alertsTabView = new AlertsTabView();
+alertsTabView.load();
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
