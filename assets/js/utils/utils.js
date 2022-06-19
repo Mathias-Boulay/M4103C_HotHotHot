@@ -21,7 +21,7 @@ export function addGlobalEventListener(
     )
 }
 
-export function createElement(type, options = {}, parent = document.body) {
+export function createElement(type, options = {}, parent = document.body, prepend = false) {
     const element = document.createElement(type);
     Object.entries(options).forEach(([key, value]) => {
         if (key === "class") {
@@ -41,10 +41,11 @@ export function createElement(type, options = {}, parent = document.body) {
         }
         element.setAttribute(key, value);
     })
-    parent.append(element);
+    prepend ? parent.prepend(element): parent.append(element);
     return element;
 }
 
+export function removeElementChilds(element){while (element.firstChild)element.removeChild(element.lastChild);}
 
 /* Diverses */
 
