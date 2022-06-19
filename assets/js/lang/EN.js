@@ -10,7 +10,14 @@ export default class EN extends Object{
      */
     static getTranslation(){
         return {
-            welcome : "Hello ##"
+            welcome : "Hello ##",
+            alert_context_outside_hot : "Hot Hot Hot !",
+            alert_context_outside_cold : "Iceberg in sight !",
+            alert_context_inside_hot : "Turn the heat down !",
+            alert_context_inside_superhot : "Call the Firefighters or stop your barbecue!",
+            alert_context_inside_cold : "Turn up the heat or put on a heavy sweater!",
+            alert_context_inside_supercold : "Frozen pipes, call a plumber and put on a woolly hat!",
+            alert_context_error : "Error, this alert is not valid"
         };
     }
 }
