@@ -1,16 +1,9 @@
 import { qs, createElement, removeElementChilds } from "./../utils/utils.js";
-import {receptor} from "./../Receptor"
+import { receptor } from "./../Receptor";
+import Localization from "./../lang/Localization";
 
 export class AlertsView extends Object
 {
-
-    static MSG_OUTSIDE_HOT = "Hot Hot Hot !";
-    static MSG_OUTSIDE_COLD = "Banquise en vue !";
-    static MSG_INSIDE_HOT = "Baissez le chauffage !";
-    static MSG_INSIDE_SUPERHOT = "Appelez les pompiers ou arrêtez votre barbecue !";
-    static MSG_INSIDE_COLD = "Montez le chauffage ou mettez un gros pull !";
-    static MSG_INSIDE_SUPERCOLD = "Canalisations gelées, appelez SOS plombier et mettez un bonnet !";
-    static MSG_ERROR = "Erreur, il ne s'agit pas d'une alerte valide";
 
     #captorName
     #value
@@ -51,7 +44,7 @@ export class AlertsView extends Object
         const alertsHistoryContainer = qs("[data-tab=alertsHistoryContainer]");
         receptor.DAO.getAlerts().then(result => {
             createElement("ul", {id:"alertsHistory", "aria-labelledby":"alertsHistory",role:"AlertsHistory","data-list":"alertsHistory"},alertsHistoryContainer);
-            for (let i = 0; i < (result.length - 1585); ++i){
+            for (let i = 0; i < (result.length); ++i){
                 this.#printAlertHistoryItem(result[i].Nom, result[i].Valeur, result[i].Timestamp);
             }
         });
@@ -120,17 +113,17 @@ export class AlertsView extends Object
     static obtainAlertContext(captorName, value){
         if(captorName === "exterieur")
         {
-            if(value > 35) return AlertsView.MSG_OUTSIDE_HOT;
-            if(value < 0 ) return AlertsView.MSG_OUTSIDE_COLD;
+            if(value > 35) return Localization.getText("alert_context_outside_hot",);
+            if(value < 0 ) return Localization.getText("alert_context_outside_cold");
         }
         else if (captorName === "interieur")
         {
-            if (value > 50) return AlertsView.MSG_INSIDE_SUPERHOT;
-            if (value > 22) return AlertsView.MSG_INSIDE_HOT;
-            if (value < 0 ) return AlertsView.MSG_INSIDE_SUPERCOLD;
-            if (value < 12) return AlertsView.MSG_INSIDE_COLD;
+            if (value > 50) return Localization.getText("alert_context_inside_superhot");
+            if (value > 22) return Localization.getText("alert_context_inside_hot");
+            if (value < 0 ) return Localization.getText("alert_context_inside_supercold");
+            if (value < 12) return Localization.getText("alert_context_inside_cold");
         }
-        return AlertsView.MSG_ERROR;
+        return Localization.getText("alert_context_error");
     }
 
     static obtainDate(timestamp){
