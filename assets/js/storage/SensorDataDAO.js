@@ -77,6 +77,7 @@ export default class SensorDataDAO extends Object {
      *     filters : {String[]} contains the name of each category, defaults to NO category being filtered !
      *     filterFunction : {function} Optional, takes a sensorData as a parameter, returns whether the current entry is kept.
      *     limit : {int} How many entries should be returned at maximum. Defaults to MAX_SAFE_INTEGER.
+     *     order : {String} "ascending" or "descending" order, by timestamp. Defaults to "ascending".
      *     startTime: {int} the start time, as a timestamp, defaults to 0
      *     endTime: {int} the end time, as a timestamp, defaults to Date.now()
      * }
@@ -91,6 +92,13 @@ export default class SensorDataDAO extends Object {
                 if(filterType !== "whitelist" && filterType !== "blacklist"){
                     throw new Error('Unexpected input : ' + filterType);
                 }
+
+                // Check and convert the cursor ordering
+                let ordering = options?.order?.toLowerCase() ?? "ascending";
+                if(ordering !== "ascending" && ordering !== "descending"){
+                    throw new Error('Unexpected input : ' + ordering);
+                }
+                ordering = ordering === "ascending" ? "next" : "prev";
 
                 // Create the filtering function beforehand,
                 // with the goal to reduce the amount of overhead by if "filterType" statement when iterating over records;
@@ -116,7 +124,7 @@ export default class SensorDataDAO extends Object {
                 let queryRange = IDBKeyRange.bound(options?.startTime ?? 0, options?.endTime ?? Date.now(), true, true);
 
                 // Query the DB itself
-                let cursorRequest = index.openCursor(queryRange);
+                let cursorRequest = index.openCursor(queryRange, ordering);
                 let results = [];
 
                 cursorRequest.onsuccess = (event) => {
