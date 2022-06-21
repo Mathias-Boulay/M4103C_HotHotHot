@@ -9,22 +9,19 @@ export default class SensorDataDAO extends Object {
     static #MAIN_OBJECT_STORE_NAME = "sensors";
     static #CURRENT_VERSION = 1;
     #databaseInstance;                          /* The instance of the opened database */
+    #openDBPromise;                             /* The promise when the db isn't opened yet */
 
     constructor() {
         super();
-
-        this.#openDatabaseIfNeeded();
+        this.#openDBPromise = this.#openDatabase();
     }
 
-
-    #openDatabaseIfNeeded(){
+    /**
+     * Opens the database
+     * @return {Promise<unknown>} A promise which resolves when the database is opened
+     */
+    #openDatabase(){
         return new Promise((resolve, reject) => {
-            // Let's not open the db multiple times, this would be silly
-            if(this.#databaseInstance !== undefined){
-                resolve("noice");
-                return;
-            }
-
             let openRequest = window.indexedDB.open(SensorDataDAO.#DATABASE_NAME, SensorDataDAO.#CURRENT_VERSION);
             openRequest.onsuccess = event => {
                 console.log("DB is opened !");
@@ -46,8 +43,18 @@ export default class SensorDataDAO extends Object {
 
             openRequest.onerror = event => reject(event);
             openRequest.onblocked = event => console.error("NOT IMPLEMENTED YET");
-
         });
+    }
+
+    /**
+     * Wait for the database to open? Resolves instantly if already opened
+     * @return {Promise<string|*>} A promise which resolves when the db is opened
+     */
+    async #waitForDatabase(){
+        if(this.#databaseInstance !== undefined){
+            return "noice";
+        }
+        return await this.#openDBPromise;
     }
 
 
@@ -56,7 +63,7 @@ export default class SensorDataDAO extends Object {
      * @param sensorDataArray An array of sensorData
      */
     async addSensorData(sensorDataArray){
-        await this.#openDatabaseIfNeeded();
+        await this.#waitForDatabase();
 
         let transaction = this.#databaseInstance.transaction(SensorDataDAO.#MAIN_OBJECT_STORE_NAME, "readwrite");
 
@@ -85,7 +92,7 @@ export default class SensorDataDAO extends Object {
      */
     getSensorData(options){
         return new Promise((resolve) => {
-            this.#openDatabaseIfNeeded().then(() =>{
+            this.#waitForDatabase().then(() =>{
                 // Check the filter type validity
                 let filterType;
                 filterType = options?.filterType?.toLowerCase() ?? "whitelist";
