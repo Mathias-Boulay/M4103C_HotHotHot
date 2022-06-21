@@ -1,5 +1,6 @@
 
 import { Application } from "./application.js";
+import { Graph } from "./graph/graph";
 import { AlertsTabView } from "./tab_view/AlertsTabView.js";
 /*Enregistrement service worker*/
 
@@ -22,6 +23,8 @@ const app = new Application();
 app.create();
 const alertsTabView = new AlertsTabView();
 alertsTabView.load();
+const graphique = new Graph("#tabHome");
+graphique.create();
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
