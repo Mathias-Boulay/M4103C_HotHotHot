@@ -8,7 +8,7 @@ export default class RealTimeSensorDataView extends Object {
 
     /**
      * Creates a new instance of the RealTimeSensorData, attaches it to the parent
-     * @param parent
+     * @param parent The parent HTMLElement to which the
      * @param sensorName The name of the sensor to listen to.
      */
     constructor(parent, sensorName) {
@@ -19,21 +19,26 @@ export default class RealTimeSensorDataView extends Object {
         this.#temperatureView = createElement("p", {}, this.#rootView);
 
         receptor.addSensorDataListener(this, sensorName);
-
-        this.#temperatureView.textContent = "33.3"
+        // Load the last saved temperature
+        receptor.DAO.getSensorData({limit:1, filters:sensorName, order:"descending"}).then(result => {
+            this.#setTemperature(result ? result[0].Valeur : 0)
+        });
         sensorNameText.textContent = sensorName;
-        console.log(lerpColorFromString("#0061FF", "#FF3700", 0.5));
+    }
+
+    /** Proxy method called because we are a Receptor listener */
+    update(sensorData){
+        this.#setTemperature(sensorData.Valeur);
     }
 
     /**
      * Update the state of the view to display the current temperature
-     * @param sensorData
+     * @param temperature The current temperature
      */
-    update(sensorData){
-        this.#temperatureView.textContent = sensorData.Valeur.toString();
-        this.#rootView.style.backgroundColor = `${lerpColorFromString("#00FFAE", "#FF3700", sensorData.Valeur/30)}`;
+    #setTemperature(temperature){
+        this.#temperatureView.textContent = temperature.toString();
+        this.#rootView.style.backgroundColor = `${lerpColorFromString("#00FFAE", "#FF3700", temperature/30)}`;
     }
-
 
 
 }
