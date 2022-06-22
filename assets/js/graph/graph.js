@@ -5,7 +5,6 @@ export class Graph {
 
     constructor(parent){
         this.canvas = createElement("canvas",{},qs(parent));
-        console.log((qsa(parent)));
         this.ctx = this.canvas.getContext('2d');
         this.gradient = this.ctx.createLinearGradient(0, 0, 0, 450);
         this.gradient.addColorStop(0, 'rgba(255, 0,0, 0.5)');
@@ -93,32 +92,22 @@ export class Graph {
             let tempDate = this.formatDate(date.Timestamp);
             if(!(this.chart.data.labels).includes(tempDate)){
                 (this.chart.data.labels).push(tempDate);
-                console.log(tempDate);
             }
             this.chart.data.datasets.forEach(dataset => {
                 if(dataset.label === date.Nom){
                     dataset.data.push(date.Valeur);
-                    console.log(date.Valeur);
                 }
                 else if(this.chart.data.labels.label != dataset.data.length){
                     dataset.data.push(null);
-                    console.log("null");
                 }
             });
             
         });
-        console.log(this.chart.data.datasets);
-        console.log(this.data.labels);
+
         this.chart.update();
         }
     create(){
         this.chart = new Chart(this.ctx, this.config);
-        // receptor.DAO.getSensorData({filters:"interieur", limit:10}).then((result) => {
-        //     this.addData(result,"interieur");
-        // });
-        // receptor.DAO.getSensorData({filters:"exterieur", limit:10}).then((result) => {
-        //     this.addData(result,"exterieur");
-        // });
         receptor.DAO.getSensorData({filters:["exterieur","interieur"]}).then((result) => {
             this.addData(result);
         });
