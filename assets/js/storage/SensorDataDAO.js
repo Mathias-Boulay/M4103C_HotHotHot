@@ -158,14 +158,13 @@ export default class SensorDataDAO extends Object {
      * @return {Promise<[]>} A promise resolving with all the sensorData ELIGIBLE FOR ALERTS
      */
     async getAlerts(options){
-        let results = await this.getSensorData(options);
-
-        for(let i = 0; i < results.length; ++i){
-            if(!Receptor.isAlert(results[i])){
-                results.splice(i, 1);
-                --i; // Needed since we go back one
-            }
+        // Insert additional filtering in the user data function
+        let originalFunction;
+        originalFunction = options?.filterFunction ?? ((sensorData) => {return true;});
+        options.filterFunction = (sensorData) => {
+            return Receptor.isAlert(sensorData) && originalFunction(sensorData);
         }
-        return results;
+
+        return await this.getSensorData(options);
     }
 }
