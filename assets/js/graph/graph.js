@@ -148,7 +148,7 @@ export class Graph {
     create(){
         this.chart = new Chart(this.ctx, this.config);
         receptor.addSensorDataListener(this)
-        receptor.DAO.getSensorData({filters:["exterieur","interieur"],startTime:}).then((result) => {
+        receptor.DAO.getSensorData({filters:["exterieur","interieur"],startTime:new Date(Date.now() - 86400000).Timestamp}).then((result) => {
             console.log(result);
             this.addData(result);
         });
