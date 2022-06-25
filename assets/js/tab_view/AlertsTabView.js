@@ -3,27 +3,30 @@ import { AlertsView } from "../view/AlertsView.js";
 
 export class AlertsTabView extends Object
 {
+    tabAlerts;
+    latestAlertContainer;
+    alertsHistoryContainer;
 
     constructor()
     {
         super();
-        const tabAlerts = qs("#tabAlerts");
-        
-        this.constructTabHTML = () =>
-        {
-            this.latestAlertContainer   = createElement("div", {id:"latestAlertContainer"  ,"aria-labelledby":"latestAlertContainer",  role:"containLastAlert",    "data-tab":"lastAlertContainer"    },tabAlerts);
-            this.alertsHistoryContainer = createElement("div", {id:"alertsHistoryContainer","aria-labelledby":"alertsHistoryContainer",role:"containAlertsHistory","data-tab":"alertsHistoryContainer"},tabAlerts);
-        };
+        this.tabAlerts = qs("#tabAlerts");
+    }
 
-        this.loadComponentViews = () =>
-        {
-            const alertsView = new AlertsView();
-        };
+    constructTabHTML()
+    {
+        this.latestAlertContainer   = createElement("div", {id:"latestAlertContainer"  ,"aria-labelledby":"latestAlertContainer",  role:"containLastAlert",    "data-tab":"lastAlertContainer"    },this.tabAlerts);
+        this.alertsHistoryContainer = createElement("div", {id:"alertsHistoryContainer","aria-labelledby":"alertsHistoryContainer",role:"containAlertsHistory","data-tab":"alertsHistoryContainer"},this.tabAlerts);
+    }
 
-        this.load = () => 
-        {
-            this.constructTabHTML();
-            this.loadComponentViews();
-        };
+    loadComponentViews()
+    {
+        new AlertsView();
+    }
+
+    load() 
+    {
+        this.constructTabHTML();
+        this.loadComponentViews();
     }
 }
