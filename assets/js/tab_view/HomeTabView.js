@@ -4,7 +4,8 @@ import {Graph} from "../graph/graph";
 
 export default class HomeTabView extends Object {
     #rootView;                      /* The root view of the Tab */
-    #realTimesensorDataContainer    /* Container for realTimeSensorDataView */
+    #realTimesensorDataContainer;    /* Container for realTimeSensorDataView */
+    #graphContainer;                /* Container for Graph */
 
     constructor() {
         super();
@@ -15,9 +16,10 @@ export default class HomeTabView extends Object {
     /** Load all necessary children components */
     load(){
         this.#realTimesensorDataContainer = createElement("div", {class:"realTimeSensorDataContainer"}, this.#rootView);
+        this.#graphContainer = createElement("div", {class: "graphLimit"},qs("#tabHome"));
         new RealTimeSensorDataView(this.#realTimesensorDataContainer, "interieur");
         new RealTimeSensorDataView(this.#realTimesensorDataContainer, "exterieur");
-        new Graph("#tabHome").create();
+        new Graph(this.#graphContainer).create();
     }
 
 

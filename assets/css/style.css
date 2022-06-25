@@ -137,6 +137,11 @@ height: 10%;
     /* border-radius: 0 0 5px 5px; */
 }
 
+.graphLimit{
+    height:70%;
+    width: 100%;
+}
+
 .realTimeSensorDataContainer{
     display: flex;
     flex-direction: row;

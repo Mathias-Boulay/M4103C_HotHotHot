@@ -4,7 +4,7 @@ import { qs,createElement } from "../utils/utils";
 export class Graph {
 
     constructor(parent){
-        this.canvas = createElement("canvas",{class: "graphLimit"},qs(parent));
+        this.canvas = createElement("canvas",{}, parent);
         this.ctx = this.canvas.getContext('2d');
 
         this.gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
