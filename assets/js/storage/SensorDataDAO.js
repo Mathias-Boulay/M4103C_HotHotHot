@@ -160,6 +160,7 @@ export default class SensorDataDAO extends Object {
     async getAlerts(options){
         // Insert additional filtering in the user data function
         let originalFunction;
+        if(options === undefined) options = {}
         originalFunction = options?.filterFunction ?? ((sensorData) => {return true;});
         options.filterFunction = (sensorData) => {
             return Receptor.isAlert(sensorData) && originalFunction(sensorData);
