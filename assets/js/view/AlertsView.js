@@ -22,11 +22,10 @@ export class AlertsView extends Object
 
     #printInitLatestAlerts(){
 
-
         AlertsView.#captorList.forEach(captorName => {
 
             const lastAlertContainer = qs("[data-tab=lastAlertContainer]");
-            const latestAlert        = createElement("div",{class:"latestAlert","aria-labelledby":"latestAlert",role:"latestAlert"},lastAlertContainer);
+            const latestAlert        = createElement("div",{class:"latestAlert","aria-labelledby":"latestAlert",role:"latestAlert", "data-lastalert": captorName + "holder"},lastAlertContainer);
             const captorNameContainer= createElement("div",{class:"latestAlertCaptorName","aria-labelledby":"latestAlertCaptorName",role:"latestAlertCaptorName","data-lastalert":captorName + "CaptorName"},latestAlert);
             const contextContainer   = createElement("p",  {class:"latestAlertContext",   "aria-labelledby":"latestAlertContext",   role:"latestAlertContext"   ,"data-lastalert":captorName + "Context"},latestAlert);
             const valueContainer     = createElement("div",{class:"latestAlertValue",     "aria-labelledby":"latestAlertValue",     role:"latestAlertValue"     ,"data-lastalert":captorName + "Value"},latestAlert);
@@ -40,8 +39,8 @@ export class AlertsView extends Object
             };
             receptor.DAO.getAlerts(optionsObject).then(result => {
                 this.#captorName = captorName;
-                this.#value      = result[0].Valeur;
-                this.#timestamp  = result[0].Timestamp;
+                this.#value      = (result?.[0] === undefined) ? "?" : result[0].Valeur;
+                this.#timestamp  = (result?.[0] === undefined) ? "?" : result[0].Timestamp;
                 captorNameContainer.append("Capteur " + this.#captorName + " :");
                 contextContainer.append(AlertsView.obtainAlertContext(this.#captorName, this.#value));
                 valueContainer.append(this.#value);
@@ -53,7 +52,7 @@ export class AlertsView extends Object
 
     #printInitAlertsHistory(){
         const alertsHistoryContainer = qs("[data-tab=alertsHistoryContainer]");
-        receptor.DAO.getAlerts({limit : 1}).then(result => {
+        receptor.DAO.getAlerts({limit : 100}).then(result => {
             createElement("ul", {id:"alertsHistory", "aria-labelledby":"alertsHistory",role:"AlertsHistory","data-list":"alertsHistory"},alertsHistoryContainer);
             for (let i = 0; i < (result.length); ++i){
                 this.#printAlertHistoryItem(result[i].Nom, result[i].Valeur, result[i].Timestamp);
@@ -62,6 +61,7 @@ export class AlertsView extends Object
     }
 
     update(sensorData){
+        
         this.#updateAlertsHistory(this.#captorName, this.#value, this.#timestamp);
 
         this.#captorName = sensorData.Nom;
@@ -73,26 +73,22 @@ export class AlertsView extends Object
         this.#updateLatestAlert();
     }
 
-    #updateAlertsHistory(captorName, value, timestamp){
-        this.#printAlertHistoryItem(captorName, value, timestamp);
-    }
+    #updateAlertsHistory(captorName, value, timestamp){this.#printAlertHistoryItem(captorName, value, timestamp);}
 
     #updateLatestAlert(){
-        const context    = qs("[data-lastalert=" + this.#captorName + "Context]");
-        const value      = qs("[data-lastalert=" + this.#captorName + "Value]");
-        const date       = qs("[data-lastalert=" + this.#captorName + "Date]");
-        const captorName = qs("[data-lastalert=" + this.#captorName + "CaptorName]");
-
-        removeElementChilds(context);
-        removeElementChilds(value);
-        removeElementChilds(date);
-        removeElementChilds(captorName);
-
-        captorName.append("Capteur " + this.#captorName + " :");
-        context.append(this.#context);
-        value.append(this.#value + "°C");
-        date.append(this.#date);
-        context.parentNode.style.background = getHSLColorMatchingTemperature(this.#value);
+        
+        const elementArray = [this.#captorName + "Context", this.#captorName + "Value", this.#captorName + "Date", this.#captorName + "CaptorName"];
+        const contentArray = ["Capteur " + this.#captorName + " :", this.#context, this.#value + "°C", this.#date];
+        let i = 0;
+        
+        while (i < elementArray.length)
+        {
+            const element = qs("[data-lastalert=" + elementArray[i] +"]");
+            removeElementChilds(element);
+            element.append(contentArray[i]);
+            ++i;
+        }
+        qs("[data-lastalert=" + this.#captorName +"holder]").parentNode.style.background = getHSLColorMatchingTemperature(this.#value);
     }
 
     #printAlertHistoryItem(captorName, value, timestamp)
@@ -130,6 +126,7 @@ export class AlertsView extends Object
     }
 
     static obtainDate(timestamp){
+        if (timestamp === "?") return "?";
         const date = new Date(timestamp);
         return (date.getHours()+":"+date.getMinutes()+" "+date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear());
     }

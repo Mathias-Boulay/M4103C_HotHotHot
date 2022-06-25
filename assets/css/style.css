@@ -162,6 +162,18 @@ height: 10%;
     text-align: center;
 }
 
+.tabsContainer{
+    width: 100%;
+    height: calc(100% - var(--headerHeight));
+    bottom: 0;
+}
+
+[data-target="tabHome"],[data-target="tabHistory"]{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #tabHome{
     position: fixed;
     background-color: var(--tabHomeColor);
@@ -175,21 +187,9 @@ height: 10%;
 
 #tabAlerts{
     position: fixed;
+    display: flex;
     background-color: var(--tabAlertsColor);
     transform: translateX(100%);
-}
-
-.tabsContainer{
-    position: absolute;
-    width: 100%;
-    height: calc(100% - var(--headerHeight));
-    bottom: 0;
-}
-
-[data-target="tabHome"],[data-target="tabHistory"],[data-target="tabAlerts"] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 @keyframes leftToRightIn{
