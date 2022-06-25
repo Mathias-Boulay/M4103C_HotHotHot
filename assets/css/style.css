@@ -163,6 +163,7 @@ height: 10%;
 }
 
 .tabsContainer{
+    position: absolute;
     width: 100%;
     height: calc(100% - var(--headerHeight));
     bottom: 0;
