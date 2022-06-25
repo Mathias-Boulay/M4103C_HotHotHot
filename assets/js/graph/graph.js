@@ -1,15 +1,27 @@
 import { receptor } from "../Receptor";
-import { qs, qsa,createElement } from "../utils/utils";
+import { qs,createElement } from "../utils/utils";
 
 export class Graph {
 
     constructor(parent){
-        this.canvas = createElement("canvas",{},qs(parent));
+        this.canvas = createElement("canvas",{class: "graphLimit"},qs(parent));
         this.ctx = this.canvas.getContext('2d');
-        this.gradient = this.ctx.createLinearGradient(0, 0, 0, 450);
-        this.gradient.addColorStop(0, 'rgba(255, 0,0, 0.5)');
-        this.gradient.addColorStop(0.5, 'rgba(255, 0, 0, 0.25)');
-        this.gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+
+        this.gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+        this.gradient.addColorStop(0, 'rgba(131,100,180,1)');
+        this.gradient.addColorStop(0.6, 'rgba(131,100,180,0.5)');
+        this.gradient.addColorStop(1, 'rgba(131,100,180,0)');
+        this.gradient2 = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+        this.gradient2.addColorStop(0, 'rgba(253,29,29,1)');
+        this.gradient2.addColorStop(0.6, 'rgba(253,29,29,0.5)');
+        this.gradient2.addColorStop(1, 'rgba(253,29,29,0)');
+
+        this.screenWidth = window.innerWidth;
+        window.addEventListener("resize", ()=> {
+            this.gradientupdate();
+            this.chart.update();
+        });
+
         this.data = {
         labels: [],
         datasets: [
@@ -17,7 +29,8 @@ export class Graph {
                 type: 'line',
                 label: 'exterieur',
                 data: [],
-                borderColor: '#ffe0b2',
+                borderColor: 'rgba(131,100,180,1)',
+                backgroundColor : this.gradient,
                 fill: "start",
                 pointRadius: 0,
                 tension: 0.5,
@@ -26,7 +39,8 @@ export class Graph {
             type: 'line',
             label: 'interieur',
             data: [],
-            borderColor: '#ff9800',
+            borderColor: 'rgba(253,29,29,1)',
+            backgroundColor : this.gradient2,
             fill: "start",
             pointRadius: 0,
             tension: 0.5,
@@ -39,41 +53,36 @@ export class Graph {
         data: this.data,
         options: {
             spanGaps: true,
-            responsive: true,
+            responsive:true,
+            maintainAspectRatio: false,
             interaction: {
                 mode: 'index',
-                intersect: false,
+                intersect: true,
             },
             stacked: false,
-            plugins: {}
+            plugins: {
+                tooltip:{
+                    callbacks: {
+                        title: function(tooltipItem, data) {
+                            console.log(tooltipItem);
+
+                          return  "Capteur " ;
+                        },
+                        label: function(tooltipItem, data) {
+                          return tooltipItem.label;
+                        },
+                        afterLabel: function(tooltipItem, data) {
+                          return tooltipItem.formattedValue + " °C";
+                        }
+                      },
+                }
+            }
         }
         };
         
     }
     
-    searchDatasetID (nomLabel, dataset) {
-        for (let i=0; i < dataset.length; i++) {
-            if (dataset[i].label === nomLabel) {
-                return i;
-            }
-        }
-    }
-
-    addDateInLabel(date){
-        let labels = this.chart.data.labels;
-        let temp = date;
-        for (let i=0; i < labels.length; i++) {
-            if(date === labels[i]){
-                return i;
-            }
-            else if (date < labels[i]){
-                (this.chart.data.labels).splice(i,0,temp)
-                return i;
-            }
-        }
-        (this.chart.data.labels).push(temp);
-        return labels.length -1;
-    }
+    canvasUpdate
 
     formatDate(date) {
         var d = new Date(date),
@@ -84,7 +93,7 @@ export class Graph {
             secondes = d.getSeconds(),
             ms = d.getMilliseconds();
 
-        return [minutes,secondes,ms].join('-');
+        return [year,month,day,minutes,secondes].join('-');
     }
 
     addData(dataArray){
@@ -103,18 +112,51 @@ export class Graph {
             });
             
         });
-
         this.chart.update();
         }
+        addSingleData(date){
+                let tempDate = this.formatDate(date.Timestamp);
+                if(!(this.chart.data.labels).includes(tempDate)){
+                    (this.chart.data.labels).push(tempDate);
+                }
+                this.chart.data.datasets.forEach(dataset => {
+                    if(dataset.label === date.Nom){
+                        dataset.data.push(date.Valeur);
+                    }
+                    else if(this.chart.data.labels.label != dataset.data.length){
+                        dataset.data.push(null);
+                    }
+                });
+
+            this.chart.update();
+            }
+
+    gradientupdate(){
+        this.gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+        this.gradient.addColorStop(0, 'rgba(131,100,180,1)');
+        this.gradient.addColorStop(0.6, 'rgba(131,100,180,0.5)');
+        this.gradient.addColorStop(1, 'rgba(131,100,180,0)');
+
+        this.gradient2 = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+
+        this.gradient2.addColorStop(0, 'rgba(253,29,29,1)');
+        this.gradient2.addColorStop(0.6, 'rgba(253,29,29,0.5)');
+        this.gradient2.addColorStop(1, 'rgba(253,29,29,0)');
+        this.chart.data.datasets[1].backgroundColor = this.gradient2;
+        this.chart.data.datasets[0].backgroundColor = this.gradient;
+    }
     create(){
         this.chart = new Chart(this.ctx, this.config);
-        receptor.DAO.getSensorData({filters:["exterieur","interieur"]}).then((result) => {
+        receptor.addSensorDataListener(this)
+        receptor.DAO.getSensorData({filters:["exterieur","interieur"],startTime:}).then((result) => {
+            console.log(result);
             this.addData(result);
         });
-        receptor.addSensorDataListener(this)
+        this.gradientupdate();
+    };
+
+    update(t){
+        this.addSingleData(t);
     }
 
-    dateConvertor(date){
-
-    }
 }
