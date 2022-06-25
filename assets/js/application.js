@@ -20,27 +20,32 @@ export class Application extends Object {
         this.previousTabPosition = "tabHome";
         this.screenWidth = window.innerWidth;
         window.addEventListener("resize", ()=> {this.screenWidth = window.innerWidth;});
+        
     }
 
     /* Création des éléments HTML */
-                                  //        ___________________________________________________________________________________________________________________
-    #constructHTML = () => {      //        |   Type   |                        Attributs, Datasets & Inner Texts                  |    Elément Parent  |
-                                  //        |d'Element_|_________________________________________________________________________________|__def:document.body_|
-        this.header          = createElement("section",{id             :"header"                                                         }                   );
-        this.userName        = createElement(  "span" ,{id             :"userName"        ,text  :"Mitchel"                              },       this.header);
-        this.connectionState = createElement(  "span" ,{id             :"connectionState" ,text  :"Déconnexion"                          },       this.header);
-        this.linksMenu       = createElement(   "ul"  ,{class          :"linksMenu"       ,                               role :"tablist"}                   );
-        this.switcher        = createElement(  "span" ,{id             :"switcher"        ,                                              },    this.linksMenu);
-        this.linkHome        = createElement(   "li"  ,{"data-target"  :"tabHome"         ,class :"active"               ,role :"tab"    },    this.linksMenu);
-        const anchorHome     = createElement(   "a"   ,{                                   text  :"Accueil"              ,href :"#"      },     this.linkHome);
-        this.linkHistory     = createElement(   "li"  ,{"data-target"  :"tabHistory"                                     ,role :"tab"    },    this.linksMenu);
-        const anchorHistory  = createElement(   "a"   ,{                                   text  :"Historique"           ,href :"#"      },  this.linkHistory);
-        this.linkAlerts      = createElement(   "li"  ,{"data-target"  :"tabAlerts"                                      ,role :"tab"    },    this.linksMenu);
-        const anchorAlerts   = createElement(   "a"   ,{                                   text  :"Alertes"              ,href :"#"      },   this.linkAlerts);
-        this.tabsContainer   = createElement(  "div"  ,{class          :"tabsContainer"                                                  }                   );
-        this.tabHome         = createElement(  "div"  ,{id:"tabHome"   ,class:"tabContent","aria-labelledby":   "tabHome",role:"tabpanel"},this.tabsContainer);
-        this.tabHistory      = createElement(  "div"  ,{id:"tabHistory",class:"tabContent","aria-labelledby":"tabHistory",role:"tabpanel"},this.tabsContainer);
-        this.tabAlerts       = createElement(  "div"  ,{id:"tabAlerts" ,class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"},this.tabsContainer);
+                                  //        ____________________________________________________________________________________________________________________
+    #constructHTML = () => {      //        |   Type    |                        Attributs, Datasets & Inner Texts                        |    Elément Parent  |
+                                  //        |_d'Element_|_________________________________________________________________________________|__def:document.body_|
+        this.header          = createElement("header" ,{id             :"header"                                                         }                   );
+        this.userName        = createElement(  "span"  ,{id             :"userName"        ,text  :""                                     },       this.header);
+        this.connectionState = createElement(  "span"  ,{id             :"connectionState" ,text  :"Connection "                          },       this.header);
+        // this.fakeConnection  = createElement("form",{id             :"fakeConnection" ,action:"", method:"GET"                                               },                  );
+        // this.fakeLabel       = createElement("label"   ,{id :"fakeLabel",for:"name",text:"Donne ton nom, salope :"},this.fakeConnection)
+        // this.fakeInput       = createElement("input"   ,{id :"fakeInput", type:"text",name:"name",placeholder:"Ton  nom, putain"},this.fakeConnection)
+        // this.fakeButton      = createElement("input"  ,{type:"submit"},this.fakeConnection)
+        this.linksMenu       = createElement(   "ul"   ,{class          :"linksMenu"       ,                               role :"tablist"},this.header                   );
+        this.switcher        = createElement(  "span"  ,{id             :"switcher"        ,                                              },    this.linksMenu);
+        this.linkHome        = createElement(   "li"   ,{"data-target"  :"tabHome"         ,class :"active"               ,role :"tab"    },    this.linksMenu);
+        const anchorHome     = createElement(   "a"    ,{                                   text  :"Accueil"              ,href :"#"      },     this.linkHome);
+        this.linkHistory     = createElement(   "li"   ,{"data-target"  :"tabHistory"                                     ,role :"tab"    },    this.linksMenu);
+        const anchorHistory  = createElement(   "a"    ,{                                   text  :"Historique"           ,href :"#"      },  this.linkHistory);
+        this.linkAlerts      = createElement(   "li"   ,{"data-target"  :"tabAlerts"                                      ,role :"tab"    },    this.linksMenu);
+        const anchorAlerts   = createElement(   "a"    ,{                                   text  :"Alertes"              ,href :"#"      },   this.linkAlerts);
+        this.tabsContainer   = createElement(  "div"   ,{class          :"tabsContainer"                                                  }                   );
+        this.tabHome         = createElement(  "div"   ,{id:"tabHome"   ,class:"tabContent","aria-labelledby":   "tabHome",role:"tabpanel"},this.tabsContainer);
+        this.tabHistory      = createElement(  "div"   ,{id:"tabHistory",class:"tabContent","aria-labelledby":"tabHistory",role:"tabpanel"},this.tabsContainer);
+        this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"},this.tabsContainer);
         this.links           =      qsa     (".linksMenu li");
         this.contents        =      qsa     (".tabContent");
 
@@ -51,19 +56,21 @@ export class Application extends Object {
         this.#homeTabView.load()
         this.#historyTabView.load();
         this.#alertTabView.load();
+        this.connectionState.addEventListener("click", ()=>{});
     }
 
     /* Comportement des onglets */
+
     #setTabsBehavior = () => {
         let  firstUse = false; // Permet de ne pas déclencher l'animation au premier affichage de l'onglet Accueil (Home)
 
         const OPT_TXT = ".7s forwards ease-in-out";
         const OPT_TXT2 = ".7s forwards ease-in-out";
 
-        const L2RI    = `leftToRightIn  ${OPT_TXT}`;
-        const L2RO    = `leftToRightOut ${OPT_TXT}`;
-        const R2LI    = `rightToLeftIn  ${OPT_TXT}`;
-        const R2LO    = `rightToLeftOut ${OPT_TXT}`;
+        const L2RI    = `leftToRightIn   ${OPT_TXT}`;
+        const L2RO    = `leftToRightOut  ${OPT_TXT}`;
+        const R2LI    = `rightToLeftIn   ${OPT_TXT}`;
+        const R2LO    = `rightToLeftOut  ${OPT_TXT}`;
 
         const HOHI    = `homeToHistory  ${OPT_TXT2}`;
         const HIAL    = `historyToAlerts${OPT_TXT2}`;
@@ -73,7 +80,7 @@ export class Application extends Object {
         const HOAL    = `homeToAlerts   ${OPT_TXT2}`;
 
         const toggle  = (targetId) => {
-            if (firstUse === false) { firstUse = true;switcher.innerText="Accueil"; return; }
+            if (firstUse === false) { firstUse = true; switcher.innerText="Accueil"; return; }
 
             this.contents.forEach(  (element)  => {
                 element.classList                                  [element.id === targetId ? "add" : "remove"]("active");
@@ -81,28 +88,28 @@ export class Application extends Object {
 
                 if(this.tabHome.classList.contains("active") && firstUse) {
                     switch(this.previousTabPosition) {
-                        case "tabHistory" : this.tabHome.style.animation    = L2RI; this.tabHistory.style.animation = L2RO;
-                            this.switcher.style.animation   = HIHO; this.switcher.innerText="Accueil"        ;break;
-                        case "tabAlerts"  :this. tabHome.style.animation    = L2RI;this. tabAlerts.style.animation = L2RO;
-                            this. switcher.style.animation   = ALHO; this.switcher.innerText="Accueil"        ;break;
+                        case "tabHistory" : this.tabHome.style.animation = L2RI; this.tabHistory.style.animation = L2RO;
+                            this.switcher.style.animation = HIHO; this.switcher.innerText="Accueil"; break;
+                        case "tabAlerts"  : this. tabHome.style.animation = L2RI;this. tabAlerts.style.animation = L2RO;
+                            this. switcher.style.animation = ALHO; this.switcher.innerText="Accueil"; break;
                     }
                     this.previousTabPosition = "tabHome";
                 }
                 if(this.tabHistory.classList.contains("active")) {
                     switch(this.previousTabPosition) {
-                        case "tabHome"    :this.tabHistory.style.animation = R2LI; this.tabHome.style.animation  = R2LO;
-                            this.switcher.style.animation   = HOHI; this.switcher.innerText="  Historique  " ;break;
-                        case "tabAlerts"  :this.tabHistory.style.animation = L2RI; this.tabAlerts.style.animation  = L2RO;
-                            this.switcher.style.animation   = ALHI; this.switcher.innerText="  Historique  " ;break;
+                        case "tabHome" : this.tabHistory.style.animation = R2LI; this.tabHome.style.animation = R2LO;
+                            this.switcher.style.animation = HOHI; this.switcher.innerText="  Historique  "; break;
+                        case "tabAlerts" : this.tabHistory.style.animation = L2RI; this.tabAlerts.style.animation = L2RO;
+                            this.switcher.style.animation = ALHI; this.switcher.innerText="  Historique  "; break;
                     }
                     this.previousTabPosition = "tabHistory";
                 }
                 if(this.tabAlerts.classList.contains("active")) {
                     switch(this.previousTabPosition) {
-                        case "tabHome"    : this.tabAlerts.style.animation  = R2LI; this.tabHome.style.animation             = R2LO;
-                            this.switcher.style.animation   = HOAL; this.switcher.innerText="Alertes"        ;break;
-                        case "tabHistory" : this.tabAlerts.style.animation  = R2LI; this.tabHistory.style.animation          = R2LO;
-                            this.switcher.style.animation   = HIAL; this.switcher.innerText="Alertes"        ;break;
+                        case "tabHome" : this.tabAlerts.style.animation  = R2LI; this.tabHome.style.animation = R2LO;
+                            this.switcher.style.animation = HOAL; this.switcher.innerText="Alertes"; break;
+                        case "tabHistory" : this.tabAlerts.style.animation  = R2LI; this.tabHistory.style.animation = R2LO;
+                            this.switcher.style.animation = HIAL; this.switcher.innerText="Alertes"; break;
                     }
                     this.previousTabPosition = "tabAlerts";
                 }
@@ -136,7 +143,7 @@ export class Application extends Object {
 
     #handleEnd(evt) {
         evt.preventDefault();
-        let screenPortionToMove = this.screenWidth * 1 / 10;
+       // let screenPortionToMove = this.screenWidth * 1 / 10;
         let diffPos = this.#prevPosX - evt.clientX;
         if(this.previousTabPosition == "tabHome"){
             if(diffPos > 0 && evt.pointerType == "mouse")  this.linkHistory.click()

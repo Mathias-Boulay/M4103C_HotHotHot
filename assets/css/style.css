@@ -47,6 +47,33 @@ html,body{
     width: 100%;
 }
 
+#fakeConnection{
+    box-shadow: 0 0 500px 200px rgba(0, 0, 0, 1);
+    position: absolute;
+    display:flex;
+    width:50%;
+    height: 30%;
+    background-color: white;
+    border-radius: 15px;
+    z-index:99;
+}
+#fakeLabel{
+    /* position: absolute; */
+color: black;
+z-index:99;
+width: 30%;
+/* font-size: 1rem; */
+font-size: 10pt;
+height: 10%;
+}
+#fakeInput{
+    
+    color: black;font-size: 1rem;
+    z-index:999999;
+    width: 30%;
+    height: 10%;
+}
+
 .linksMenu{
     opacity: 45%;
     display: flex;
@@ -98,7 +125,7 @@ html,body{
 }
 
 .tabContent{
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
     bottom: 0;
     height: calc(100% - var(--headerHeight));
@@ -107,7 +134,7 @@ html,body{
     justify-content: center;
     align-items: center;
     background-size: auto;
-    border-radius: 0 0 5px 5px;
+    /* border-radius: 0 0 5px 5px; */
 }
 
 .realTimeSensorDataContainer{
