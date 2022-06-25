@@ -21,10 +21,8 @@ addBtn.style.display = 'none';
 
 const app = new Application();
 app.create();
-const alertsTabView = new AlertsTabView();
-alertsTabView.load();
-const graphique = new Graph("#tabHome");
-graphique.create();
+
+
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();

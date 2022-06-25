@@ -1,8 +1,16 @@
 import { qs, qsa, createElement, addGlobalEventListener } from "./utils/utils.js";
+import HistoryTabView from "./tab_view/HistoryTabView";
+import {AlertsTabView} from "./tab_view/AlertsTabView";
+import HomeTabView from "./tab_view/HomeTabView";
 
 /* Classe de création de l'interface d'application */
 
 export class Application extends Object {
+
+    /* Container for TabView */
+    #homeTabView;
+    #alertTabView;
+    #historyTabView;
 
     #tmpEventClient = 0;
     #prevPosX = 0;
@@ -35,6 +43,14 @@ export class Application extends Object {
         this.tabAlerts       = createElement(  "div"  ,{id:"tabAlerts" ,class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"},this.tabsContainer);
         this.links           =      qsa     (".linksMenu li");
         this.contents        =      qsa     (".tabContent");
+
+        // Link the tabViews
+        this.#homeTabView = new HomeTabView();
+        this.#historyTabView = new HistoryTabView();
+        this.#alertTabView = new AlertsTabView();
+        this.#homeTabView.load()
+        this.#historyTabView.load();
+        this.#alertTabView.load();
     }
 
     /* Comportement des onglets */

@@ -110,6 +110,14 @@ html,body{
     border-radius: 0 0 5px 5px;
 }
 
+.realTimeSensorDataContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 3em;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .realTimeSensorDataView{
     background: gray;
     border-radius: 1em;

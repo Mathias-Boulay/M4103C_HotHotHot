@@ -9,4 +9,9 @@ export default class HistoryTabView extends Object {
         this.#rootView = qs("#tabHistory");
     }
 
+    /** Load all necessary children components */
+    load(){
+        // TODO add children ?
+    }
+
 }
