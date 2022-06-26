@@ -230,6 +230,21 @@ html,body{
     transform: translateX(100%);
 }
 
+.aggregatedSensorDataTable {
+    width: 80%;
+    color: white;
+    text-align: center;
+    border: 0.2rem solid darkgray;
+    border-collapse: separate;
+    border-spacing: 0.35em;
+}
+
+.aggregatedSensorDataTable thead {
+    background-color: darkgray;
+}
+
+
+
 #tabAlerts{
     position: fixed;
     display: flex;

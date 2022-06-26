@@ -7,7 +7,7 @@ import Localization from "../lang/Localization";
 
 export default class AggregatedSensorDataView extends Object {
     #rootView;      /* The view root used to display all children */
-    #tableBody;
+    #tableBody;     /* The body of the table, from which aggregated sensor data is displayed */
 
     /**
      * @param parent The parent HTMLElement, to be attached to
@@ -25,7 +25,7 @@ export default class AggregatedSensorDataView extends Object {
 
 
         /* Table header */
-        this.#rootView = createElement("table", {class: "dailyTable"}, parent);
+        this.#rootView = createElement("table", {class: "aggregatedSensorDataTable"}, parent);
         let tableHead = createElement("thead", {}, this.#rootView);
         let tableHeadRow = createElement("tr", {}, tableHead);
         createElement("td", {colspan: 4, text: getStartOfDay(date).toDateString()}, tableHeadRow);
