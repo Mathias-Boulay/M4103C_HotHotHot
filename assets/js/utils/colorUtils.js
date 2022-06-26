@@ -1,4 +1,4 @@
-import { map } from "./mathUtils.js";
+import {clamp, map} from "./mathUtils.js";
 
 /**
  * A linear interpolator for hex colors.
@@ -15,7 +15,7 @@ import { map } from "./mathUtils.js";
  * @returns {Number}
  */
 export function lerpColor(a, b, amount) {
-    
+    amount = clamp(amount, 0, 1);
     const ar = a >> 16,
         ag = a >> 8 & 0xff,
         ab = a & 0xff,
