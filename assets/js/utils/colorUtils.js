@@ -1,4 +1,4 @@
-import {clamp, map} from "./mathUtils.js";
+import { map } from "./mathUtils.js";
 
 /**
  * A linear interpolator for hex colors.
@@ -15,7 +15,7 @@ import {clamp, map} from "./mathUtils.js";
  * @returns {Number}
  */
 export function lerpColor(a, b, amount) {
-    amount = clamp(amount, 0, 1);
+    
     const ar = a >> 16,
         ag = a >> 8 & 0xff,
         ab = a & 0xff,
@@ -47,14 +47,14 @@ export function lerpColorFromString(a, b, amount){
 }
 
 /**
- * Return a specific color in HSL depending on the temperature.
+ * Return a specific hue needed for HSL depending on the temperature.
  * If the temperature is low the color will be close to blue, and red for the opposite.
  * @param {Number} temp  the temperature
  *
- * @return {String} the HSL color as a string
+ * @return {String} the Hue of the color
  */
-export function getHSLColorMatchingTemperature(temp){
+export function getHSLHueMatchingTemperature(temp){
     let colorHue = ((((temp > 55) ? 55 : temp) < -20) ? -20 : temp);
     colorHue = (temp > 17) ? map(temp, 17, 55, 50, 0) : map(temp, -20, 17, 220, 160);
-    return "hsla(" + colorHue + ", 100%, 60%, 0.8)";
+    return  colorHue;
 }

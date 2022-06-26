@@ -23,7 +23,7 @@ export default class EN extends Object{
             alert_context_inside_superhot : "Call the Firefighters or stop your barbecue!",
             alert_context_inside_cold : "Turn up the heat or put on a heavy sweater!",
             alert_context_inside_supercold : "Frozen pipes, call a plumber and put on a woolly hat!",
-            alert_context_error : "Error, this alert is not valid"
+            alert_context_error : "Error, this alert isn't valid"
         };
     }
 }

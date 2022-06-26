@@ -23,7 +23,7 @@ export default class FR extends Object{
             alert_context_inside_superhot : "Appelez les pompiers ou arrêtez votre barbecue !",
             alert_context_inside_cold : "Montez le chauffage ou mettez un gros pull !",
             alert_context_inside_supercold : "Canalisations gelées, appelez SOS plombier et mettez un bonnet !",
-            alert_context_error : "Erreur, il ne s'agit pas d'une alerte valide"
+            alert_context_error : "Erreur, cette alerte est invalide"
         };
     }
 }

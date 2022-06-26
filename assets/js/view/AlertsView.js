@@ -1,5 +1,5 @@
 import { qs, createElement, removeElementChilds } from "./../utils/utils.js";
-import { getHSLColorMatchingTemperature } from "./../utils/colorUtils.js";
+import { getHSLHueMatchingTemperature } from "./../utils/colorUtils.js";
 import { receptor } from "./../Receptor";
 import Localization from "./../lang/Localization";
 
@@ -45,7 +45,8 @@ export class AlertsView extends Object
                 contextContainer.append(AlertsView.obtainAlertContext(this.#captorName, this.#value));
                 valueContainer.append(this.#value + "°C");
                 dateContainer.append(AlertsView.obtainDate(this.#timestamp));
-                latestAlert.style.background = getHSLColorMatchingTemperature(this.#value);
+                const hue = getHSLHueMatchingTemperature(this.#value);
+                latestAlert.style.background = "radial-gradient(circle, hsla(" + hue + ", 100%, 60%, 0.8) 0%, hsla(0 , 100%, 70%, 0.8) 100%)";
             });
         });
     }
@@ -87,7 +88,7 @@ export class AlertsView extends Object
             element.append(contentArray[i]);
             ++i;
         }
-        qs("[data-lastalert=" + this.#captorName +"holder]").style.background = getHSLColorMatchingTemperature(this.#value);
+        qs("[data-lastalert=" + this.#captorName +"holder]").style.background = "radial-gradient(circle, hsla(" + hue + ", 100%, 60%, 0.8) 0%, hsla(0 , 100%, 70%, 0.8) 100%)";
     }
 
     #printAlertHistoryItem(captorName, value, timestamp){
@@ -103,7 +104,8 @@ export class AlertsView extends Object
         itemCaptorName.append(captorName);
         itemContext.append(AlertsView.obtainAlertContext(captorName, value));
         itemValue.append(value + "°C");
-        itemCaptorName.parentNode.style.background = getHSLColorMatchingTemperature(value);
+        const hue = getHSLHueMatchingTemperature(value);
+        itemCaptorName.parentNode.style.background = "linear-gradient(175deg, hsla(" + hue + ", 100%, 60%, 0.8) 0%, hsla(" + hue + ", 100%, 70%, 0.8) 50%, hsla(0 , 100%, 100%, 0.8) 100%)";
     }
 
 
