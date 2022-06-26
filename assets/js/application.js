@@ -14,7 +14,7 @@ export class Application extends Object {
 
     #tmpEventClient = 0;
     #prevPosX = 0;
-
+    
     constructor() {
         super();
         this.previousTabPosition = "tabHome";
@@ -24,28 +24,29 @@ export class Application extends Object {
     }
 
     /* Création des éléments HTML */
-                                  //        ____________________________________________________________________________________________________________________
-    #constructHTML = () => {      //        |   Type    |                        Attributs, Datasets & Inner Texts                        |    Elément Parent  |
-                                  //        |_d'Element_|_________________________________________________________________________________|__def:document.body_|
-        this.header          = createElement("header" ,{id             :"header"                                                         }                   );
-        this.userName        = createElement(  "span"  ,{id             :"userName"        ,text  :""                                     },       this.header);
-        this.connectionState = createElement(  "span"  ,{id             :"connectionState" ,text  :"Connection "                          },       this.header);
-        // this.fakeConnection  = createElement("form",{id             :"fakeConnection" ,action:"", method:"GET"                                               },                  );
-        // this.fakeLabel       = createElement("label"   ,{id :"fakeLabel",for:"name",text:"Donne ton nom, salope :"},this.fakeConnection)
-        // this.fakeInput       = createElement("input"   ,{id :"fakeInput", type:"text",name:"name",placeholder:"Ton  nom, putain"},this.fakeConnection)
-        // this.fakeButton      = createElement("input"  ,{type:"submit"},this.fakeConnection)
-        this.linksMenu       = createElement(   "ul"   ,{class          :"linksMenu"       ,                               role :"tablist"},this.header                   );
-        this.switcher        = createElement(  "span"  ,{id             :"switcher"        ,                                              },    this.linksMenu);
-        this.linkHome        = createElement(   "li"   ,{"data-target"  :"tabHome"         ,class :"active"               ,role :"tab"    },    this.linksMenu);
-        const anchorHome     = createElement(   "a"    ,{                                   text  :"Accueil"              ,href :"#"      },     this.linkHome);
-        this.linkHistory     = createElement(   "li"   ,{"data-target"  :"tabHistory"                                     ,role :"tab"    },    this.linksMenu);
-        const anchorHistory  = createElement(   "a"    ,{                                   text  :"Historique"           ,href :"#"      },  this.linkHistory);
-        this.linkAlerts      = createElement(   "li"   ,{"data-target"  :"tabAlerts"                                      ,role :"tab"    },    this.linksMenu);
-        const anchorAlerts   = createElement(   "a"    ,{                                   text  :"Alertes"              ,href :"#"      },   this.linkAlerts);
-        this.tabsContainer   = createElement(  "div"   ,{class          :"tabsContainer"                                                  }                   );
-        this.tabHome         = createElement(  "div"   ,{id:"tabHome"   ,class:"tabContent","aria-labelledby":   "tabHome",role:"tabpanel"},this.tabsContainer);
-        this.tabHistory      = createElement(  "div"   ,{id:"tabHistory",class:"tabContent","aria-labelledby":"tabHistory",role:"tabpanel"},this.tabsContainer);
-        this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"},this.tabsContainer);
+                                  //        _____________________________________________________________________________________________________________________
+    #constructHTML = () => {      //        |   Type    |                        Attributs, Datasets & Inner Texts                        |    Elément Parent   |
+                                  //        |_d'Element_|_________________________________________________________________________________|__def:document.body__|
+        this.header          = createElement( "header" ,{id             :"header"                                                         }                    );
+        this.userName        = createElement(  "span"  ,{id             :"userName"        ,text  :""                                     },        this.header);
+        this.connectionState = createElement(  "span"  ,{id             :"connectionState" ,text  :"Connection"                           },        this.header);
+        this.fakeOverlay     = createElement(  "div"   ,{id             : "fakeOverlay"                                                   }                    );
+        this.fakeConnection  = createElement(  "form"  ,{id             :"fakeConnection"                                                 },  this.fakeOverlay );
+        this.fakeLabel       = createElement(  "label" ,{id:"fakeLabel" ,for:"fakeInput"   ,text:"Connection"                             },this.fakeConnection);
+        this.fakeInput       = createElement(  "input" ,{id:"fakeInput" ,placeholder:"Nom" ,type:"text"                   ,name:"name"    },this.fakeConnection);
+        this.fakeButton      = createElement( "button" ,{id:"fakeButton",type:"submit"                                                    },this.fakeConnection);
+        this.linksMenu       = createElement(   "ul"   ,{class          :"linksMenu"                                      ,role :"tablist"},        this.header);
+        this.switcher        = createElement(  "span"  ,{id             :"switcher"                                                       },     this.linksMenu);
+        this.linkHome        = createElement(   "li"   ,{"data-target"  :"tabHome"         ,class :"active"               ,role :"tab"    },     this.linksMenu);
+        const anchorHome     = createElement(   "a"    ,{                                   text  :"Accueil"              ,href :"#"      },      this.linkHome);
+        this.linkHistory     = createElement(   "li"   ,{"data-target"  :"tabHistory"                                     ,role :"tab"    },     this.linksMenu);
+        const anchorHistory  = createElement(   "a"    ,{                                   text  :"Historique"           ,href :"#"      },   this.linkHistory);
+        this.linkAlerts      = createElement(   "li"   ,{"data-target"  :"tabAlerts"                                      ,role :"tab"    },     this.linksMenu);
+        const anchorAlerts   = createElement(   "a"    ,{                                   text  :"Alertes"              ,href :"#"      },    this.linkAlerts);
+        this.tabsContainer   = createElement(  "div"   ,{class          :"tabsContainer"                                                  }                    );
+        this.tabHome         = createElement(  "div"   ,{id:"tabHome"   ,class:"tabContent","aria-labelledby":   "tabHome",role:"tabpanel"}, this.tabsContainer);
+        this.tabHistory      = createElement(  "div"   ,{id:"tabHistory",class:"tabContent","aria-labelledby":"tabHistory",role:"tabpanel"}, this.tabsContainer);
+        this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"}, this.tabsContainer);
         this.links           =      qsa     (".linksMenu li");
         this.contents        =      qsa     (".tabContent");
 
@@ -56,7 +57,42 @@ export class Application extends Object {
         this.#homeTabView.load()
         this.#historyTabView.load();
         this.#alertTabView.load();
-        this.connectionState.addEventListener("click", ()=>{});
+       
+       let connected =false;
+        this.connectionState.addEventListener("click", () =>{
+            if(connected) {
+                connected = false;
+                this.userName.innerText ="";
+                this.connectionState.innerText="Connection";
+                return;
+            }
+                this.fakeOverlay.style.display="flex";
+                this.fakeConnection.style.display="flex";
+        });
+        this.fakeButton.addEventListener("click", () =>{
+            if (this.fakeInput.value !== ""){
+                connected = true;
+                this.userName.innerText = this.fakeInput.value;
+                this.connectionState.innerText="Déconnection";
+                this.fakeOverlay.style.display="none";
+                this.fakeConnection.style.display="none";
+            }
+            else {
+                this.userName.innerText ="";
+                connected = false;
+                this.connectionState.innerText="Connection";
+                this.fakeOverlay.style.display="none";
+            }
+        });
+
+        // hide the fake connection modal while clicking out of it
+        this.fakeOverlay.addEventListener("click", (e) => {
+            const eT = e.target;
+            if(eT != this.fakeConnection && eT != this.fakeInput && eT != this.fakeLabel){
+                this.fakeOverlay.style.display="none";
+                this.fakeInput.value = "";
+            }             
+        })     
     }
 
     /* Comportement des onglets */
@@ -123,15 +159,14 @@ export class Application extends Object {
 
     #startup() {
         const d =  document;
-        d.addEventListener('pointerdown', this.#handleStart.bind(this));
-        d.addEventListener('pointerup', this.#handleEnd.bind(this));
-        d.addEventListener('pointercancel', this.#handleCancel.bind(this));
-        d.addEventListener('pointermove', this.#handleMove.bind(this));
-        console.log('Initialisation.');
+        d.addEventListener("pointerdown", this.#handleStart.bind(this));
+        d.addEventListener("pointerup", this.#handleEnd.bind(this));
+        d.addEventListener("pointercancel", this.#handleCancel.bind(this));
+        d.addEventListener("pointermove", this.#handleMove.bind(this));
     }
 
     #handleStart(evt){
-        evt.preventDefault();
+        // evt.preventDefault();
         this.#prevPosX = evt.clientX
     }
 
