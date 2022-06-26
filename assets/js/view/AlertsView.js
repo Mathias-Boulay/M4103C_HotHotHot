@@ -88,6 +88,7 @@ export class AlertsView extends Object
             element.append(contentArray[i]);
             ++i;
         }
+        const hue = getHSLHueMatchingTemperature(this.#value);
         qs("[data-lastalert=" + this.#captorName +"holder]").style.background = "radial-gradient(circle, hsla(" + hue + ", 100%, 60%, 0.8) 0%, hsla(0 , 100%, 70%, 0.8) 100%)";
     }
 

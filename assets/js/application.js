@@ -2,6 +2,8 @@ import { qs, qsa, createElement, addGlobalEventListener } from "./utils/utils.js
 import HistoryTabView from "./tab_view/HistoryTabView";
 import {AlertsTabView} from "./tab_view/AlertsTabView";
 import HomeTabView from "./tab_view/HomeTabView";
+import { ToastNotification } from "./notification/ToastNotification.js";
+import { PushNotification } from "./notification/PushNotification.js";
 
 /* Classe de création de l'interface d'application */
 
@@ -57,6 +59,9 @@ export class Application extends Object {
         this.#homeTabView.load()
         this.#historyTabView.load();
         this.#alertTabView.load();
+
+        new PushNotification();
+        new ToastNotification();
        
        let connected =false;
         this.connectionState.addEventListener("click", () =>{
