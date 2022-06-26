@@ -11,6 +11,12 @@ export default class EN extends Object{
     static getTranslation(){
         return {
             welcome : "Hello ##",
+
+            history_minimum: "Minimum",
+            history_maximum: "Maximum",
+            history_average: "Average",
+            history_name: "Name",
+
             alert_context_outside_hot : "Hot Hot Hot !",
             alert_context_outside_cold : "Iceberg in sight !",
             alert_context_inside_hot : "Turn the heat down !",
