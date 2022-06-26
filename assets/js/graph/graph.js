@@ -1,5 +1,5 @@
 import { receptor } from "../Receptor";
-import { qs,createElement } from "../utils/utils";
+import {qs, createElement, getStartOfDay} from "../utils/utils";
 
 export class Graph {
 
@@ -148,7 +148,7 @@ export class Graph {
     create(){
         this.chart = new Chart(this.ctx, this.config);
         receptor.addSensorDataListener(this)
-        receptor.DAO.getSensorData({filters:["exterieur","interieur"],startTime:Date.parse(new Date(Date.now() - 86400000))}).then((result) => {
+        receptor.DAO.getSensorData({filters:["exterieur","interieur"],startTime: getStartOfDay(Date.now()).getTime()}).then((result) => {
             console.log(result);
             this.addData(result);
         });
