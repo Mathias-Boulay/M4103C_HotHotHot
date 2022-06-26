@@ -182,6 +182,7 @@ html,body{
     gap: 3em;
     justify-content: space-around;
     align-items: center;
+    margin: 1em;
 }
 
 .realTimeSensorDataView{
