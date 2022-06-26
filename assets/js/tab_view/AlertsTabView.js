@@ -12,7 +12,7 @@ export class AlertsTabView extends Object {
     }
 
     constructTabHTML() {
-        this.latestAlertContainer   = createElement("div", {id:"latestAlertContainer"  ,"aria-labelledby":"latestAlertContainer",  role:"containLastAlert",    "data-tab":"lastAlertContainer"    },this.tabAlerts);
+        this.latestAlertContainer   = createElement("ul", {id:"latestAlertsContainer"  ,"aria-labelledby":"latestsAlertContainer",  role:"containLastAlerts",    "data-tab":"lastAlertsContainer"    },this.tabAlerts);
         this.alertsHistoryContainer = createElement("div", {id:"alertsHistoryContainer","aria-labelledby":"alertsHistoryContainer",role:"containAlertsHistory","data-tab":"alertsHistoryContainer"},this.tabAlerts);
     }
 
