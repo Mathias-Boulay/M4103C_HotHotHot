@@ -53,3 +53,32 @@ export function removeElementChilds(element){while (element.firstChild)element.r
 export function randomNumberBetween(min, max) {return Math.floor(Math.random() * (max - min + 1) + min);}
 
 export function sleep(duration) {return new Promise(resolve => setTimeout(resolve, duration));}
+
+/**
+ * Given a date, find the start of the current day
+ * @param {Date|int} date: The date to get
+ * @return {Date} The start of the day, as a Date instance
+ */
+export function getStartOfDay(date){
+    // Pre-conversion
+    if(typeof date === "number"){
+        date = new Date(date);
+    }
+
+    date.setHours(0, 0, 0, 0);
+    return date;
+}
+
+/**
+ * Given a date, find the end of the current day
+ * @param {Date|int} date: The date to get
+ * @return {Date} The start of the day, as a Date instance
+ */
+export function getEndOfDay(date){
+    // Pre-conversion
+    if(typeof date === "number"){
+        date = new Date(date);
+    }
+    date.setHours(23, 59, 59, 0);
+    return date;
+}
