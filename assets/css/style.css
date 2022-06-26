@@ -223,8 +223,51 @@ html,body{
 #tabAlerts{
     position: fixed;
     display: flex;
+    justify-content: start;
     background-color: var(--tabAlertsColor);
     transform: translateX(100%);
+}
+
+#latestAlertsContainer{
+    display: flex;
+    padding: 0;
+    gap: 1em;
+}
+
+.latestAlert{
+    list-style: none;
+    width: min(35vw, 10em);
+    aspect-ratio: 1/1;
+    border-radius: 5%;
+    padding: 1em;
+    box-shadow: 6px 8px 3px rgb(100,100,100);
+}
+
+#alertsHistory{
+    overflow: scroll;
+    padding: 0.2em;
+    display: flex;
+    gap: 0.3em;
+    width: fit-content;
+    height: 18em;
+    background-color: white;
+    flex-direction: column;
+    border-radius: 2% / 4%;
+    box-shadow: 6px 8px 3px rgb(100,100,100);
+}
+
+.alertHistoryItem{
+    list-style: none;
+    width: min(85vw, 50em);
+}
+
+.alertHistoryItem > div{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 1em;
+    border-radius: 2% / 15%;
+    box-shadow: 2px 3px 3px rgb(160,160,160);
 }
 
 @keyframes leftToRightIn{

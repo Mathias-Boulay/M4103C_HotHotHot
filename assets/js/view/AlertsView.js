@@ -81,8 +81,7 @@ export class AlertsView extends Object
         const contentArray = ["Capteur " + this.#captorName, this.#context, this.#value + "°C", this.#date];
         let i = 0;
         
-        while (i < elementArray.length)
-        {
+        while (i < elementArray.length){
             const element = qs("[data-lastalert=" + elementArray[i] +"]");
             removeElementChilds(element);
             element.append(contentArray[i]);
@@ -95,15 +94,15 @@ export class AlertsView extends Object
         const alertsHistoryUl = qs("[data-list=alertsHistory]");
         const li              = createElement("li", {class:"alertHistoryItem"},alertsHistoryUl, true);
         const liContainer     = createElement("div",{class:"alertHistoryItemContainer","aria-labelledby":"alertHistoryItemContainer",  role:"alertHistoryItemContainer" },li);
+        const itemDate        = createElement("div",{class:"alertHistoryItemDate",      "aria-labelledby":"alertHistoryItemDate",      role:"alertHistoryItemDate"      },liContainer);
         const itemCaptorName  = createElement("div",{class:"alertHistoryItemCaptorName","aria-labelledby":"alertHistoryItemCaptorName",role:"alertHistoryItemCaptorName"},liContainer);
         const itemContext     = createElement("p",  {class:"alertHistoryItemContext",   "aria-labelledby":"alertHistoryItemContext",   role:"alertHistoryItemContext"   },liContainer);
         const itemValue       = createElement("div",{class:"alertHistoryItemValue",     "aria-labelledby":"alertHistoryItemValue",     role:"alertHistoryItemValue"     },liContainer);
-        const itemDate        = createElement("div",{class:"alertHistoryItemDate",      "aria-labelledby":"alertHistoryItemDate",      role:"alertHistoryItemDate"      },liContainer);
 
-        itemCaptorName.append("Capteur " + captorName + " :");
+        itemDate.append(AlertsView.obtainDate(timestamp));
+        itemCaptorName.append(captorName);
         itemContext.append(AlertsView.obtainAlertContext(captorName, value));
         itemValue.append(value + "°C");
-        itemDate.append(AlertsView.obtainDate(timestamp));
         itemCaptorName.parentNode.style.background = getHSLColorMatchingTemperature(value);
     }
 
@@ -128,5 +127,4 @@ export class AlertsView extends Object
         const date = new Date(timestamp);
         return (date.getHours()+":"+date.getMinutes()+" "+date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear());
     }
-
 }
