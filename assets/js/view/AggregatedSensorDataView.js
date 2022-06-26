@@ -64,7 +64,7 @@ export default class AggregatedSensorDataView extends Object {
             }
 
             aggregatedData[result.Nom].max = Math.max(aggregatedData[result.Nom].max, result.Valeur);
-            aggregatedData[result.Nom].min = Math.min(aggregatedData[result.Nom].max, result.Valeur);
+            aggregatedData[result.Nom].min = Math.min(aggregatedData[result.Nom].min, result.Valeur);
             aggregatedData[result.Nom].average += result.Valeur;
             aggregatedData[result.Nom].entryCount += 1;
         }
