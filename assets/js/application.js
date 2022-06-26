@@ -3,11 +3,21 @@ import HistoryTabView from "./tab_view/HistoryTabView";
 import {AlertsTabView} from "./tab_view/AlertsTabView";
 import HomeTabView from "./tab_view/HomeTabView";
 import {bubbly} from "./bubbly.js";
+import { ToastNotification } from "./notification/ToastNotification.js";
+import { PushNotification } from "./notification/PushNotification.js";
+import {clamp} from "./utils/mathUtils";
+
+
 /* Classe de création de l'interface d'application */
 
 export class Application extends Object {
 
-    /* Container for TabView */
+    /* List of tabs and their appropriate buttons  */
+    #tabs = [];
+    #tabButtons = [];
+    #currentTabIndex = 0;
+
+    /* Instances of TabView */
     #homeTabView;
     #alertTabView;
     #historyTabView;
@@ -20,7 +30,6 @@ export class Application extends Object {
         this.previousTabPosition = "tabHome";
         this.screenWidth = window.innerWidth;
         window.addEventListener("resize", ()=> {this.screenWidth = window.innerWidth;});
-        
     }
 
     /* Création des éléments HTML */
@@ -44,12 +53,21 @@ export class Application extends Object {
         this.linkAlerts      = createElement(   "li"   ,{"data-target"  :"tabAlerts"                                      ,role :"tab"    },     this.linksMenu);
         const anchorAlerts   = createElement(   "a"    ,{                                   text  :"Alertes"              ,href :"#"      },    this.linkAlerts);
         this.tabsContainer   = createElement(  "div"   ,{class          :"tabsContainer"                                                  }                    );
-        this.tabHome         = createElement(  "div"   ,{id:"tabHome"   ,class:"tabContent","aria-labelledby":   "tabHome",role:"tabpanel"}, this.tabsContainer);
-        this.tabHistory      = createElement(  "div"   ,{id:"tabHistory",class:"tabContent","aria-labelledby":"tabHistory",role:"tabpanel"}, this.tabsContainer);
-        this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"}, this.tabsContainer);
+        this.tabHome         = createElement(  "div"   ,{id:"tabHome"   ,class:"tabContent tabAnimated","aria-labelledby":   "tabHome",role:"tabpanel"}, this.tabsContainer);
+        this.tabHistory      = createElement(  "div"   ,{id:"tabHistory",class:"tabContent tabAnimated","aria-labelledby":"tabHistory",role:"tabpanel"}, this.tabsContainer);
+        this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"tabContent tabAnimated","aria-labelledby": "tabAlerts",role:"tabpanel"}, this.tabsContainer);
         this.links           =      qsa     (".linksMenu li");
         this.contents        =      qsa     (".tabContent");
-        console.log(this.tabHome)
+
+        // Put all tabs and their associated button in a list, for scalability
+        this.#tabs = [this.tabHome, this.tabHistory, this.tabAlerts];
+        this.#tabButtons = [this.linkHome, this.linkHistory, this.linkAlerts];
+
+        // Put the links slightly on top of the switcher
+        for(let tab of this.#tabButtons){
+            tab.style.zIndex = '1';
+        }
+
         // Link the tabViews
         this.#homeTabView = new HomeTabView();
         this.#historyTabView = new HistoryTabView();
@@ -99,65 +117,48 @@ export class Application extends Object {
     }
 
     /* Comportement des onglets */
-
     #setTabsBehavior = () => {
-        let  firstUse = false; // Permet de ne pas déclencher l'animation au premier affichage de l'onglet Accueil (Home)
+        const toggle = (targetIndex, skipAnimation=false, forceToggle=false) => {
+            if(targetIndex === this.#currentTabIndex && !forceToggle) return;
 
-        const OPT_TXT = ".7s forwards ease-in-out";
-        const OPT_TXT2 = ".7s forwards ease-in-out";
 
-        const L2RI    = `leftToRightIn   ${OPT_TXT}`;
-        const L2RO    = `leftToRightOut  ${OPT_TXT}`;
-        const R2LI    = `rightToLeftIn   ${OPT_TXT}`;
-        const R2LO    = `rightToLeftOut  ${OPT_TXT}`;
+            // Remove all class transitions, then apply the appropriate one
+            for(let index in this.#tabs){
+                let currentTab = this.#tabs[index];
 
-        const HOHI    = `homeToHistory  ${OPT_TXT2}`;
-        const HIAL    = `historyToAlerts${OPT_TXT2}`;
-        const ALHI    = `alertsToHistory${OPT_TXT2}`;
-        const HIHO    = `historyToHome  ${OPT_TXT2}`;
-        const ALHO    = `alertsToHome   ${OPT_TXT2}`;
-        const HOAL    = `homeToAlerts   ${OPT_TXT2}`;
+                // Compute animation settings
+                let addedClass = index < targetIndex ? "left" : index > targetIndex ? "right" : "middle"
+                let currentBounds = currentTab.getBoundingClientRect();
+                let destination = addedClass === "left" ? -window.innerWidth : addedClass === "right" ? window.innerWidth : 0;
 
-        const toggle  = (targetId) => {
-            if (firstUse === false) { firstUse = true; switcher.innerText="Accueil"; return; }
+                // Then we update the class holding transform properties
 
-            this.contents.forEach(  (element)  => {
-                element.classList                                  [element.id === targetId ? "add" : "remove"]("active");
-                qs(`[data-target="${element.id}"]`).classList      [element.id === targetId ? "add" : "remove"]("active");
+                currentTab.style.transitionDuration = !skipAnimation * ((0.3 * Math.abs(currentBounds.x - destination)) / window.innerWidth) + "s";
+                currentTab.classList.remove("left", "middle", "right");
+                currentTab.classList.add(addedClass);
+                currentTab.style.zIndex = '0';
+            }
 
-                if(this.tabHome.classList.contains("active") && firstUse) {
-                    switch(this.previousTabPosition) {
-                        case "tabHistory" : this.tabHome.style.animation = L2RI; this.tabHistory.style.animation = L2RO;
-                            this.switcher.style.animation = HIHO; this.switcher.innerText="Accueil"; break;
-                        case "tabAlerts"  : this. tabHome.style.animation = L2RI;this. tabAlerts.style.animation = L2RO;
-                            this. switcher.style.animation = ALHO; this.switcher.innerText="Accueil"; break;
-                    }
-                    this.previousTabPosition = "tabHome";
-                }
-                if(this.tabHistory.classList.contains("active")) {
-                    switch(this.previousTabPosition) {
-                        case "tabHome" : this.tabHistory.style.animation = R2LI; this.tabHome.style.animation = R2LO;
-                            this.switcher.style.animation = HOHI; this.switcher.innerText="  Historique  "; break;
-                        case "tabAlerts" : this.tabHistory.style.animation = L2RI; this.tabAlerts.style.animation = L2RO;
-                            this.switcher.style.animation = ALHI; this.switcher.innerText="  Historique  "; break;
-                    }
-                    this.previousTabPosition = "tabHistory";
-                }
-                if(this.tabAlerts.classList.contains("active")) {
-                    switch(this.previousTabPosition) {
-                        case "tabHome" : this.tabAlerts.style.animation  = R2LI; this.tabHome.style.animation = R2LO;
-                            this.switcher.style.animation = HOAL; this.switcher.innerText="Alertes"; break;
-                        case "tabHistory" : this.tabAlerts.style.animation  = R2LI; this.tabHistory.style.animation = R2LO;
-                            this.switcher.style.animation = HIAL; this.switcher.innerText="Alertes"; break;
-                    }
-                    this.previousTabPosition = "tabAlerts";
-                }
-            })
+            // Put priority on the two main animating tabs
+            this.#tabs[this.#currentTabIndex].style.zIndex = '2';
+            this.#tabs[targetIndex].style.zIndex = '3';
+
+
+            // button transition, we need to be direction aware
+            let containerBounds = this.linksMenu.getBoundingClientRect();
+            let targetBounds = this.#tabButtons[targetIndex].getBoundingClientRect();
+            this.switcher.style.right =  containerBounds.right - targetBounds.right + 'px';
+            this.switcher.style.left = targetBounds.x - containerBounds.x + 'px';
+
+
+
+            this.#currentTabIndex = targetIndex;
         }
-        this.links.forEach( (link) => {
-            link.addEventListener("click", () => { toggle(link.dataset.target); });
-            if (link.className.includes("active")) toggle(link.dataset.target);
-        })
+        // Bind button click to their respective tabs
+        for(let index in this.#tabButtons){
+            this.#tabButtons[index].addEventListener("click", () => toggle(index));
+        }
+        toggle(0, true, true);
     };
 
     #startup() {
@@ -185,28 +186,19 @@ export class Application extends Object {
         evt.preventDefault();
        // let screenPortionToMove = this.screenWidth * 1 / 10;
         let diffPos = this.#prevPosX - evt.clientX;
-        if(this.previousTabPosition == "tabHome"){
-            if(diffPos > 0 && evt.pointerType == "mouse")  this.linkHistory.click();
-        }
-        else if(this.previousTabPosition == "tabHistory"){
-            if(diffPos > 0 && evt.pointerType == "mouse")  this.linkAlerts.click();
-            if(diffPos  < 0 && evt.pointerType == "mouse") this.linkHome.click();
-        }
-        else if(this.previousTabPosition == "tabAlerts"){
-            if(diffPos > 0 && evt.pointerType == "mouse")  this.linkAlerts.click();
-            if(diffPos  < 0 && evt.pointerType == "mouse") this.linkHistory.click();
+        if(evt.pointerType === "mouse"){
+            if(diffPos > 0) this.#tabButtons[clamp(this.#currentTabIndex + 1, 0, this.#tabButtons.length-1)].click();
+            if(diffPos < 0) this.#tabButtons[clamp(this.#currentTabIndex - 1, 0, this.#tabButtons.length-1)].click();
         }
     }
 
     #handleCancel(evt) {
         let diffPos = this.#tmpEventClient - this.#prevPosX;
-
-        if(this.previousTabPosition == "tabHome" && diffPos < -8.5 && evt.pointerType == "touch") this.linkHistory.click();
-        else if(this.previousTabPosition == "tabHistory"){
-            if(diffPos < -8.5 && evt.pointerType == "touch")     this.linkAlerts.click();
-            else if(diffPos > 8.5 && evt.pointerType == "touch") this.linkHome.click();
+        if(evt.pointerType === "touch"){
+            if(diffPos < -8.5) this.#tabButtons[clamp(this.#currentTabIndex + 1, 0, this.#tabButtons.length-1)].click();
+            if(diffPos > 8.5) this.#tabButtons[clamp(this.#currentTabIndex - 1, 0, this.#tabButtons.length-1)].click();
         }
-        else if(this.previousTabPosition == "tabAlerts" && diffPos > 8.5 && evt.pointerType == "touch") this.linkHistory.click();
+
         evt.preventDefault();
     }
     
