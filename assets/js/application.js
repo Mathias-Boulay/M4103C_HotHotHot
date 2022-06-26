@@ -2,9 +2,7 @@ import { qs, qsa, createElement, addGlobalEventListener } from "./utils/utils.js
 import HistoryTabView from "./tab_view/HistoryTabView";
 import {AlertsTabView} from "./tab_view/AlertsTabView";
 import HomeTabView from "./tab_view/HomeTabView";
-import { ToastNotification } from "./notification/ToastNotification.js";
-import { PushNotification } from "./notification/PushNotification.js";
-
+import {bubbly} from "./bubbly.js";
 /* Classe de création de l'interface d'application */
 
 export class Application extends Object {
@@ -32,11 +30,11 @@ export class Application extends Object {
         this.header          = createElement( "header" ,{id             :"header"                                                         }                    );
         this.userName        = createElement(  "span"  ,{id             :"userName"        ,text  :""                                     },        this.header);
         this.connectionState = createElement(  "span"  ,{id             :"connectionState" ,text  :"Connection"                           },        this.header);
-        this.fakeOverlay     = createElement(  "div"   ,{id             : "fakeOverlay"                                                   }                    );
+        this.fakeOverlay     = createElement(  "div"   ,{id             :"fakeOverlay"                                                    }                    );
         this.fakeConnection  = createElement(  "form"  ,{id             :"fakeConnection"                                                 },  this.fakeOverlay );
         this.fakeLabel       = createElement(  "label" ,{id:"fakeLabel" ,for:"fakeInput"   ,text:"Connection"                             },this.fakeConnection);
         this.fakeInput       = createElement(  "input" ,{id:"fakeInput" ,placeholder:"Nom" ,type:"text"                   ,name:"name"    },this.fakeConnection);
-        this.fakeButton      = createElement( "button" ,{id:"fakeButton",type:"submit"                                                    },this.fakeConnection);
+        this.fakeButton      = createElement( "button" ,{id:"fakeButton",type:"#"                                                    },this.fakeConnection);
         this.linksMenu       = createElement(   "ul"   ,{class          :"linksMenu"                                      ,role :"tablist"},        this.header);
         this.switcher        = createElement(  "span"  ,{id             :"switcher"                                                       },     this.linksMenu);
         this.linkHome        = createElement(   "li"   ,{"data-target"  :"tabHome"         ,class :"active"               ,role :"tab"    },     this.linksMenu);
@@ -51,7 +49,7 @@ export class Application extends Object {
         this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"tabContent","aria-labelledby": "tabAlerts",role:"tabpanel"}, this.tabsContainer);
         this.links           =      qsa     (".linksMenu li");
         this.contents        =      qsa     (".tabContent");
-
+        console.log(this.tabHome)
         // Link the tabViews
         this.#homeTabView = new HomeTabView();
         this.#historyTabView = new HistoryTabView();
@@ -164,21 +162,23 @@ export class Application extends Object {
 
     #startup() {
         const d =  document;
-        d.addEventListener("pointerdown", this.#handleStart.bind(this));
-        d.addEventListener("pointerup", this.#handleEnd.bind(this));
+        d.addEventListener("pointerdown"  , this.#handleStart.bind(this));
+        d.addEventListener("pointerup"    , this.#handleEnd.bind(this));
         d.addEventListener("pointercancel", this.#handleCancel.bind(this));
-        d.addEventListener("pointermove", this.#handleMove.bind(this));
+        d.addEventListener("pointermove"  , this.#handleMove.bind(this));
+        bubbly();
+        console.log("bubbly in action")
     }
 
     #handleStart(evt){
         // evt.preventDefault();
-        this.#prevPosX = evt.clientX
+        this.#prevPosX = evt.clientX;
     }
 
 
     #handleMove(evt) {
         evt.preventDefault();
-        this.#tmpEventClient=evt.clientX
+        this.#tmpEventClient=evt.clientX;
     }
 
     #handleEnd(evt) {
@@ -186,15 +186,15 @@ export class Application extends Object {
        // let screenPortionToMove = this.screenWidth * 1 / 10;
         let diffPos = this.#prevPosX - evt.clientX;
         if(this.previousTabPosition == "tabHome"){
-            if(diffPos > 0 && evt.pointerType == "mouse")  this.linkHistory.click()
+            if(diffPos > 0 && evt.pointerType == "mouse")  this.linkHistory.click();
         }
         else if(this.previousTabPosition == "tabHistory"){
-            if(diffPos > 0 && evt.pointerType == "mouse") this.linkAlerts.click()
-            if(diffPos  < 0 && evt.pointerType == "mouse")this.linkHome.click()
+            if(diffPos > 0 && evt.pointerType == "mouse")  this.linkAlerts.click();
+            if(diffPos  < 0 && evt.pointerType == "mouse") this.linkHome.click();
         }
         else if(this.previousTabPosition == "tabAlerts"){
-            if(diffPos > 0 && evt.pointerType == "mouse") this.linkAlerts.click()
-            if(diffPos  < 0 && evt.pointerType == "mouse")this.linkHistory.click()
+            if(diffPos > 0 && evt.pointerType == "mouse")  this.linkAlerts.click();
+            if(diffPos  < 0 && evt.pointerType == "mouse") this.linkHistory.click();
         }
     }
 
@@ -203,17 +203,16 @@ export class Application extends Object {
 
         if(this.previousTabPosition == "tabHome" && diffPos < -8.5 && evt.pointerType == "touch") this.linkHistory.click();
         else if(this.previousTabPosition == "tabHistory"){
-            if(diffPos < -8.5 && evt.pointerType == "touch") this.linkAlerts.click();
+            if(diffPos < -8.5 && evt.pointerType == "touch")     this.linkAlerts.click();
             else if(diffPos > 8.5 && evt.pointerType == "touch") this.linkHome.click();
         }
-        else if(this.previousTabPosition == "tabAlerts" && diffPos > 8.5 && evt.pointerType == "touch")this.linkHistory.click();
-
+        else if(this.previousTabPosition == "tabAlerts" && diffPos > 8.5 && evt.pointerType == "touch") this.linkHistory.click();
         evt.preventDefault();
     }
     
     create() {
         this.#constructHTML();
         this.#setTabsBehavior();
-        this.#startup()
+        this.#startup();
     };
 }

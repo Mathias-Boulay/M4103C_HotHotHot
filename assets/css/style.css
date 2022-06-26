@@ -2,12 +2,12 @@
     --textColor          :rgb(51, 51, 51);
 
     --headerHeight       :  20%;
-    --headerColor        : white;
+    --headerColor        : rgba(255, 255, 255,.0000001);;
 
     --tabMenuColor       :rgb(209, 209, 209);
     --switcherColor      :rgb(255, 255, 255);
-    
-    --tabHomeColor       :rgb(85, 85, 85);
+    /* rgba(85, 85, 85,.8); */
+    --tabHomeColor       :rgba(0, 0, 0,.65);
     --tabHistoryColor    :rgb(21, 193, 216);
     --tabAlertsColor     :rgb(156, 151, 151);
 
@@ -31,7 +31,7 @@ html,body{
     font: inherit;
     font-family: system-ui;
     vertical-align: baseline;
-    -webkit-overflow-scrolling: touch;
+    /* -webkit-overflow-scrolling: touch; */
     font-weight: bold;
 }
 
@@ -45,6 +45,7 @@ html,body{
     background-color: var(--headerColor);
     width: 100%;
 }
+
 #userName{
     position: absolute;
     left: 8%;
@@ -68,17 +69,17 @@ html,body{
 	top: 0%;
 	width: 100%;
 	height: 100%;
-	backdrop-filter: blur(.15rem);
+	backdrop-filter: blur(.25rem);
 	background-color: rgba(0,0,0,.55);
 }
+
 #fakeConnection{
-    box-shadow: 0 0 500px 200px rgba(0, 0, 0, 1);
     position: relative;
     display:none;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    width:50%;
+    width:35%;
     height: 30%;
     background-color: white;
     border-radius: 15px;
@@ -94,19 +95,26 @@ html,body{
     width: 90%;
     font-size: 1rem;
     height: 10%;
-    
 }
+
 #fakeInput{
-    
-    color: black;font-size: 1rem;
-    z-index:999999;
-    width: 30%;
+    color: black;
+    font-size: 1rem;
+    z-index:99;
+    width: 60%;
     height: 10%;
 }
+
 #fakeButton{
     width: 30%;
     height: 30%;
+    border-radius:100px ;
     cursor: pointer;
+    transition: border-radius 100ms ease-out;
+}
+
+#fakeButton:hover{
+    border-radius: 50% ;
 }
 
 .linksMenu{
@@ -204,7 +212,7 @@ html,body{
     bottom: 0;
 }
 
-[data-target="tabHome"],[data-target="tabHistory"]{
+[data-target="tabHome"], [data-target="tabHistory"]{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -213,6 +221,7 @@ html,body{
 #tabHome{
     position: fixed;
     background-color: var(--tabHomeColor);
+    backdrop-filter: blur(.80rem);
 }
 
 #tabHistory{
@@ -329,12 +338,12 @@ html,body{
 @keyframes homeToHistory{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(var(--homeTabPosition))scale(1,1);
+        transform: translateX(var(--homeTabPosition));
     }
     100%{
         color: rgba(0, 0, 0, 1);
         transform: translateX(var(--historyTabPosition)) 
-                        scale(var(--historyTabScale),.99);
+                        scale(var(--historyTabScale),1);
         font-size: 16.75px;
     }
 }
@@ -347,7 +356,7 @@ html,body{
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform: translateX(var(--alertsTabPosition)) scale(1,1);
+        transform: translateX(var(--alertsTabPosition)) ;
         font-size: 18px;
     }
 }
@@ -355,7 +364,7 @@ html,body{
 @keyframes alertsToHistory{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(var(--alertsTabPosition)) scale(1,1);
+        transform: translateX(var(--alertsTabPosition)) ;
     }
     100%{
         color: rgba(0, 0, 0, 1);
@@ -373,7 +382,7 @@ html,body{
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform: translateX(var(--homeTabPosition)) scale(1,1);
+        transform: translateX(var(--homeTabPosition)) ;
         font-size: 18px;
     }
 }
@@ -381,21 +390,21 @@ html,body{
 @keyframes alertsToHome{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(var(--alertsTabPosition)) scale(1,1);
+        transform: translateX(var(--alertsTabPosition)) ;
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform: translateX(var(--homeTabPosition)) scale(1,1);
+        transform: translateX(var(--homeTabPosition)) ;
     }
 }
 
 @keyframes homeToAlerts{
     0%{
         color: rgba(0, 0, 0, 0.15);
-        transform: translateX(var(--homeTabPosition))scale(1,1);
+        transform: translateX(var(--homeTabPosition));
     }
     100%{
         color: rgba(0, 0, 0, 1);
-        transform: translateX(var(--alertsTabPosition)) scale(1,1);
+        transform: translateX(var(--alertsTabPosition)) ;
     }
 }
