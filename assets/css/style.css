@@ -8,8 +8,8 @@
     --switcherColor      :rgb(255, 255, 255);
     /* rgba(85, 85, 85,.8); */
     --tabHomeColor       :rgba(0, 0, 0,.65);
-    --tabHistoryColor    :rgb(85, 85, 85);
-    --tabAlertsColor     :rgb(156, 151, 151);
+    --tabHistoryColor    :rgba(0, 0, 0,.65);
+    --tabAlertsColor     :rgba(0, 0, 0,.65);
 
     --historyTabScale    :  1.15;
 
