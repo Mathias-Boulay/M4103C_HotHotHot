@@ -74,6 +74,7 @@ export default class AggregatedSensorDataView extends Object {
                 aggregatedData[key] = { max : 0, min : 0, average : 0, entryCount : 0};
             }else{
                 aggregatedData[key].average /= aggregatedData[key].entryCount;
+                aggregatedData[key].average = aggregatedData[key].average.toFixed(1);
             }
         }
         return aggregatedData
