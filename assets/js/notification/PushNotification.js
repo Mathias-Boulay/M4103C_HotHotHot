@@ -1,10 +1,13 @@
-import { qs, createElement, removeElementChilds } from "./../utils/utils.js";
-import { getHSLHueMatchingTemperature } from "./../utils/colorUtils.js";
 import { AlertsView } from "./../view/AlertsView.js";
 import { receptor } from "./../Receptor";
 
 export class PushNotification extends Object
 {
+    #captorName;
+    #value;
+    #timestamp;
+    #context;
+    #date;
 
     constructor(){
         super();
