@@ -21,7 +21,7 @@ export default class RealTimeSensorDataView extends Object {
         receptor.addSensorDataListener(this, sensorName);
         // Load the last saved temperature
         receptor.DAO.getSensorData({limit:1, filters:sensorName, order:"descending"}).then(result => {
-            this.#setTemperature(result ? result[0].Valeur : 0)
+            this.#setTemperature(result.length > 0 ? result[0].Valeur : 0)
         });
         sensorNameText.textContent = sensorName;
     }
