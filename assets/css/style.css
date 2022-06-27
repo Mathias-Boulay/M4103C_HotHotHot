@@ -230,12 +230,15 @@ html,body{
 #tabHistory{
     position: fixed;
     background-color: var(--tabHistoryColor);
+    overflow-y: auto;
+    justify-content: flex-start;
 }
 
 .aggregatedSensorDataTable {
     width: 80%;
     color: white;
     text-align: center;
+    margin: 1em;
     border: 0.2rem solid darkgray;
     border-collapse: separate;
     border-spacing: 0.35em;
