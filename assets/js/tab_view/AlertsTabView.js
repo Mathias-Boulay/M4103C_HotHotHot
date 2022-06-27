@@ -1,5 +1,6 @@
 import { qs, createElement } from "../utils/utils.js";
-import { AlertsView } from "../view/AlertsView.js";
+import { AlertsHistoryView } from "../view/AlertsHistoryView.js";
+import { LatestAlertView } from "../view/LatestAlertView.js";
 
 export class AlertsTabView extends Object {
     tabAlerts;
@@ -17,7 +18,9 @@ export class AlertsTabView extends Object {
     }
 
     loadComponentViews() {
-        new AlertsView();
+        new AlertsHistoryView();
+        new LatestAlertView("interieur", this.latestAlertContainer);
+        new LatestAlertView("exterieur", this.latestAlertContainer);
     }
 
     /** Load all necessary children components */

@@ -13,12 +13,6 @@ if ('serviceWorker' in navigator) {
 
 };
 
-/* Bouton d'installation de Super-Hot*/
-
-let deferredPrompt;
-const addBtn = document.querySelector('.add-button');
-addBtn.style.display = 'none';
-
 const app = new Application();
 app.create();
 
@@ -27,7 +21,6 @@ app.create();
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    addBtn.style.display = 'block';
     
     addBtn.addEventListener('click', (e) => {
         addBtn.style.display = 'none';

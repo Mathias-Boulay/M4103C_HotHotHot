@@ -9,11 +9,12 @@ export class PushNotification extends Object{
 
     constructor(){
         super();
-        this.#notifImg = "./../../images/android-chrome-192x192.png";
-        receptor.addAlertListener(this);
-        window.addEventListener('focus', this.setActive);
-        window.addEventListener('blur', this.setUnactive);
+        this.#notifImg = "./assets/images/android-chrome-192x192.png";
         
+        receptor.addAlertListener(this);
+
+        window.addEventListener('focus',() => PushNotification.#activeWindow = true );
+        window.addEventListener('blur', () => PushNotification.#activeWindow = false);
     }
 
     update(sensorData){
@@ -21,14 +22,6 @@ export class PushNotification extends Object{
         this.#value      = sensorData.Valeur;
         if(!PushNotification.#activeWindow) 
             Notification.requestPermission().then(result => { if(result === 'granted') this.#sendNotif(); console.log("HERE");}); 
-    }
-
-    setActive(){
-        PushNotification.#activeWindow = true;
-    }
-
-    setUnactive(){
-        PushNotification.#activeWindow = false;
     }
 
     #sendNotif(){
