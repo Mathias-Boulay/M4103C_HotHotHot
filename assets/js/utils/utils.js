@@ -54,6 +54,21 @@ export function randomNumberBetween(min, max) {return Math.floor(Math.random() *
 
 export function sleep(duration) {return new Promise(resolve => setTimeout(resolve, duration));}
 
+
+/**
+ * Change the time by itself + the delta that is generated from the parameters
+ * @param date The reference date
+ * @param days The amount of days
+ * @param hours The amount of hours
+ * @param minutes The amount of minutes
+ * @param seconds The amount of seconds
+ * @return The new date, with the delta applied
+ */
+export function addTime(date, days=0, hours=0, minutes=0, seconds=0){
+    let totalDelta = 8.64e+7 * days + 3.6e+6 * hours + 60000 * minutes + 1000 * seconds;
+    return new Date(date.getTime() + totalDelta);
+}
+
 /**
  * Given a date, find the start of the current day
  * @param {Date|int} date: The date to get
