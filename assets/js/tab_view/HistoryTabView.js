@@ -1,4 +1,4 @@
-import { qs, qsa, createElement } from "../utils/utils.js";
+import {qs, qsa, createElement, addTime} from "../utils/utils.js";
 import AggregatedSensorDataView from "../view/AggregatedSensorDataView";
 
 export default class HistoryTabView extends Object {
@@ -12,8 +12,13 @@ export default class HistoryTabView extends Object {
 
     /** Load all necessary children components */
     load(){
-        // TODO add children ?
-        new AggregatedSensorDataView(this.#rootView, Date.now());
+        let today = new Date(Date.now());
+        new AggregatedSensorDataView(this.#rootView, today);
+        new AggregatedSensorDataView(this.#rootView, addTime(today, -1));
+        new AggregatedSensorDataView(this.#rootView, addTime(today, -2));
+        new AggregatedSensorDataView(this.#rootView, addTime(today, -3));
+        new AggregatedSensorDataView(this.#rootView, addTime(today, -4));
+        new AggregatedSensorDataView(this.#rootView, addTime(today, -5));
     }
 
 }
