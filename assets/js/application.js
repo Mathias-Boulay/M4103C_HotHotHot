@@ -1,7 +1,7 @@
 import { qs, qsa, createElement, addGlobalEventListener } from "./utils/utils.js";
+import HomeTabView from "./tab_view/HomeTabView";
 import HistoryTabView from "./tab_view/HistoryTabView";
 import {AlertsTabView} from "./tab_view/AlertsTabView";
-import HomeTabView from "./tab_view/HomeTabView";
 import {bubbly} from "./bubbly.js";
 import { ToastNotification } from "./notification/ToastNotification.js";
 import { PushNotification } from "./notification/PushNotification.js";
@@ -129,10 +129,9 @@ export class Application extends Object {
                 // Compute animation settings
                 let addedClass = index < targetIndex ? "left" : index > targetIndex ? "right" : "middle"
                 let currentBounds = currentTab.getBoundingClientRect();
-                let destination = addedClass === "left" ? -window.innerWidth : addedClass === "right" ? window.innerWidth : 0;
+                let destination = addedClass === "left" ? - window.innerWidth : addedClass === "right" ? window.innerWidth : 0;
 
                 // Then we update the class holding transform properties
-
                 currentTab.style.transitionDuration = !skipAnimation * ((0.3 * Math.abs(currentBounds.x - destination)) / window.innerWidth) + "s";
                 currentTab.classList.remove("left", "middle", "right");
                 currentTab.classList.add(addedClass);
@@ -168,7 +167,6 @@ export class Application extends Object {
         d.addEventListener("pointercancel", this.#handleCancel.bind(this));
         d.addEventListener("pointermove"  , this.#handleMove.bind(this));
         bubbly();
-        console.log("bubbly in action")
     }
 
     #handleStart(evt){
