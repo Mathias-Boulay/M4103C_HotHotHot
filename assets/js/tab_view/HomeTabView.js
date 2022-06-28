@@ -1,4 +1,4 @@
-import { qs, qsa, createElement } from "../utils/utils.js";
+import { qs, createElement } from "../utils/utils.js";
 import RealTimeSensorDataView from "../view/RealTimeSensorDataView";
 import {Graph} from "../graph/graph";
 
@@ -21,7 +21,5 @@ export default class HomeTabView extends Object {
         new RealTimeSensorDataView(this.#realTimesensorDataContainer, "exterieur");
         new Graph(this.#graphContainer).create();
     }
-
-
 
 }
