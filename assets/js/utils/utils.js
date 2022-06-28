@@ -144,3 +144,17 @@ export function getEndOfDay(date){
     date.setHours(23, 59, 59, 0);
     return date;
 }
+
+/**
+ * @param sensorData {Object|String} The sensor data or the type directly
+ * @return {String} The suffix, eg. "°C"
+ */
+export function getSensorSuffix(sensorData){
+    // Preformat the input
+    if(typeof sensorData !== "string"){
+        sensorData = sensorData.type;
+    }
+
+    if(sensorData.toLowerCase() === "thermique") return "°C";
+    return "";
+}

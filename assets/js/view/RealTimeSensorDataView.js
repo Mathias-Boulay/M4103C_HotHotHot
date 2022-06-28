@@ -1,4 +1,4 @@
-import {createElement} from "../utils/utils";
+import {createElement, getSensorSuffix} from "../utils/utils";
 import {receptor} from "../Receptor";
 import {lerpColor, lerpColorFromString} from "../utils/colorUtils";
 
@@ -21,23 +21,24 @@ export default class RealTimeSensorDataView extends Object {
         receptor.addSensorDataListener(this, sensorName);
         // Load the last saved temperature
         receptor.DAO.getSensorData({limit:1, filters:sensorName, order:"descending"}).then(result => {
-            this.#setTemperature(result.length > 0 ? result[0].Valeur : 0)
+            if(result.length === 0) return;
+            this.#setTemperature(result[0]);
         });
         sensorNameText.textContent = sensorName;
     }
 
     /** Proxy method called because we are a Receptor listener */
     update(sensorData){
-        this.#setTemperature(sensorData.Valeur);
+        this.#setTemperature(sensorData);
     }
 
     /**
      * Update the state of the view to display the current temperature
-     * @param temperature The current temperature
+     * @param sensorData The current sensor which holds the temperature
      */
-    #setTemperature(temperature){
-        this.#temperatureView.textContent = temperature.toString();
-        this.#rootView.style.outlineColor = `${lerpColorFromString("#00FFAE", "#FF3700", temperature/30)}`;
+    #setTemperature(sensorData){
+        this.#temperatureView.textContent = sensorData.Valeur.toString() + getSensorSuffix(sensorData);
+        this.#rootView.style.outlineColor = `${lerpColorFromString("#00FFAE", "#FF3700", sensorData.Valeur/30)}`;
     }
 
 

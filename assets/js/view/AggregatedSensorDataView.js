@@ -1,7 +1,7 @@
 /**
  * View aimed at displaying the min, max and average data of the day
  */
-import {createElement, getEndOfDay, getStartOfDay} from "../utils/utils";
+import {createElement, getEndOfDay, getSensorSuffix, getStartOfDay} from "../utils/utils";
 import Receptor, {receptor} from "../Receptor";
 import Localization from "../lang/Localization";
 
@@ -60,7 +60,7 @@ export default class AggregatedSensorDataView extends Object {
         for(let result of results){
             // Create the object for the given sensor, if needed
             if(aggregatedData[result.Nom] === undefined){
-                aggregatedData[result.Nom] = {max : -9999, min : 9999, average : 0, entryCount : 0}
+                aggregatedData[result.Nom] = {max : -9999, min : 9999, average : 0, entryCount : 0, sensorType : result.type}
             }
 
             aggregatedData[result.Nom].max = Math.max(aggregatedData[result.Nom].max, result.Valeur);
@@ -71,7 +71,7 @@ export default class AggregatedSensorDataView extends Object {
         // Once we get gathered all the data, compute the average if possible, else put default values
         for(let key of Object.keys(aggregatedData)){
             if(aggregatedData[key].entryCount === 0){
-                aggregatedData[key] = { max : 0, min : 0, average : 0, entryCount : 0};
+                aggregatedData[key] = { max : 0, min : 0, average : 0, entryCount : 0, sensorType:""};
             }else{
                 aggregatedData[key].average /= aggregatedData[key].entryCount;
                 aggregatedData[key].average = aggregatedData[key].average.toFixed(1);
@@ -88,10 +88,11 @@ export default class AggregatedSensorDataView extends Object {
         for(let key of Object.keys(aggregatedData)){
             let currentData = aggregatedData[key];
 
+            let suffix = getSensorSuffix(currentData.sensorType);
             let tableRow = createElement("tr", {text: key}, this.#tableBody);
-            createElement("td", {text: currentData.min}, tableRow);
-            createElement("td", {text: currentData.max}, tableRow);
-            createElement("td", {text: currentData.average}, tableRow);
+            createElement("td", {text: currentData.min + suffix}, tableRow);
+            createElement("td", {text: currentData.max + suffix}, tableRow);
+            createElement("td", {text: currentData.average + suffix}, tableRow);
         }
     }
 
