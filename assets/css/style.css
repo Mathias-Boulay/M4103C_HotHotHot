@@ -27,7 +27,6 @@ html,body{
     padding: 0;
     margin: 0;
     border: 0;
-    color :var(--textColor);
     height: 100%;
     font: inherit;
     font-family: system-ui;
@@ -44,6 +43,7 @@ html,body{
     height:var(--headerHeight);
     background-color: var(--headerColor);
     width: 100%;
+    color: white;
 }
 
 #userName{

@@ -63,5 +63,3 @@ export let bubbly = function (config) {
         });
     })();
 };
-
-//export {bubbly};

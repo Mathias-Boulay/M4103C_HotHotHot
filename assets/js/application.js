@@ -7,9 +7,6 @@ import { ToastNotification } from "./notification/ToastNotification.js";
 import { PushNotification } from "./notification/PushNotification.js";
 import {clamp} from "./utils/mathUtils";
 
-
-/* Classe de création de l'interface d'application */
-
 export class Application extends Object {
 
     /* List of tabs and their appropriate buttons  */
@@ -24,7 +21,11 @@ export class Application extends Object {
  
     #tmpEventClient = 0;
     #prevPosX = 0;
-    
+
+     /**
+     * Creates a new instance of the Application
+     * 
+     */
     constructor() {
         super();
         this.previousTabPosition = "tabHome";
@@ -32,7 +33,7 @@ export class Application extends Object {
         window.addEventListener("resize", ()=> {this.screenWidth = window.innerWidth;});
     }
 
-    /* Création des éléments HTML */
+    /*   HTML Elements creation   */
                                   //        _____________________________________________________________________________________________________________________
     #constructHTML = () => {      //        |   Type    |                        Attributs, Datasets & Inner Texts                        |    Elément Parent   |
                                   //        |_d'Element_|_________________________________________________________________________________|__def:document.body__|
@@ -116,7 +117,9 @@ export class Application extends Object {
         })     
     }
 
-    /* Comportement des onglets */
+    /**
+     * Set the tabs behavior
+     */
     #setTabsBehavior = () => {
         const toggle = (targetIndex, skipAnimation=false, forceToggle=false) => {
             if(targetIndex === this.#currentTabIndex && !forceToggle) return;
@@ -160,6 +163,9 @@ export class Application extends Object {
         toggle(0, true, true);
     };
 
+    /**
+     * Set screen swaping behaviors (#startup, #handleStart, #handleMove, #handleEnd, #handleCancel)
+     */
     #startup() {
         const d =  document;
         d.addEventListener("pointerdown"  , this.#handleStart.bind(this));
@@ -168,28 +174,21 @@ export class Application extends Object {
         d.addEventListener("pointermove"  , this.#handleMove.bind(this));
         bubbly();
     }
-
     #handleStart(evt){
-        // evt.preventDefault();
         this.#prevPosX = evt.clientX;
     }
-
-
     #handleMove(evt) {
         evt.preventDefault();
         this.#tmpEventClient=evt.clientX;
     }
-
     #handleEnd(evt) {
         evt.preventDefault();
-       // let screenPortionToMove = this.screenWidth * 1 / 10;
         let diffPos = this.#prevPosX - evt.clientX;
         if(evt.pointerType === "mouse"){
             if(diffPos > 0) this.#tabButtons[clamp(this.#currentTabIndex + 1, 0, this.#tabButtons.length-1)].click();
             if(diffPos < 0) this.#tabButtons[clamp(this.#currentTabIndex - 1, 0, this.#tabButtons.length-1)].click();
         }
     }
-
     #handleCancel(evt) {
         let diffPos = this.#tmpEventClient - this.#prevPosX;
         if(evt.pointerType === "touch"){
@@ -199,7 +198,11 @@ export class Application extends Object {
 
         evt.preventDefault();
     }
-    
+
+    /**
+     * Creates the application
+     *
+     */
     create() {
         this.#constructHTML();
         this.#setTabsBehavior();

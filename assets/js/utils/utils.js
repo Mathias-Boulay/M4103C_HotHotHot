@@ -1,10 +1,33 @@
 /* Accès au DOM */
 
-
+/**
+ * Allow to easily access elements
+ * @param {String } element The element name as an id or a class 
+ * @param parent The element's parent
+ *
+ * @return The required element
+ */
 export function qs(element, parent = document){return parent.querySelector(element);}
 
+/**
+ * Allow to easily access all the same elements
+ * @param {String } element The element name as a tag or a class 
+ * @param parent The element's parent
+ *
+ * @return The required element
+ */
 export function qsa(element, parent = document){return [...parent.querySelectorAll(element)];}
 
+/**
+ * Add event listeners, a cleaner way
+ * @param {String } type The type of the event (click, touch, mousedown) 
+ * @param element The element concerned 
+ * @param callback The callback to trigger
+ * @param options The possible options of callbacks
+ * @param parent The element's parent
+ *
+ * @return The required element
+ */
 export function addGlobalEventListener(
     type,
     element,
@@ -21,6 +44,15 @@ export function addGlobalEventListener(
     )
 }
 
+/**
+ * Easy way to create elements
+ * @param {String } type The type of the element 
+ * @param options every attribute, classes and ids to set to the class 
+ * @param parent The element's parent
+ * @param {Boolean} prepend If set true, prepend the element instead of appending it
+ *
+ * @return The required element
+ */
 export function createElement(type, options = {}, parent = document.body, prepend = false) {
     const element = document.createElement(type);
     Object.entries(options).forEach(([key, value]) => {
@@ -45,15 +77,30 @@ export function createElement(type, options = {}, parent = document.body, prepen
     return element;
 }
 
+/**
+ * Toremove childs of an element
+ * @param element The element whom child will be removed
+ */
 export function removeElementChilds(element){while (element.firstChild)element.removeChild(element.lastChild);}
 
 /* Diverses */
 
-
+/**
+ * Give a number between two values
+ * @param {Number} min Min value 
+ * @param {Number} max Max value
+ * 
+ * @return The random number
+ */
 export function randomNumberBetween(min, max) {return Math.floor(Math.random() * (max - min + 1) + min);}
 
+/**
+ * Set a pause in code execution
+ * @param {Number} duration Duration of the pause
+ * 
+ * @return Some time
+ */
 export function sleep(duration) {return new Promise(resolve => setTimeout(resolve, duration));}
-
 
 /**
  * Change the time by itself + the delta that is generated from the parameters
