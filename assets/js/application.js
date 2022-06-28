@@ -21,7 +21,7 @@ export class Application extends Object {
     #homeTabView;
     #alertTabView;
     #historyTabView;
-
+ 
     #tmpEventClient = 0;
     #prevPosX = 0;
     
@@ -43,7 +43,7 @@ export class Application extends Object {
         this.fakeConnection  = createElement(  "form"  ,{id             :"fakeConnection"                                                 },  this.fakeOverlay );
         this.fakeLabel       = createElement(  "label" ,{id:"fakeLabel" ,for:"fakeInput"   ,text:"Connection"                             },this.fakeConnection);
         this.fakeInput       = createElement(  "input" ,{id:"fakeInput" ,placeholder:"Nom" ,type:"text"                   ,name:"name"    },this.fakeConnection);
-        this.fakeButton      = createElement( "button" ,{id:"fakeButton",type:"#"                                                    },this.fakeConnection);
+        this.fakeButton      = createElement( "button" ,{id:"fakeButton",                   type:"button"                                 },this.fakeConnection);
         this.linksMenu       = createElement(   "ul"   ,{class          :"linksMenu"                                      ,role :"tablist"},        this.header);
         this.switcher        = createElement(  "span"  ,{id             :"switcher"                                                       },     this.linksMenu);
         this.linkHome        = createElement(   "li"   ,{"data-target"  :"tabHome"         ,class :"active"               ,role :"tab"    },     this.linksMenu);
@@ -53,11 +53,11 @@ export class Application extends Object {
         this.linkAlerts      = createElement(   "li"   ,{"data-target"  :"tabAlerts"                                      ,role :"tab"    },     this.linksMenu);
         const anchorAlerts   = createElement(   "a"    ,{                                   text  :"Alertes"              ,href :"#"      },    this.linkAlerts);
         this.tabsContainer   = createElement(  "div"   ,{class          :"tabsContainer"                                                  }                    );
-        this.tabHome         = createElement(  "div"   ,{id:"tabHome"   ,class:"tabContent tabAnimated","aria-labelledby":   "tabHome",role:"tabpanel"}, this.tabsContainer);
-        this.tabHistory      = createElement(  "div"   ,{id:"tabHistory",class:"tabContent tabAnimated","aria-labelledby":"tabHistory",role:"tabpanel"}, this.tabsContainer);
-        this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"tabContent tabAnimated","aria-labelledby": "tabAlerts",role:"tabpanel"}, this.tabsContainer);
+        this.tabHome         = createElement(  "div"   ,{id:"tabHome"   ,class:"everyTab",  "aria-labelledby":   "tabHome",role:"tabpanel"}, this.tabsContainer);
+        this.tabHistory      = createElement(  "div"   ,{id:"tabHistory",class:"everyTab",  "aria-labelledby":"tabHistory",role:"tabpanel"}, this.tabsContainer);
+        this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"everyTab",  "aria-labelledby": "tabAlerts",role:"tabpanel"}, this.tabsContainer);
         this.links           =      qsa     (".linksMenu li");
-        this.contents        =      qsa     (".tabContent");
+        this.contents        =      qsa     (".everyTab");
 
         // Put all tabs and their associated button in a list, for scalability
         this.#tabs = [this.tabHome, this.tabHistory, this.tabAlerts];
@@ -72,7 +72,7 @@ export class Application extends Object {
         this.#homeTabView = new HomeTabView();
         this.#historyTabView = new HistoryTabView();
         this.#alertTabView = new AlertsTabView();
-        this.#homeTabView.load()
+        this.#homeTabView.load();
         this.#historyTabView.load();
         this.#alertTabView.load();
 
