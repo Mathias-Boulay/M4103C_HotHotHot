@@ -110,7 +110,7 @@ export default class SensorDataDAO extends Object {
                 // Create the filtering function beforehand,
                 // with the goal to reduce the amount of overhead by if "filterType" statement when iterating over records;
                 let filters;
-                if(options?.filters ?? Receptor.ALL_SENSORS === Receptor.ALL_SENSORS){
+                if((options?.filters ?? Receptor.ALL_SENSORS) === Receptor.ALL_SENSORS){
                     filters = function (record){return true;} // No filtering
                 }else{
                     filters = filterType === "whitelist" ?
