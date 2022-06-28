@@ -4,12 +4,11 @@ export class PushNotification extends Object{
 
     #captorName;
     #value;
-    #notifImg;
+    static #notifImg = "./assets/images/android-chrome-192x192.png";
     static #activeWindow = true;
 
     constructor(){
         super();
-        this.#notifImg = "./assets/images/android-chrome-192x192.png";
         
         receptor.addAlertListener(this);
 
@@ -21,13 +20,13 @@ export class PushNotification extends Object{
         this.#captorName = sensorData.Nom;
         this.#value      = sensorData.Valeur;
         if(!PushNotification.#activeWindow) 
-            Notification.requestPermission().then(result => { if(result === 'granted') this.#sendNotif(); console.log("HERE");}); 
+            Notification.requestPermission().then(result => { if(result === 'granted') this.#sendNotif();}); 
     }
 
     #sendNotif(){
         const notifTitle = "Alerte pour le capteur " + this.#captorName;  
         const notifBody = 'Température : ' + this.#value + '°C';   
-        const options = { body: notifBody, icon: this.#notifImg}  
+        const options = { body: notifBody, icon: PushNotification.#notifImg};
         new Notification(notifTitle, options);
     }
 

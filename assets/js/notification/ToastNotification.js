@@ -17,7 +17,7 @@ export class ToastNotification extends Object{
     }
 
     update(sensorData){
-        qs("#tabAlerts").className.split(" ").array.forEach(element => {if (element == "middle") return;});
+        if(qs("#tabAlerts").className.split(" ").includes("middle")) return;
 
         this.showToast(sensorData.Nom, obtainAlertContext(sensorData.Nom, sensorData.Valeur), sensorData.Valeur, obtainDate(sensorData.Timestamp));
     }
