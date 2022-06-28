@@ -37,7 +37,7 @@ export default class RealTimeSensorDataView extends Object {
      */
     #setTemperature(temperature){
         this.#temperatureView.textContent = temperature.toString();
-        this.#rootView.style.backgroundColor = `${lerpColorFromString("#00FFAE", "#FF3700", temperature/30)}`;
+        this.#rootView.style.outlineColor = `${lerpColorFromString("#00FFAE", "#FF3700", temperature/30)}`;
     }
 
 

@@ -192,7 +192,9 @@ html,body{
 }
 
 .realTimeSensorDataView{
-    background: gray;
+    color: white;
+    background: rgba(0, 0, 0, 0.3) ;
+    outline: 0.4em solid gray;
     border-radius: 1em;
     aspect-ratio: 1/1;
     padding: 25%;
