@@ -55,21 +55,23 @@ export default class ServerQuery extends Object{
      * @param sensorDataArray
      */
     #updateListener(sensorDataArray){
-        this.#sanitizeSensorData(sensorDataArray);
-        this.#listener.update(sensorDataArray);
+        if(this.#sanitizeSensorData(sensorDataArray)){
+            this.#listener.update(sensorDataArray);
+        }
     }
+
 
     /**
      * Sanitize and normalize the data to guarantee the "type" of it.
      * Let's say we don't expect a string with SQLERROR instead of a float for the temperature
      * Also, the timestamp has to be converted into ms instead of seconds
      * @param sensorDataArray An array of sensor data object
-     * @return The array, sanitized on the value
+     * @return {Array|boolean} The array, with sanitization, false otherwise
      */
     #sanitizeSensorData(sensorDataArray){
         sensorDataArray.forEach(sensorData => {
             let convertedValue = parseFloat(sensorData.Valeur);
-            if(isNaN(convertedValue)) convertedValue = 0; // Fallback for SQLERROR
+            if(isNaN(convertedValue)) return false; // Fallback for SQLERROR
 
             sensorData.Valeur = convertedValue;
             sensorData.Timestamp *= 1000;
