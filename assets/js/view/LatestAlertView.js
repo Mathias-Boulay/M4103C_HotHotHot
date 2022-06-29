@@ -17,7 +17,6 @@
       * @param {element} parent The parent of this view
       */
      constructor(captorName, parent){
-         console.log("captorname : " + captorName);
          super();
  
          this.#parent = parent;
@@ -51,7 +50,7 @@
              valueContainer.append(value + "°C");
              dateContainer.append(obtainDate(timestamp));
              const hue = getHSLHueMatchingTemperature(value);
-             latestAlert.style.background = "radial-gradient(circle, hsla(" + hue + ", 100%, 60%, 0.8) 0%, hsla(0 , 100%, 70%, 0.8) 100%)";
+             latestAlert.style.outlineColor = "hsl(" + hue + ", 100%, 55%)";
          });
      }
  
@@ -78,6 +77,6 @@
              ++i;
          }
          const hue = getHSLHueMatchingTemperature(value);
-         qs("[data-lastalert=" + this.#captorName +"holder]").style.background = "radial-gradient(circle, hsla(" + hue + ", 100%, 60%, 0.8) 0%, hsla(0 , 100%, 70%, 0.8) 100%)";
+         qs("[data-lastalert=" + this.#captorName +"holder]").style.outlineColor = "hsl(" + hue + ", 100%, 55%)";
      }
- }
+}

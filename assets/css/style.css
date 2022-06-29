@@ -275,16 +275,21 @@ html,body{
 #latestAlertsContainer{
     display: flex;
     padding: 0;
-    gap: 1em;
+    gap: 2em;
 }
 
 .latestAlert{
     list-style: none;
     width: min(35vw, 10em);
+    background: rgba(0, 0, 0, 0.3);
     aspect-ratio: 1/1;
-    border-radius: 5%;
+    outline: 0.3em solid gray;
+    border-radius: 1em;
     padding: 1em;
-    border: 0.05em solid #adaaaa;
+}
+
+.latestAlert > *{
+    color: white;
 }
 
 #alertsHistory{
@@ -324,6 +329,10 @@ html,body{
     bottom: 5%;
     border-radius: 30px;
     z-index: 10;
+}
+
+.toastInactive{
+    display: none;
 }
 
 @keyframes toastNotification {
