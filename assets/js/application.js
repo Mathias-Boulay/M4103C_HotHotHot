@@ -1,11 +1,11 @@
-import { qs, qsa, createElement, addGlobalEventListener } from "./utils/utils.js";
-import HomeTabView from "./tab_view/HomeTabView";
-import HistoryTabView from "./tab_view/HistoryTabView";
-import {AlertsTabView} from "./tab_view/AlertsTabView";
-import {bubbly} from "./bubbly.js";
-import { ToastNotification } from "./notification/ToastNotification.js";
-import { PushNotification } from "./notification/PushNotification.js";
-import {clamp} from "./utils/mathUtils";
+import { qsa, createElement } from "./utils/utils.js";
+import   HomeTabView          from "./tab_view/HomeTabView";
+import   HistoryTabView       from "./tab_view/HistoryTabView";
+import { AlertsTabView }      from "./tab_view/AlertsTabView";
+import { bubbly }             from "./utils/bubbly.js";
+import { ToastNotification }  from "./notification/ToastNotification.js";
+import { PushNotification }   from "./notification/PushNotification.js";
+import { clamp }              from "./utils/mathUtils";
 
 export class Application extends Object {
 
@@ -65,9 +65,7 @@ export class Application extends Object {
         this.#tabButtons = [this.linkHome, this.linkHistory, this.linkAlerts];
 
         // Put the links slightly on top of the switcher
-        for(let tab of this.#tabButtons){
-            tab.style.zIndex = '1';
-        }
+        for(let tab of this.#tabButtons) tab.style.zIndex = '1';
 
         // Link the tabViews
         this.#homeTabView = new HomeTabView();
@@ -151,9 +149,6 @@ export class Application extends Object {
             let targetBounds = this.#tabButtons[targetIndex].getBoundingClientRect();
             this.switcher.style.right =  containerBounds.right - targetBounds.right + 'px';
             this.switcher.style.left = targetBounds.x - containerBounds.x + 'px';
-
-
-
             this.#currentTabIndex = targetIndex;
         }
         // Bind button click to their respective tabs

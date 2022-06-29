@@ -1,4 +1,8 @@
-
+/**
+ * A method to create visual moving bubbles. Thanks to @tipsy
+ * @param config Possible modifications of the bubbles aspect
+ *
+ */
 export let bubbly = function (config) {
     const c = config || {};
     const r = () => Math.random();
