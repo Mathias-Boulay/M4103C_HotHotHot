@@ -2,7 +2,7 @@
  * The English dictionary, used by Localization upon loading
  * Note that the special chain ## denotes a spot for data to be placed in on the fly
  */
-export default class EN extends Object{
+ export default class EN extends Object{
 
     /**
      * Gives back an object containing ALL translations, as English is considered the base one
@@ -23,7 +23,11 @@ export default class EN extends Object{
             alert_context_inside_superhot : "Call the Firefighters or stop your barbecue!",
             alert_context_inside_cold : "Turn up the heat or put on a heavy sweater!",
             alert_context_inside_supercold : "Frozen pipes, call a plumber and put on a woolly hat!",
-            alert_context_error : "Error, this alert isn't valid"
+            alert_context_error : "Error, this alert isn't valid",
+
+            sensor : "Sensor ",
+            notif_context : "Alert for sensor ",
+            notif_temp : "Temperature : "
         };
     }
 }

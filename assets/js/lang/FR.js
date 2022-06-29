@@ -2,7 +2,7 @@
  * The French dictionary, used by Localization upon loading
  * Note that the special chain ## denotes a spot for data to be placed in on the fly
  */
-export default class FR extends Object{
+ export default class FR extends Object{
 
     /**
      * Gives back an object containing ALL translations, but in French
@@ -23,7 +23,11 @@ export default class FR extends Object{
             alert_context_inside_superhot : "Appelez les pompiers ou arrêtez votre barbecue !",
             alert_context_inside_cold : "Montez le chauffage ou mettez un gros pull !",
             alert_context_inside_supercold : "Canalisations gelées, appelez SOS plombier et mettez un bonnet !",
-            alert_context_error : "Erreur, cette alerte est invalide"
+            alert_context_error : "Erreur, cette alerte est invalide",
+
+            sensor : "Capteur ",
+            notif_context : "Alerte pour le capteur ",
+            notif_temp : "Température : "
         };
     }
 }

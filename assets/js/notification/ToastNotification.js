@@ -4,6 +4,7 @@
  import { qs, createElement, removeElementChilds, sleep } from "./../utils/utils.js";
  import { obtainAlertContext, obtainDate } from "./../utils/alertUtils.js";
  import { receptor } from "./../Receptor";
+ import Localization from "./../lang/Localization";
  
  export class ToastNotification extends Object{
  
@@ -35,7 +36,7 @@
       */
      showToast(captorName, context, value, date){
          const elementArray = ["CaptorName", "Context",  "Value", "Date"];
-         const contentArray = ["Capteur " + captorName, context, value + "°C", date];
+         const contentArray = [Localization.getText("sensor") + captorName, context, value + "°C", date];
  
          let i = 0;
          while (i < elementArray.length){
@@ -51,4 +52,4 @@
          sleep(5000).then(resolve => {toastContainer.className = "toastInactive";}); 
          /* Let enough time to the toast so it can complete his animation*/
      }
- }
+}

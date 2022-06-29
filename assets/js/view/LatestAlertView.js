@@ -5,6 +5,7 @@
  import { getHSLHueMatchingTemperature } from "./../utils/colorUtils.js";
  import { obtainAlertContext, obtainDate } from "./../utils/alertUtils.js";
  import { receptor } from "./../Receptor";
+ import Localization from "./../lang/Localization";
  
  export class LatestAlertView extends Object{
  
@@ -45,7 +46,7 @@
          receptor.DAO.getAlerts(optionsObject).then(result => {
              const value      = result?.[0]?.Valeur ?? "?";
              const timestamp  = result?.[0]?.Timestamp ?? "?";
-             captorNameContainer.append("Capteur " + this.#captorName);
+             captorNameContainer.append(Localization.getText("sensor") + this.#captorName);
              contextContainer.append(obtainAlertContext(this.#captorName, value));
              valueContainer.append(value + "°C");
              dateContainer.append(obtainDate(timestamp));
@@ -67,7 +68,7 @@
       */
      #updateLatestAlert(value, context, date){
          const elementArray = [this.#captorName + "CaptorName", this.#captorName + "Context", this.#captorName + "Value", this.#captorName + "Date"];
-         const contentArray = ["Capteur " + this.#captorName, context, value + "°C", date];
+         const contentArray = [Localization.getText("sensor") + this.#captorName, context, value + "°C", date];
          let i = 0;
          
          while (i < elementArray.length){

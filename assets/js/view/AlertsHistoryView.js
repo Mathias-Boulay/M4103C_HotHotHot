@@ -68,6 +68,5 @@
          itemValue.append(value + "°C");
          const hue = getHSLHueMatchingTemperature(value);
          itemCaptorName.parentNode.style.background = "linear-gradient(175deg, hsla(" + hue + ", 100%, 60%, 0.8) 0%, hsla(" + hue + ", 100%, 70%, 0.8) 50%, hsla(0 , 100%, 100%, 0.8) 100%)";
-     }
- 
- }
+     } 
+}
