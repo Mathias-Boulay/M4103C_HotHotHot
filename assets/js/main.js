@@ -19,18 +19,17 @@ window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     let deferredPrompt = e;
     const addBtn = document.querySelector(".add-button");
-    if (addBtn){
-        addBtn.addEventListener('click', (e) => {
-            addBtn.style.display = 'none';
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the A2HS prompt');
-                } else {
-                    console.log('User dismissed the A2HS prompt');
-                }
-                deferredPrompt = null;
-            });
+
+    addBtn?.addEventListener('click', (e) => {
+        addBtn.style.display = 'none';
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the A2HS prompt');
+            } else {
+                console.log('User dismissed the A2HS prompt');
+            }
+            deferredPrompt = null;
         });
-    }
+    });
 });
