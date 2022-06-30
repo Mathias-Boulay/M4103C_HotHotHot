@@ -79,11 +79,16 @@ export class Graph {
                 plugins: {
                     title: {
                         display: false,
-                        text: 'Chart.js Line Chart - External Tooltips'
                       },
                       tooltip: {
                         enabled: false,
                         position: 'nearest',
+                      },
+                      legend:{
+                        labels:{
+                            color: "#ffffff"
+                        }
+                        
                       }
                 }
             }
@@ -182,7 +187,7 @@ export class Graph {
         if(this.dataTemp){
             console.log(this.dataTemp)
             this.tempDataRow = createElement("tr",{}, this.table);
-            createElement("span",{text:dataDate}, this.tempDataRow);
+            createElement("span",{scope:"row",text:dataDate}, this.tempDataRow);
             if(this.dataTemp[0] === "interieur"){
                 this.interieur = this.dataTemp[1];
                 this.externe = data.Valeur;
