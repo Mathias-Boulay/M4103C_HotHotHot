@@ -5,6 +5,8 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: #F8F7F3;
+    color: rgba(0, 0, 0, 0.8);
 }
 
 p{
