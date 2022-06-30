@@ -11,6 +11,13 @@
     static getTranslation(){
         return {
             welcome : "Bienvenue ##",
+            
+            application_connection: "Connexion",
+            application_deconnection: "Déconnexion",
+            application_placeholder: "Nom",
+            application_link_home: "Accueil",
+            application_link_history: "Historique",
+            application_link_alerts: "Alertes",
 
             history_minimum: "Minimum",
             history_maximum: "Maximum",

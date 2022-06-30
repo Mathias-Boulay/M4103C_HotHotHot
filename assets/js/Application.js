@@ -6,6 +6,7 @@ import { bubbly }             from "./utils/bubbly.js";
 import { ToastNotification }  from "./notification/ToastNotification.js";
 import { PushNotification }   from "./notification/PushNotification.js";
 import { clamp }              from "./utils/mathUtils";
+import Localization from "./lang/Localization.js";
 
 export class Application extends Object {
 
@@ -34,29 +35,29 @@ export class Application extends Object {
     }
 
     /*   HTML Elements creation   */
-                                  //        _____________________________________________________________________________________________________________________
-    #constructHTML = () => {      //        |   Type    |                        Attributs, Datasets & Inner Texts                        |    Elément Parent   |
-                                  //        |_d'Element_|_________________________________________________________________________________|__def:document.body__|
-        this.header          = createElement( "header" ,{id             :"header"                                                         }                    );
-        this.userName        = createElement(  "span"  ,{id             :"userName"        ,text  :""                                     },        this.header);
-        this.connectionState = createElement(  "span"  ,{id             :"connectionState" ,text  :"Connection"                           },        this.header);
-        this.fakeOverlay     = createElement(  "div"   ,{id             :"fakeOverlay"                                                    }                    );
-        this.fakeConnection  = createElement(  "form"  ,{id             :"fakeConnection"                                                 },  this.fakeOverlay );
-        this.fakeLabel       = createElement(  "label" ,{id:"fakeLabel" ,for:"fakeInput"   ,text:"Connection"                             },this.fakeConnection);
-        this.fakeInput       = createElement(  "input" ,{id:"fakeInput" ,placeholder:"Nom" ,type:"text"                   ,name:"name"    },this.fakeConnection);
-        this.fakeButton      = createElement( "button" ,{id:"fakeButton",                   type:"button"                                 },this.fakeConnection);
-        this.linksMenu       = createElement(   "ul"   ,{class          :"linksMenu"                                      ,role :"tablist"},        this.header);
-        this.switcher        = createElement(  "span"  ,{id             :"switcher"                                                       },     this.linksMenu);
-        this.linkHome        = createElement(   "li"   ,{"data-target"  :"tabHome"         ,class :"active"               ,role :"tab"    },     this.linksMenu);
-        const anchorHome     = createElement(   "a"    ,{                                   text  :"Accueil"              ,href :"#"      },      this.linkHome);
-        this.linkHistory     = createElement(   "li"   ,{"data-target"  :"tabHistory"                                     ,role :"tab"    },     this.linksMenu);
-        const anchorHistory  = createElement(   "a"    ,{                                   text  :"Historique"           ,href :"#"      },   this.linkHistory);
-        this.linkAlerts      = createElement(   "li"   ,{"data-target"  :"tabAlerts"                                      ,role :"tab"    },     this.linksMenu);
-        const anchorAlerts   = createElement(   "a"    ,{                                   text  :"Alertes"              ,href :"#"      },    this.linkAlerts);
-        this.tabsContainer   = createElement(  "div"   ,{class          :"tabsContainer"                                                  }                    );
-        this.tabHome         = createElement(  "div"   ,{id:"tabHome"   ,class:"everyTab",  "aria-labelledby":   "tabHome",role:"tabpanel"}, this.tabsContainer);
-        this.tabHistory      = createElement(  "div"   ,{id:"tabHistory",class:"everyTab",  "aria-labelledby":"tabHistory",role:"tabpanel"}, this.tabsContainer);
-        this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"everyTab",  "aria-labelledby": "tabAlerts",role:"tabpanel"}, this.tabsContainer);
+                                  //        _______________________________________________________________________________________________________________________
+    #constructHTML = () => {      //        |   Type    |                        Attributs, Datasets & Inner Texts                          |    Elément Parent   |
+                                  //        |_d'Element_|___________________________________________________________________________________|__def:document.body__|
+        this.header          = createElement( "header" ,{id:"header"                                                                        }                    );
+        this.userName        = createElement(  "span"  ,{id:"userName"                                                     ,text :""        },        this.header);
+        this.connectionState = createElement(  "span"  ,{id:"connectionState"          ,text :Localization.getText("application_connection")},        this.header);
+        this.fakeOverlay     = createElement(  "div"   ,{id:"fakeOverlay"                                                                   }                    );
+        this.fakeConnection  = createElement(  "form"  ,{id:"fakeConnection"                                                                },  this.fakeOverlay );
+        this.fakeLabel       = createElement(  "label" ,{id:"fakeLabel",for:"fakeInput",text:Localization.getText("application_connection") },this.fakeConnection);
+        this.fakeInput       = createElement(  "input" ,{id :"fakeInput",placeholder:Localization.getText("application_placeholder"),name:"name"},this.fakeConnection);
+        this.fakeButton      = createElement( "button" ,{id :"fakeButton",                   type:"button"                                  },this.fakeConnection);
+        this.linksMenu       = createElement(   "ul"   ,{class :"linksMenu"                                                ,role :"tablist" },        this.header);
+        this.switcher        = createElement(  "span"  ,{id :"switcher"                                                                     },     this.linksMenu);
+        this.linkHome        = createElement(   "li"   ,{"data-target"  :"tabHome"         ,class :"active"                ,role :"tab"     },     this.linksMenu);
+        const anchorHome     = createElement(   "a"    ,{text :Localization.getText("application_link_home")               ,href :"#"       },      this.linkHome);
+        this.linkHistory     = createElement(   "li"   ,{"data-target"  :"tabHistory"                                      ,role :"tab"     },     this.linksMenu);
+        const anchorHistory  = createElement(   "a"    ,{text :Localization.getText("application_link_history")            ,href :"#"       },   this.linkHistory);
+        this.linkAlerts      = createElement(   "li"   ,{"data-target"  :"tabAlerts"                                       ,role :"tab"     },     this.linksMenu);
+        const anchorAlerts   = createElement(   "a"    ,{text  :Localization.getText("application_link_alerts")            ,href :"#"       },    this.linkAlerts);
+        this.tabsContainer   = createElement(  "div"   ,{class          :"tabsContainer"                                                    }                    );
+        this.tabHome         = createElement(  "div"   ,{id:"tabHome"   ,class:"everyTab",  "aria-labelledby":   "tabHome" ,role:"tabpanel" }, this.tabsContainer);
+        this.tabHistory      = createElement(  "div"   ,{id:"tabHistory",class:"everyTab",  "aria-labelledby":"tabHistory" ,role:"tabpanel" }, this.tabsContainer);
+        this.tabAlerts       = createElement(  "div"   ,{id:"tabAlerts" ,class:"everyTab",  "aria-labelledby": "tabAlerts" ,role:"tabpanel" }, this.tabsContainer);
         this.links           =      qsa     (".linksMenu li");
         this.contents        =      qsa     (".everyTab");
 
@@ -83,7 +84,7 @@ export class Application extends Object {
             if(connected) {
                 connected = false;
                 this.userName.innerText ="";
-                this.connectionState.innerText="Connexion";
+                this.connectionState.innerText = Localization.getText("application_connection");
                 return;
             }
                 this.fakeOverlay.style.display="flex";
@@ -93,15 +94,15 @@ export class Application extends Object {
             if (this.fakeInput.value !== ""){
                 connected = true;
                 this.userName.innerText = this.fakeInput.value;
-                this.connectionState.innerText="Déconnection";
-                this.fakeOverlay.style.display="none";
-                this.fakeConnection.style.display="none";
+                this.connectionState.innerText = Localization.getText("application_deconnection");
+                this.fakeOverlay.style.display = "none";
+                this.fakeConnection.style.display = "none";
             }
             else {
                 this.userName.innerText ="";
                 connected = false;
-                this.connectionState.innerText="Connection";
-                this.fakeOverlay.style.display="none";
+                this.connectionState.innerText = Localization.getText("application_connection");
+                this.fakeOverlay.style.display = "none";
             }
         });
 
@@ -121,7 +122,6 @@ export class Application extends Object {
     #setTabsBehavior = () => {
         const toggle = (targetIndex, skipAnimation=false, forceToggle=false) => {
             if(targetIndex === this.#currentTabIndex && !forceToggle) return;
-
 
             // Remove all class transitions, then apply the appropriate one
             for(let index in this.#tabs){
@@ -190,7 +190,6 @@ export class Application extends Object {
             if(diffPos < -8.5) this.#tabButtons[clamp(this.#currentTabIndex + 1, 0, this.#tabButtons.length-1)].click();
             if(diffPos > 8.5) this.#tabButtons[clamp(this.#currentTabIndex - 1, 0, this.#tabButtons.length-1)].click();
         }
-
         evt.preventDefault();
     }
 

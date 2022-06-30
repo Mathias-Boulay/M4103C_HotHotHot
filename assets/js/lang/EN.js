@@ -12,6 +12,13 @@
         return {
             welcome : "Hello ##",
 
+            application_connection: "Connection",
+            application_deconnection: "Deconnection",
+            application_placeholder: "Name",
+            application_link_home: "Home",
+            application_link_history: "History",
+            application_link_alerts: "Alerts",
+
             history_minimum: "Minimum",
             history_maximum: "Maximum",
             history_average: "Average",
