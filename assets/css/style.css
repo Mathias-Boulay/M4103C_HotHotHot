@@ -249,6 +249,7 @@ html,body{
     position: fixed;
     display: flex;
     justify-content: start;
+    overflow-y: auto;
     background-color: var(--tabAlertsColor);
 }
 
@@ -294,38 +295,50 @@ html,body{
 
 #alertsHistory{
     overflow-y: scroll;
-    padding: 0.2em;
     display: flex;
-    gap: 0.3em;
-    width: fit-content;
+    width: min(85vw, 50em);
     height: 18em;
-    background-color: rgba(255,255,255, 0.4);
+    background-color: rgba(0, 0, 0, 0.3);
     flex-direction: column;
     border-radius: 2% / 4%;
+    padding: 0.5em 2.5em;
 }
 
 .alertHistoryItem{
     list-style: none;
-    width: min(85vw, 50em);
+    width: 100%;
 }
 
 .alertHistoryItem > div{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding: 1em;
-    border-radius: 2% / 15%;
-    box-shadow: 2px 3px 3px rgb(160,160,160);
+}
+
+.alertHistoryItem:not(:first-child){
+    border-top: solid 0.1em rgba(255, 255, 255, 0.6);
+}
+
+.alertHistoryItem > div > *{
+    color:white;
+}
+
+.alertHistoryItem > div > p{
+    width : 30%;
+}
+
+.alertHistoryItem > div > div:first-child{
+    width : 15%;
 }
 
 .toastActive{
     animation: toastNotification 4s;
     position: fixed;
-    background-color: #fff;
+    background-color: var(--tabMenuColor);
     text-align: center;
-    width: 15em;
-    padding: 3em;
-    right: -25%;
+    width: 20vw;
+    padding: 1em;
+    right: -50vw;
     bottom: 5%;
     border-radius: 30px;
     z-index: 10;
@@ -336,10 +349,10 @@ html,body{
 }
 
 @keyframes toastNotification {
-    0% { transform: translateX(0%);}
-    10% { transform: translateX(-120%);}
-    90% { transform: translateX(-120%);}
-    100% { transform: translateX(0%);}
+    0% { transform: translateX(0vw);}
+    10% { transform: translateX(-70vw);}
+    90% { transform: translateX(-70vw);}
+    100% { transform: translateX(0vw);}
 }
 
 .middle {
