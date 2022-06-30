@@ -83,7 +83,7 @@ export class Application extends Object {
             if(connected) {
                 connected = false;
                 this.userName.innerText ="";
-                this.connectionState.innerText="Connection";
+                this.connectionState.innerText="Connexion";
                 return;
             }
                 this.fakeOverlay.style.display="flex";
