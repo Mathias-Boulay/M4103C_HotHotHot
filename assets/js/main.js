@@ -1,4 +1,4 @@
-import { Application } from "./application.js";
+import { Application } from "./Application.js";
 import { Graph } from "./graph/graph";
 import { AlertsTabView } from "./tab_view/AlertsTabView.js";
 /*Enregistrement service worker*/
