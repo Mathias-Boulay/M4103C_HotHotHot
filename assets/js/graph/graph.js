@@ -1,28 +1,20 @@
 import { receptor } from "../Receptor";
 import {qs, createElement, getStartOfDay} from "../utils/utils";
 
-/*TODO
- - Historique
- - 
- - Mettre les temp en valeur
- - ToolTip 
- - enlever Grid
-*/
-
 export class Graph {
 
     constructor(parent){
         this.canvas = createElement("canvas",{}, parent);
         this.ctx = this.canvas.getContext('2d');
 
-        this.gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-        this.gradient.addColorStop(0, 'rgba(131,100,180,1)');
-        this.gradient.addColorStop(0.6, 'rgba(131,100,180,0)');
-        this.gradient.addColorStop(1, 'rgba(131,100,180,0)');
         this.gradient2 = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-        this.gradient2.addColorStop(0, 'rgba(253,29,29,1)');
-        this.gradient2.addColorStop(0.6, 'rgba(253,29,29,0)');
-        this.gradient2.addColorStop(1, 'rgba(253,29,29,0)');
+        this.gradient2.addColorStop(0, 'rgba(131,100,180,1)');
+        this.gradient2.addColorStop(0.6, 'rgba(131,100,180,0)');
+        this.gradient2.addColorStop(1, 'rgba(131,100,180,0)');
+        this.gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+        this.gradient.addColorStop(0, 'rgba(253,29,29,1)');
+        this.gradient.addColorStop(0.6, 'rgba(253,29,29,0)');
+        this.gradient.addColorStop(1, 'rgba(253,29,29,0)');
 
         this.screenWidth = window.innerWidth;
         window.addEventListener("resize", ()=> {
@@ -129,7 +121,6 @@ export class Graph {
         }
     
         addSingleData(date){
-            console.log(date);
             let tempDate = this.formatDate(date.Timestamp);
             if(!(this.chart.data.labels).includes(tempDate)){
                 (this.chart.data.labels).push(tempDate);
@@ -171,23 +162,41 @@ export class Graph {
 
     update(t){
         this.addSingleData(t);
+        this.addDataTable(t);
     }
 
     tableCreate(){
-        this.table = createElement("div",{role:"table", "aria-label":"Table des Températures en direct"}, this.canvas);
-        this.tableHeader = createElement("div",{role:"rowgroup"}, this.table);
-        createElement("span",{role:"columnheader",text:"Date"}, this.tableHeader);
-        createElement("span",{role:"columnheader",text:"Capteur Interne"}, this.tableHeader);
-        createElement("span",{role:"columnheader",text:"Capteur Externe"}, this.tableHeader);
-        this.tableData = createElement("div",{role:"rowgroup"}, this.table);
-        this.tableDatarow1 = createElement("div",{role:"row"}, this.tableData);
-        createElement("span",{role:"cell",text:"5 °c"}, this.tableDatarow1);
-        createElement("span",{role:"cell",text:"5 °c"}, this.tableDatarow1);
-        createElement("span",{role:"cell",text:"5 °c"}, this.tableDatarow1);
-        this.tableDatarow2 = createElement("div",{role:"row"}, this.tableData);
-        createElement("span",{role:"cell",text:"5 °c"}, this.tableDatarow2);
-        createElement("span",{role:"cell",text:"5 °c"}, this.tableDatarow2);
-        createElement("span",{role:"cell",text:"5 °c"}, this.tableDatarow2);
+        this.table = createElement("table",{}, this.canvas);
+        createElement("Caption",{text:"Table des températures en direct"}, this.table);
+
+        this.tableHeader = createElement("tr",{}, this.table);
+        createElement("th",{scope:"col",text:"Date"}, this.tableHeader);
+        createElement("th",{scope:"col",text:"Capteur Interne"}, this.tableHeader);
+        createElement("th",{scope:"col",text:"Capteur Externe"}, this.tableHeader);
     }
 
+    addDataTable(data){
+
+        let dataDate = new Date(data.Timestamp).toGMTString();
+
+        if(this.dataTemp){
+            console.log(this.dataTemp)
+            this.tempDataRow = createElement("tr",{}, this.table);
+            createElement("span",{text:dataDate}, this.tempDataRow);
+            if(this.dataTemp[0] === "interieur"){
+                this.interieur = this.dataTemp[1];
+                this.externe = data.Valeur;
+            }
+            else{
+                this.interieur= data.Valeur;
+                this.externe = this.dataTemp[1];
+            }
+            createElement("span",{text: this.interieur}, this.tempDataRow);
+            createElement("span",{text: this.externe}, this.tempDataRow);
+
+            delete(this.dataTemp);
+        }else{
+            this.dataTemp = [data.Nom,data.Valeur];
+        }
+    }   
 }   
